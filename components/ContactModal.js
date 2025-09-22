@@ -131,7 +131,7 @@ export default function ContactModal({ isOpen, onClose }) {
             Get in Touch
           </h2>
           <p className="contact-modal-description">
-            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </div>
 

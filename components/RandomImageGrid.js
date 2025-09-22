@@ -243,8 +243,8 @@ export default function RandomImageGrid({ imageGridData }) {
             className="grid-image-item"
             style={{
               position: 'absolute',
-              width: '196px',
-              height: '147px',
+              width: '15vw',
+              height: '15vw',
               left: '50%',
               top: '50%',
               transform: 'translate(-50%, -50%)',
@@ -286,7 +286,7 @@ export default function RandomImageGrid({ imageGridData }) {
               className={`hero-headline-line ${showText ? 'animate-line' : ''}`}
               style={{
                 fontFamily: 'var(--font-heading), serif',
-                fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
+                
                 fontWeight: 300,
                 lineHeight: .95,
                 letterSpacing: '-0.025em',

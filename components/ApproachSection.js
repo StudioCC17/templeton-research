@@ -159,13 +159,26 @@ export default function ApproachSection({ approachData }) {
       window.gsap.killTweensOf(img)
     })
     
-    // STEP 2: Hide all images immediately (they use different timing)
+    // STEP 2: Fade out all images except target
     allImageContainers.forEach((img, index) => {
-      window.gsap.set(img, { 
-        opacity: 0, 
-        y: 30,
-        visibility: 'hidden'
-      })
+      if (index !== targetIndex && img.style.opacity !== '0') {
+        window.gsap.to(img, {
+          opacity: 0,
+          y: 30,
+          duration: 0.2,
+          ease: "power1.out",
+          onComplete: () => {
+            img.style.visibility = 'hidden'
+          }
+        })
+      } else if (index !== targetIndex) {
+        // Hide non-visible images immediately
+        window.gsap.set(img, { 
+          opacity: 0, 
+          y: 30,
+          visibility: 'hidden'
+        })
+      }
     })
     
     // STEP 3: Handle text transitions
@@ -209,7 +222,7 @@ export default function ApproachSection({ approachData }) {
       console.log(`✅ SHOWING text container ${targetIndex}`)
     }
     
-    // STEP 5: Show target image (separate timing from text)
+    // STEP 5: Show target image with improved timing
     const targetImage = allImageContainers[targetIndex]
     if (targetImage) {
       window.gsap.set(targetImage, { visibility: 'visible' })
@@ -218,7 +231,7 @@ export default function ApproachSection({ approachData }) {
         y: 0,
         duration: 0.6,
         ease: "power2.out",
-        delay: 0.2
+        delay: 0.3 // Slightly longer delay to allow image fade-out
       })
       console.log(`✅ SHOWING image ${targetIndex}`)
     }

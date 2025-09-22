@@ -133,7 +133,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
         ref={headerRef}
         className="case-studies-header"
         style={{
-          maxWidth: '1400px',
+          
           margin: '0 auto',
           padding: '6rem 0 2rem 0',
           textAlign: 'center'
@@ -192,7 +192,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
           ref={sectionRef}
           className="case-studies-table-container"
           style={{
-            maxWidth: '1400px',
+           
             margin: '0 auto',
             paddingBottom: '4rem'
           }}
@@ -242,7 +242,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                       className="case-study-title"
                       style={{
                         fontFamily: 'var(--font-heading), serif',
-                        fontSize: 'clamp(2.5rem, 8vw, 4rem)',
+                       
                         fontWeight: 300,
                         lineHeight: 1,
                         color: '#f5f5f0',
