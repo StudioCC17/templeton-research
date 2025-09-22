@@ -316,8 +316,8 @@ export default function ApproachSection({ approachData }) {
                       pointerEvents: 'none',
                       paddingRight: '10px',
                       fontFamily: 'var(--font-body), var(--font-fallback)',
-                      width: '55.2px',
-                      height: '48.3px'
+                      width: '60.2px',
+                      height: '55.3px'
                     }}
                   >
                     <svg 
@@ -340,7 +340,7 @@ export default function ApproachSection({ approachData }) {
                     className={`approach-nav-title approach-title-${index}`}
                     style={{
                       fontFamily: 'var(--font-heading), serif',
-                      fontSize: '5vw',
+                      fontSize: '4vw',
                       fontWeight: '300',
                       lineHeight: '1',
                       letterSpacing: '-0.01em',
@@ -431,7 +431,10 @@ export default function ApproachSection({ approachData }) {
                     left: 0,
                     right: 0,
                     opacity: 0,
-                    visibility: 'hidden'
+                    visibility: 'hidden',
+                    paddingRight: '5%'
+                    
+                    
                   }}
                 >
                   {approach.description && (

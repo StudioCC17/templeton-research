@@ -58,9 +58,9 @@ export default function Footer({ footerData }) {
     <footer 
       className="footer-section"
       style={{
-        backgroundColor: '#f5f5f0',
+        backgroundColor: '#245148',
         padding: '2rem 2rem 2rem 2rem',
-        borderTop: '1px solid #245148'
+        borderTop: '0px solid #245148'
       }}
     >
       <div 
@@ -124,7 +124,7 @@ export default function Footer({ footerData }) {
                   fontSize: 'clamp(2rem, 4vw, 2rem)',
                   fontWeight: '300',
                   letterSpacing: '0.1em',
-                  color: '#245148',
+                  color: '#f5f5f0',
                   margin: '0'
                 }}
               >
@@ -137,7 +137,7 @@ export default function Footer({ footerData }) {
                   fontSize: '0.875rem',
                   fontWeight: '400',
                   letterSpacing: '0.05em',
-                  color: '#245148',
+                  color: '#f5f5f0',
                   marginTop: '0.5rem',
                   textTransform: 'uppercase'
                 }}
@@ -168,7 +168,7 @@ export default function Footer({ footerData }) {
                   fontSize: '1rem',
                   fontWeight: '600',
                   letterSpacing: '0.05em',
-                  color: '#245148',
+                  color: '#f5f5f0',
                   marginBottom: '1rem',
                   textTransform: 'uppercase'
                 }}
@@ -182,7 +182,7 @@ export default function Footer({ footerData }) {
                   fontSize: '1rem',
                   fontWeight: '400',
                   lineHeight: '1.6',
-                  color: '#245148'
+                  color: '#f5f5f0'
                 }}
               >
                 <div>{office.address?.line1}</div>
