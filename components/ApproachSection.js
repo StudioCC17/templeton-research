@@ -253,7 +253,7 @@ export default function ApproachSection({ approachData }) {
       >
         <div 
           style={{ 
-            maxWidth: '1400px', 
+      
             margin: '0 auto', 
             padding: '0 25px',
             height: '100vh',
