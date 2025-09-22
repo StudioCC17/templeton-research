@@ -1,103 +1,297 @@
-import Image from "next/image";
+// app/page.js
+// Updated with footer query and CaseStudiesSection replacing StatsTable
 
-export default function Home() {
+import { client } from '@/lib/sanity'
+import { urlFor } from '@/lib/sanity'
+import { PortableText } from '@portabletext/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import Navigation from '@/components/Navigation'
+import ApproachSection from '@/components/ApproachSection'
+import ServicesSection from '@/components/ServicesSection'
+import TeamSection from '@/components/TeamSection'
+import InteractiveCaseStudyMap from '@/components/InteractiveCaseStudyMap'
+import HeroSection from '@/components/HeroSection'
+import RandomImageGrid from '@/components/RandomImageGrid'
+import CaseStudiesSection from '@/components/CaseStudiesSection'
+import HeroTextSection from '@/components/HeroTextSection'
+import CareersSection from '@/components/CareersSection'
+import Footer from '@/components/Footer'
+import SmoothScroll from '@/components/SmoothScroll'
+
+async function getHomepageData() {
+  const query = `{
+    "homepage": *[_type == "landingPage"][0]{
+      heroSection {
+        mediaType,
+        images[]{
+          asset,
+          alt
+        },
+        videos[]{
+          asset,
+          alt,
+          poster {
+            asset,
+            alt
+          }
+        },
+        headline,
+        preheader
+      },
+      approachSection {
+        headline,
+        approaches[]{
+          _key,
+          title,
+          description,
+          image {
+            asset,
+            alt
+          },
+          imageCaption
+        }
+      },
+      ourApproach {
+        headline,
+        copy,
+        callToAction {
+          text,
+          link
+        }
+      },
+      imageGridSection {
+        images[]{
+          asset,
+          alt
+        }
+      },
+      heroTextSection {
+        image {
+          asset,
+          alt
+        },
+        headline
+      },
+      servicesSection {
+        headline,
+        introduction,
+        services[]{
+          _key,
+          title,
+          description,
+          image {
+            asset,
+            alt
+          },
+          imageCaption
+        }
+      },
+      hero3Section {
+        mediaType,
+        images[]{
+          asset,
+          alt
+        },
+        videos[]{
+          asset,
+          alt,
+          poster {
+            asset,
+            alt
+          }
+        },
+        headline,
+        preheader
+      },
+      seniorTeamSection {
+        headline,
+        introduction,
+        callToAction {
+          text,
+          link
+        },
+        teamMembers[]->{
+          _id,
+          profileImage {
+            asset,
+            alt
+          },
+          name,
+          jobTitle,
+          location,
+          bio
+        } | order(order asc, name asc)
+      },
+      careersSection {
+        headline,
+        copy,
+        callToAction {
+          text,
+          link
+        }
+      }
+    },
+    "globalSettings": *[_type == "globalSettings"][0]{
+      logoSettings {
+        primaryLogo {
+          asset,
+          alt
+        },
+        secondaryLogo {
+          asset,
+          alt
+        }
+      },
+      mapSettings {
+        mapImage {
+          asset,
+          alt
+        }
+      },
+      navigation {
+        headerNav[]{
+          label,
+          link,
+          openInNewTab
+        }
+      }
+    },
+    "footerSettings": *[_type == "footerSettings"][0]{
+      companyInfo {
+        logo {
+          asset->{
+            _id,
+            url
+          },
+          alt,
+          width,
+          height
+        },
+        companyName,
+        tagline,
+        copyrightText
+      },
+      offices[] {
+        city,
+        address {
+          line1,
+          line2
+        },
+        order
+      } | order(order asc),
+      footerNavigation {
+        enabled,
+        navigationSections[] {
+          sectionTitle,
+          links[] {
+            label,
+            url,
+            openInNewTab
+          }
+        }
+      },
+      socialMedia {
+        enabled,
+        links[] {
+          platform,
+          url
+        }
+      }
+    },
+    "caseStudies": *[_type == "caseStudy"] | order(featured desc, date desc) {
+      _id,
+      title,
+      slug,
+      date,
+      location,
+      type,
+      copy,
+      image {
+        asset,
+        alt
+      },
+      callToAction {
+        text,
+        link,
+        style
+      },
+      coordinates {
+        lat,
+        lng
+      },
+      featured,
+      order
+    }
+  }`
+  
+  const data = await client.fetch(query)
+  return data
+}
+
+export default async function Home() {
+  const { homepage, globalSettings, footerSettings, caseStudies } = await getHomepageData()
+
+  console.log('Team members data:', homepage.seniorTeamSection?.teamMembers)
+  console.log('Footer data:', footerSettings)
+  
+  if (!homepage) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Please add Homepage content in Sanity Studio</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="homepage">
+      {/* Navigation */}
+      <Navigation globalSettings={globalSettings} />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      {/* Hero Section 1 */}
+      <HeroSection 
+        heroData={homepage.heroSection}
+        defaultPreheader="Fast finders, analysts and problem solvers"
+        defaultHeadline="Providing clarity when there is uncertainty"
+      />
+
+      {/* Our Approach Section - Uses real Sanity data */}
+      {homepage.approachSection && (
+        <ApproachSection approachData={homepage.approachSection} />
+      )}
+
+      {/* Random Image Grid Section - Between Approach and Services */}
+      <RandomImageGrid 
+        imageGridData={homepage.imageGridSection}
+      />
+
+      {/* Services Section */}
+      {homepage.servicesSection && (
+        <ServicesSection servicesData={homepage.servicesSection} />
+      )}
+
+      {/* Case Studies Section - Replacing Stats Table */}
+      <CaseStudiesSection caseStudies={caseStudies} />
+
+      {/* Hero Text Section - Portrait Image with Text */}
+      {/* Commented out - uncomment if needed
+      {homepage.heroTextSection && (
+        <HeroTextSection heroTextData={homepage.heroTextSection} />
+      )}
+      */}
+
+      {/* Team Section */}
+      {homepage.seniorTeamSection && (
+        <TeamSection teamData={homepage.seniorTeamSection} />
+      )}
+
+      {/* Careers Section */}
+      {homepage.careersSection && (
+        <CareersSection careersData={homepage.careersSection} />
+      )}
+
+      {/* Footer */}
+      <Footer footerData={footerSettings} />
+    </main>
+  )
 }
