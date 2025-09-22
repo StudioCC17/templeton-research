@@ -340,7 +340,7 @@ export default function ApproachSection({ approachData }) {
                     className={`approach-nav-title approach-title-${index}`}
                     style={{
                       fontFamily: 'var(--font-heading), serif',
-                      fontSize: '3.5rem',
+                      fontSize: '5vw',
                       fontWeight: '300',
                       lineHeight: '1',
                       letterSpacing: '-0.01em',
