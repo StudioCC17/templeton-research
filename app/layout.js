@@ -1,6 +1,5 @@
 // app/layout.js
-// Updated layout.js file with GSAP and ScrollTrigger for text animations and parallax
-// Added ScrollTo plugin for smooth navigation scrolling
+// Fixed layout.js with async scripts for Vercel deployment
 
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -20,18 +19,21 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="https://use.typekit.net/bfr8lmv.css" />
         {/* GSAP for text animations and parallax */}
         <script 
+          async
           src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
         />
         <script 
+          async
           src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
         />
         {/* GSAP ScrollTo plugin for smooth navigation scrolling */}
-       {/* GSAP ScrollTo plugin for smooth navigation scrolling */}
-       <script 
+        <script 
+          async
           src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"
         />
         {/* Lenis Smooth Scroll */}
         <script 
+          async
           src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.39/dist/lenis.min.js"
         />
       </head>
