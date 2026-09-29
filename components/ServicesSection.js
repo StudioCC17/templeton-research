@@ -115,6 +115,12 @@ export default function ServicesSection({ servicesData }) {
   // Leave activeIndex set so the left prose stays in place while it fades back out.
   const closeDetail = () => setIsDetailOpen(false)
 
+  // "Next service" link inside the detail panel (wraps round to the first).
+  const services = servicesData?.services || []
+  const nextIndex = activeIndex === null || services.length < 2 ? null : (activeIndex + 1) % services.length
+  const nextService = nextIndex === null ? null : services[nextIndex]
+  const openNext = () => { if (nextService) openDetail(nextService, nextIndex) }
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -390,6 +396,8 @@ export default function ServicesSection({ servicesData }) {
                             color: 'var(--color-red)',
                             margin: 0,
                             flexShrink: 0,
+                            width: '2.1em', // fixed column so every title/summary lines up
+                            fontVariantNumeric: 'tabular-nums',
                           }}
                         >
                           {number}.
@@ -425,6 +433,12 @@ export default function ServicesSection({ servicesData }) {
                             {service.summary || SERVICE_SUMMARIES[service.title] || SERVICE_FILL}
                           </p>
                         </div>
+                        <span className="service-arrow" aria-hidden="true">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="M13 6l6 6-6 6" />
+                          </svg>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -441,6 +455,9 @@ export default function ServicesSection({ servicesData }) {
         isOpen={isDetailOpen}
         onClose={closeDetail}
         item={detailItem}
+        nextNumber={nextIndex === null ? null : String(nextIndex + 1).padStart(2, '0')}
+        nextTitle={nextService?.title}
+        onNext={openNext}
       />
 
       <style jsx global>{`
@@ -507,6 +524,46 @@ export default function ServicesSection({ servicesData }) {
 
         .service-item:last-child {
           border-bottom: 1px solid rgb(224 224 224);
+        }
+
+        .service-arrow {
+          flex-shrink: 0;
+          align-self: center;
+          color: var(--color-red);
+          opacity: 0.5;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .service-header:hover .service-arrow {
+          opacity: 1;
+          transform: translateX(4px);
+        }
+
+        .service-header .service-summary {
+          transition: color 0.3s ease;
+        }
+
+        .service-header:hover .service-summary {
+          color: var(--color-green) !important;
+        }
+
+        /* Desktop: sit the list at the bottom so it ends level with the
+           "Have a question?" footnote, and calm the expanded prose down to
+           the same size as the section headline. */
+        @media (min-width: 769px) {
+          .services-split-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: calc(80vh - 3rem);
+            padding-bottom: 0;
+          }
+        }
+
+        @media (min-width: 1025px) {
+          .services-left-crossfade > div:last-child .hero-text {
+            font-size: 2.5rem !important;
+          }
         }
 
         :global(.services-split-char) {

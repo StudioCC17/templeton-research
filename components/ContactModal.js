@@ -17,7 +17,7 @@ const INITIAL_FORM = {
   message: '',
 }
 
-export default function ContactModal({ isOpen, onClose }) {
+export default function ContactModal({ isOpen, onClose, service }) {
   const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [form, setForm] = useState(INITIAL_FORM)
@@ -42,6 +42,13 @@ export default function ContactModal({ isOpen, onClose }) {
       if (raf2) cancelAnimationFrame(raf2)
     }
   }, [isOpen])
+
+  // Opened from a service panel: start the message off with the service name.
+  useEffect(() => {
+    if (isOpen && service) {
+      setForm((prev) => (prev.message ? prev : { ...prev, message: `I'd like to find out more about ${service}.` }))
+    }
+  }, [isOpen, service])
 
   // Slide out, then tell the parent to unmount once the transition ends.
   const handleClose = useCallback(() => {

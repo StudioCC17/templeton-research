@@ -89,8 +89,9 @@ const bodyComponents = {
   },
 }
 
-export default function ServiceDetailPanel({ isOpen, onClose, item }) {
+export default function ServiceDetailPanel({ isOpen, onClose, item, nextNumber, nextTitle, onNext }) {
   const [isRendered, setIsRendered] = useState(false)
+  const contentRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
   const [expanded, setExpanded] = useState({})
   const closeTimer = useRef(null)
@@ -138,10 +139,15 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
     }
   }, [])
 
-  // Collapse all cards each time a different service is opened.
+  // Collapse all cards and scroll back to the top each time a different service is opened.
   useEffect(() => {
     setExpanded({})
+    if (contentRef.current) contentRef.current.scrollTop = 0
   }, [item])
+
+  // Opens the contact modal with this service pre-filled (listened for in Navigation).
+  const enquire = () =>
+    window.dispatchEvent(new CustomEvent('open-contact-modal', { detail: { service: item?.title } }))
 
   const toggleCard = (key) =>
   setExpanded((prev) => (prev[key] ? {} : { [key]: true }))
@@ -218,6 +224,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
 
         {/* Scrollable content */}
         <div
+          ref={contentRef}
           className="service-detail-content"
           style={{
             flex: 1,
@@ -231,6 +238,22 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
         >
           {/* Title now shown on the left, above the prose (see ServicesSection).
              Kept on the dialog's aria-label above for accessibility. */}
+
+          {/* Preheader - mirrors the red service title on the left so both columns start together */}
+          <span
+            style={{
+              display: 'block',
+              fontFamily: 'var(--font-body), var(--font-fallback)',
+              fontSize: 'var(--text-preheader-size)',
+              fontWeight: 'var(--text-preheader-weight)',
+              lineHeight: '1.4',
+              letterSpacing: '0.03em',
+              color: 'var(--color-red)',
+              marginBottom: '6px',
+            }}
+          >
+            What we do
+          </span>
 
           {cards.map((card, i) => {
             const key = card._key || i
@@ -298,15 +321,14 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
               </div>
             )
           })}
-        </div>
 
-        {/* Enquire now - opens the site-wide contact modal (listened for in Navigation) */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 2rem 2rem' }}>
+          {/* Enquire - sits straight under the list */}
           <button
             type="button"
             className="sd-enquire"
-            onClick={() => window.dispatchEvent(new Event('open-contact-modal'))}
+            onClick={enquire}
             style={{
+              marginTop: '2rem',
               backgroundColor: 'var(--color-red)',
               color: 'var(--color-cream)',
               border: 'none',
@@ -320,14 +342,56 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
               transition: 'background-color 0.3s ease',
             }}
           >
-            Enquire now
+            Enquire about this service
           </button>
         </div>
+
+        {/* Next service - keeps people moving through the services without closing the panel */}
+        {nextTitle && (
+          <div style={{ padding: '0 2rem 2rem' }}>
+            <button type="button" className="sd-next" onClick={onNext}>
+              <span className="sd-next-label">Next</span>
+              <span>
+                {nextNumber}. {nextTitle}{' '}
+                <span aria-hidden="true" className="sd-next-arrow">&rarr;</span>
+              </span>
+            </button>
+          </div>
+        )}
       </div>
 
       <style jsx>{`
         .sd-enquire:hover {
           background-color: #A66850 !important;
+        }
+        .sd-next {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.25rem;
+          width: 100%;
+          background: none;
+          border: none;
+          border-top: 1px solid rgba(245, 245, 240, 0.25);
+          padding: 1.25rem 0 0;
+          cursor: pointer;
+          text-align: left;
+          font-family: var(--font-body), var(--font-fallback);
+          font-size: 1.1rem;
+          color: var(--color-cream);
+        }
+        .sd-next-label {
+          font-size: var(--text-preheader-size);
+          font-weight: var(--text-preheader-weight);
+          letter-spacing: 0.03em;
+          color: var(--color-red);
+        }
+        .sd-next-arrow {
+          display: inline-block;
+          transition: transform 0.3s ease;
+        }
+        .sd-next:hover .sd-next-arrow {
+          transform: translateX(4px);
         }
         .service-detail-content::-webkit-scrollbar {
           width: 0;
