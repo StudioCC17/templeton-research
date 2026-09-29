@@ -417,7 +417,7 @@ export default function ServicesSection({ servicesData }) {
                               marginTop: '0.25rem',
                               paddingRight: '25%',
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: '1.1rem',
+                              fontSize: '0.956rem',
                               fontWeight: 400,
                               lineHeight: 1.4,
                               color: '#24514882',
