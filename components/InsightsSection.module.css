@@ -329,13 +329,15 @@ display: inline-block;
 
   .grid {
     grid-template-columns: 1fr;
+    height: auto; /* desktop fixes the grid at 350px, which squashes stacked tiles */
   }
 
   .tile,
   .tile:nth-child(2n + 1),
   .tile:nth-child(3n + 1) {
     border-left: none;
-    padding: 1.75rem 0;
+    padding: 1.75rem 0 4.5rem; /* bottom room for the absolutely positioned "Read article" */
+    min-height: 240px;
   }
 }
 
