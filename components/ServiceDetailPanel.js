@@ -246,7 +246,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
                     alignItems: 'center',
                     gap: '0.5rem',
                     cursor: 'pointer',
-                    padding: '0.35rem 0',
+                    padding: '0.25rem 0',
                     transition: 'opacity 0.2s ease',
                   }}
                 >
@@ -299,9 +299,36 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
             )
           })}
         </div>
+
+        {/* Enquire now - opens the site-wide contact modal (listened for in Navigation) */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '0 2rem 2rem' }}>
+          <button
+            type="button"
+            className="sd-enquire"
+            onClick={() => window.dispatchEvent(new Event('open-contact-modal'))}
+            style={{
+              backgroundColor: 'var(--color-red)',
+              color: 'var(--color-cream)',
+              border: 'none',
+              borderRadius: '2px',
+              padding: '0.75rem 1.6rem',
+              fontFamily: 'var(--font-body), var(--font-fallback)',
+              fontSize: '1rem',
+              fontWeight: 400,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
+            }}
+          >
+            Enquire now
+          </button>
+        </div>
       </div>
 
       <style jsx>{`
+        .sd-enquire:hover {
+          background-color: #A66850 !important;
+        }
         .service-detail-content::-webkit-scrollbar {
           width: 0;
           background: transparent;

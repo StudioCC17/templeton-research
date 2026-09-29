@@ -296,16 +296,15 @@ export default function ServicesSection({ servicesData }) {
                             style={{
                               display: 'block',
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: '1.3rem',
-                              fontWeight: '400',
+                              fontSize: 'var(--text-preheader-size)',
+                              fontWeight: 'var(--text-preheader-weight)',
                               lineHeight: '1.4',
                               letterSpacing: '0.05em',
                               textTransform: 'uppercase',
                               color: 'var(--color-red)',
                               marginBottom: '1rem',
-                              borderBottom: '1px solid',
                               textTransform: 'none',
-                              marginBottom: '13px',
+                              marginBottom: '6px',
                               letterSpacing: '0.03em',
                               display: 'inline-block'
                             }}
