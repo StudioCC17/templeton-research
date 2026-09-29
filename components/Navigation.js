@@ -1,6 +1,9 @@
 // components/Navigation.js
-// Navigation with section-based nav item styling and smooth scroll
-// Updated: Integrated with Lenis smooth scroll with GSAP fallback and Contact Modal
+// Fixed: Two separate navs - primary scrolls, secondary slides down
+// Added: Mobile hamburger menu
+// Added: About us nav item opens a slide-up modal (AboutModal) instead of scrolling
+// Added: listens for 'open-contact-modal' so the footer can open the contact modal
+// iOS fix: Using top position instead of transform for better compatibility
 
 'use client'
 
@@ -9,121 +12,203 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import ContactModal from '@/components/ContactModal'
+import AboutModal from '@/components/AboutModal'
 
-export default function Navigation({ globalSettings }) {
+export default function Navigation({ globalSettings, aboutData }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [hasLoaded, setHasLoaded] = useState(false)
   const [currentSection, setCurrentSection] = useState('hero')
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
+  const [isHidden, setIsHidden] = useState(false)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const [showSecondaryNav, setShowSecondaryNav] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // Define nav items with their corresponding section names
+  // Let other components (e.g. the footer) open the contact modal.
+  useEffect(() => {
+    const open = () => setIsContactModalOpen(true)
+    window.addEventListener('open-contact-modal', open)
+    return () => window.removeEventListener('open-contact-modal', open)
+  }, [])
+
+  // Define nav items
   const navItems = [
-    { label: 'About', href: '#approach', section: 'approach' },
+    { label: 'About us', href: '#approach', section: 'approach' },
     { label: 'Services', href: '#services', section: 'services' },
-    { label: 'Case Studies', href: '#case-studies', section: 'case-studies' },
     { label: 'Team', href: '#team', section: 'team' }
   ]
 
-  // Smooth scroll function using Lenis instead of GSAP
+  // Close mobile menu when clicking a nav item
+  const handleMobileNavClick = (e, href, section) => {
+    setIsMobileMenuOpen(false)
+    handleNavClick(e, href, section)
+  }
+
+  // Smooth scroll function with debugging
   const handleNavClick = (e, href, section) => {
-    // Only handle anchor links, not full URLs
-    if (!href.startsWith('#') || !section) return
-    
-    e.preventDefault()
-    
-    // More specific selectors to find the right sections
-    let targetElement = null
-    
+    // "About us" is an action (open modal), not a scroll target.
     if (section === 'approach') {
-      targetElement = document.querySelector('.approach-section') || document.querySelector('section.approach-section')
-    } else if (section === 'services') {
-      targetElement = document.querySelector('.services-section') || document.querySelector('section.services-section')
-    } else if (section === 'case-studies') {
-      targetElement = document.querySelector('.case-studies-table-section') || document.querySelector('section.case-studies-table-section')
-    } else if (section === 'team') {
-      targetElement = document.querySelector('.team-section') || document.querySelector('section.team-section')
-    } else {
-      targetElement = document.querySelector(`.${section}-section`)
-    }
-    
-    if (!targetElement) {
-      console.log(`Could not find target element for section: ${section}`)
+      e.preventDefault()
+      setIsMobileMenuOpen(false)
+      setIsAboutModalOpen(true)
       return
     }
 
-    // Use Lenis scrollTo if available, fallback to GSAP
-    if (window.lenisScrollTo) {
-      window.lenisScrollTo(targetElement, {
-        offset: 0,
-        duration: 1.5
-      })
-    } else if (window.gsap) {
-      // Fallback to GSAP method
-      let targetPosition
-      
-      if (section === 'approach' || section === 'services') {
-        const heroSection = document.querySelector('.hero-section')
-        const imageGridSection = document.querySelector('.random-image-grid-section')
-        
-        if (section === 'approach' && heroSection) {
-          targetPosition = heroSection.offsetTop + heroSection.offsetHeight
-        } else if (section === 'services' && imageGridSection) {
-          targetPosition = imageGridSection.offsetTop + imageGridSection.offsetHeight
-        } else {
-          targetPosition = targetElement.offsetTop
-        }
-      } else {
-        targetPosition = targetElement.offsetTop
-      }
-
-      window.gsap.killTweensOf(window)
-      window.gsap.to(window, {
-        scrollTo: { y: targetPosition, autoKill: false },
-        duration: 1.5,
-        ease: "power3.out",
-        overwrite: "auto"
-      })
+    console.log('Nav clicked:', { href, section })
+    
+    if (!href.startsWith('#') || !section) {
+      console.log('Invalid href or section')
+      return
     }
+    
+    e.preventDefault()
+    
+    let targetElement = null
+    
+    // Try multiple selectors to find the target
+    if (section === 'approach') {
+      targetElement = document.querySelector('.random-image-grid-section')
+      console.log('Looking for approach section:', targetElement)
+    } else if (section === 'services') {
+      targetElement = document.querySelector('.services-section')
+      console.log('Looking for services section:', targetElement)
+    } else if (section === 'team') {
+      targetElement = document.querySelector('.team-section')
+      console.log('Looking for team section:', targetElement)
+    }
+    
+    if (!targetElement) {
+      console.warn(`Target element not found for section: ${section}`)
+      // Try a more generic approach
+      targetElement = document.getElementById(section)
+      console.log('Trying ID selector:', targetElement)
+    }
+    
+    if (!targetElement) {
+      console.error('No target element found at all')
+      return
+    }
+
+    console.log('Found target element:', targetElement)
+    
+    // Calculate position with 38px offset
+    const offset = 38
+    const targetPosition = targetElement.offsetTop - offset
+    
+    console.log('Scrolling to position with 38px offset:', targetPosition)
+    
+    // Custom smooth scroll animation (slowed down by 10%)
+    const startPosition = window.pageYOffset
+    const distance = targetPosition - startPosition
+    const baseDuration = 800 // Base duration in milliseconds
+    const duration = baseDuration * 1.1 // Slow down by 10% (multiply by 1.1)
+    let startTime = null
+
+    function smoothScrollAnimation(currentTime) {
+      if (startTime === null) startTime = currentTime
+      const timeElapsed = currentTime - startTime
+      const progress = Math.min(timeElapsed / duration, 1)
+      
+      // Easing function for smooth animation (ease-out)
+      const ease = 1 - Math.pow(1 - progress, 3)
+      
+      window.scrollTo(0, startPosition + (distance * ease))
+      
+      if (progress < 1) {
+        requestAnimationFrame(smoothScrollAnimation)
+      }
+    }
+    
+    requestAnimationFrame(smoothScrollAnimation)
   }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Check if approach section is getting close to top of viewport
-      const approachSection = document.querySelector('.approach-section')
-      if (approachSection) {
-        const rect = approachSection.getBoundingClientRect()
-        const approachTop = rect.top
-        
-        // Toggle scrolled class when approach section is 80px from top
-        if (approachTop <= 80) {
-          setIsScrolled(true)
-        } else {
-          setIsScrolled(false)
-        }
-      } else {
-        // Fallback to original behavior if approach section not found
-        const scrollY = window.scrollY
-        if (scrollY > 300) {
-          setIsScrolled(true)
-        } else {
-          setIsScrolled(false)
-        }
-      }
+  // Scroll to top function for logo click
+  const handleLogoClick = (e) => {
+    e.preventDefault()
+    setIsMobileMenuOpen(false)
+    console.log('Logo clicked - scrolling to top')
+    
+    // Custom smooth scroll to top (same speed as navigation)
+    const startPosition = window.pageYOffset
+    const distance = -startPosition // Negative because we're going to 0
+    const baseDuration = 800
+    const duration = baseDuration * 1.1 // Same 10% slower speed
+    let startTime = null
 
-      // Section detection logic
-      detectCurrentSection()
+    function scrollToTopAnimation(currentTime) {
+      if (startTime === null) startTime = currentTime
+      const timeElapsed = currentTime - startTime
+      const progress = Math.min(timeElapsed / duration, 1)
+      
+      // Easing function for smooth animation (ease-out)
+      const ease = 1 - Math.pow(1 - progress, 3)
+      
+      window.scrollTo(0, startPosition + (distance * ease))
+      
+      if (progress < 1) {
+        requestAnimationFrame(scrollToTopAnimation)
+      }
+    }
+    
+    requestAnimationFrame(scrollToTopAnimation)
+  }
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMobileMenuOpen])
+
+  useEffect(() => {
+    let ticking = false
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY
+          const viewportHeight = window.innerHeight
+          const threshold = viewportHeight * 0.75 // 75vh
+          
+          // Determine scroll direction
+          const scrollingDown = currentScrollY > lastScrollY
+          const scrollingUp = currentScrollY < lastScrollY
+
+          // At the very top (first 75vh)
+          if (currentScrollY < threshold) {
+            setIsHidden(false)
+            setIsScrolled(false)
+            setShowSecondaryNav(false)
+          }
+          // Past 75vh - switch to secondary header
+          else if (currentScrollY >= threshold) {
+            setIsHidden(false)
+            setIsScrolled(true)
+            setShowSecondaryNav(true)
+          }
+
+          setLastScrollY(currentScrollY)
+          detectCurrentSection()
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
     const detectCurrentSection = () => {
-      const scrollPosition = window.scrollY + (window.innerHeight * 0.1) // Top 10% of viewport
-      let activeSection = 'hero' // Default
+      const scrollPosition = window.scrollY + (window.innerHeight * 0.1)
+      let activeSection = 'hero'
 
-      // Get all sections in order
       const heroSection = document.querySelector('.hero-section')
       const approachSection = document.querySelector('.approach-section')
       const imageGridSection = document.querySelector('.random-image-grid-section')
       const servicesSection = document.querySelector('.services-section')
-      const caseStudiesSection = document.querySelector('.case-studies-table-section')
       const teamSection = document.querySelector('.team-section')
 
       const sections = [
@@ -131,11 +216,9 @@ export default function Navigation({ globalSettings }) {
         { name: 'approach', element: approachSection },
         { name: 'image-grid', element: imageGridSection },
         { name: 'services', element: servicesSection },
-        { name: 'case-studies', element: caseStudiesSection },
         { name: 'team', element: teamSection }
       ]
 
-      // Find which section we're currently in - check from bottom to top for better detection
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i]
         if (!section.element) continue
@@ -143,7 +226,6 @@ export default function Navigation({ globalSettings }) {
         const rect = section.element.getBoundingClientRect()
         const elementTop = rect.top + window.scrollY
         
-        // If we've scrolled past the start of this section, this is the active one
         if (scrollPosition >= elementTop) {
           activeSection = section.name
           break
@@ -153,67 +235,102 @@ export default function Navigation({ globalSettings }) {
       setCurrentSection(activeSection)
     }
 
-    // Set initial state
     handleScroll()
-
-    // Throttle scroll events for better performance
-    let ticking = false
-    const throttledHandleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll()
-          ticking = false
-        })
-        ticking = true
-      }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
     }
-
-    window.addEventListener('scroll', throttledHandleScroll)
-    return () => window.removeEventListener('scroll', throttledHandleScroll)
-  }, [])
+  }, [lastScrollY])
 
   // Trigger slide-down animation on mount
   useEffect(() => {
     const timer = setTimeout(() => {
       setHasLoaded(true)
-    }, 100) // Small delay to ensure smooth animation
+    }, 100)
 
     return () => clearTimeout(timer)
   }, [])
 
-  // Function to get nav item opacity based on current section
-  const getNavItemOpacity = (navItem) => {
-    // If we're on the hero section, all nav items are full opacity
+  const getNavItemStyles = (navItem) => {
     if (currentSection === 'hero') {
-      return 1
+      return { opacity: 1, color: '#245148' }
     }
     
-    // Special case: highlight "Our Approach" when on image-grid section too
     if (navItem.section === 'approach' && currentSection === 'image-grid') {
-      return 1
+      return { opacity: 1, color: '#245148' } // Brand color for active
     }
     
-    // If nav item has no section mapping, it gets dimmed like others
     if (!navItem.section) {
-      return 0.4
+      return { opacity: 0.25, color: '#245148' }
     }
     
-    // If current section matches nav item section, full opacity, otherwise dimmed
-    return currentSection === navItem.section ? 1 : 0.4
+    const isActive = currentSection === navItem.section
+    return { 
+      opacity: isActive ? 1 : 0.25, 
+      color: isActive ? '#245148' : '#245148' // Brand color for active, normal color for inactive
+    }
   }
-
-  // Build navigation classes
-  const navigationClasses = [
-    'navigation',
-    isScrolled ? 'navigation--scrolled' : '',
-    hasLoaded ? 'navigation--loaded' : '',
-    `navigation--${currentSection}`,
-    `${currentSection}-section-scroll`
-  ].filter(Boolean).join(' ')
 
   return (
     <>
-      <nav className={navigationClasses}>
+      {/* Hamburger Button - Fixed position, always on top, animates to X */}
+      <button 
+        className={`nav-hamburger ${isMobileMenuOpen ? 'nav-hamburger--open' : ''}`}
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label="Toggle menu"
+        aria-expanded={isMobileMenuOpen}
+      >
+        <span className="nav-hamburger-line"></span>
+        <span className="nav-hamburger-line"></span>
+      </button>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`nav-mobile-menu ${isMobileMenuOpen ? 'nav-mobile-menu--open' : ''}`}>
+        {navItems.map((navItem, index) => (
+          <Link 
+            key={index}
+            href={navItem.href} 
+            className="nav-link"
+            onClick={(e) => handleMobileNavClick(e, navItem.href, navItem.section)}
+          >
+            {navItem.label}
+          </Link>
+        ))}
+        <button 
+          onClick={() => {
+            setIsMobileMenuOpen(false)
+            setIsContactModalOpen(true)
+          }}
+          className="nav-link"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Contact
+        </button>
+        <button 
+          className="locale-button"
+        >
+          <span style={{ opacity: 1 }}>en</span>
+          <span style={{ opacity: .25 }}> jp</span>
+        </button>
+      </div>
+
+      {/* Primary Navigation - Scrolls with page */}
+      <nav 
+        className={`navigation ${hasLoaded ? 'navigation--loaded' : ''} navigation--${currentSection} ${currentSection}-section-scroll`}
+        style={{
+          backgroundColor: 'transparent',
+          position: 'absolute',
+          opacity: showSecondaryNav ? 0 : 1,
+          visibility: showSecondaryNav ? 'hidden' : 'visible',
+          pointerEvents: showSecondaryNav ? 'none' : 'auto',
+          transition: 'all 0.2s ease, visibility 0.2s ease'
+        }}
+      >
         <div className="nav-container">
           <div className="nav-left">
             {globalSettings?.navigation?.headerNav ? (
@@ -225,8 +342,8 @@ export default function Navigation({ globalSettings }) {
                   target={item.openInNewTab ? '_blank' : '_self'}
                   rel={item.openInNewTab ? 'noopener noreferrer' : undefined}
                   style={{
-                    opacity: getNavItemOpacity({ section: null }), // Global nav items always visible
-                    transition: 'opacity 0.3s ease'
+                    ...getNavItemStyles({ section: null }),
+                    transition: 'all 0.3s ease'
                   }}
                 >
                   {item.label}
@@ -241,8 +358,8 @@ export default function Navigation({ globalSettings }) {
                     className="nav-link"
                     onClick={(e) => handleNavClick(e, navItem.href, navItem.section)}
                     style={{
-                      opacity: getNavItemOpacity(navItem),
-                      transition: 'opacity 0.3s ease'
+                      ...getNavItemStyles(navItem),
+                      transition: 'all 0.3s ease'
                     }}
                   >
                     {navItem.label}
@@ -253,9 +370,17 @@ export default function Navigation({ globalSettings }) {
           </div>
           
           <div className="nav-center">
-            {/* Primary logo - always rendered */}
             {globalSettings?.logoSettings?.primaryLogo?.asset?._ref ? (
-              <Link href="/" className="nav-logo-link nav-logo-primary">
+              <button 
+                onClick={handleLogoClick}
+                className="nav-logo-link nav-logo-primary"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0
+                }}
+              >
                 <Image
                   src={urlFor(globalSettings.logoSettings.primaryLogo).url()}
                   alt={globalSettings.logoSettings.primaryLogo.alt || 'Templeton Research'}
@@ -264,16 +389,125 @@ export default function Navigation({ globalSettings }) {
                   className="nav-logo-image"
                   priority
                 />
-              </Link>
+              </button>
             ) : (
-              <div className="nav-logo nav-logo-primary">
-                <span className="logo-text">TEMPLETON</span>
-                <span className="logo-subtext">RESEARCH</span>
-              </div>
+              <button 
+                onClick={handleLogoClick}
+                className="nav-logo nav-logo-primary"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0
+                }}
+              >
+                <span className="logo-text" style={{ color: '#245148' }}>TEMPLETON</span>
+                <span className="logo-subtext" style={{ color: '#245148' }}>RESEARCH</span>
+              </button>
             )}
-            
-            {/* Secondary logo - SVG version */}
-            <div className="nav-logo nav-logo-secondary">
+          </div>
+
+          <div className="nav-right">
+       
+            <button 
+              onClick={() => setIsContactModalOpen(true)}
+              className="nav-link"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                opacity: 1,
+                transition: 'all 0.3s ease',
+                marginLeft: '1.5rem',
+                fontFamily: 'var(--font-body), var(--font-fallback)',
+                fontSize: '1.1rem',
+                fontWeight: '400',
+                color: '#245148',
+                textDecoration: 'none'
+              }}
+            >
+              Contact
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Secondary Navigation - Fixed, slides down using top position for iOS compatibility */}
+      <nav 
+        className={`navigation navigation--scrolled navigation--${currentSection} ${currentSection}-section-scroll`}
+        style={{
+          backgroundColor: '#f5f5f0',
+          position: 'fixed',
+          top: showSecondaryNav ? 0 : -60,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          opacity: showSecondaryNav ? 1 : 0,
+          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        }}
+      >
+        {/* Hamburger for Secondary Nav */}
+        <button 
+          className={`nav-hamburger ${isMobileMenuOpen ? 'nav-hamburger--open' : ''}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span className="nav-hamburger-line"></span>
+          <span className="nav-hamburger-line"></span>
+        </button>
+
+        <div className="nav-container">
+          <div className="nav-left">
+            {globalSettings?.navigation?.headerNav ? (
+              globalSettings.navigation.headerNav.map((item, index) => (
+                <Link 
+                  key={index}
+                  href={item.link || '#'} 
+                  className="nav-link"
+                  target={item.openInNewTab ? '_blank' : '_self'}
+                  rel={item.openInNewTab ? 'noopener noreferrer' : undefined}
+                  style={{
+                    ...getNavItemStyles({ section: null }),
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {item.label}
+                </Link>
+              ))
+            ) : (
+              <>
+                {navItems.map((navItem, index) => (
+                  <Link 
+                    key={index}
+                    href={navItem.href} 
+                    className="nav-link"
+                    onClick={(e) => handleNavClick(e, navItem.href, navItem.section)}
+                    style={{
+                      ...getNavItemStyles(navItem),
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {navItem.label}
+                  </Link>
+                ))}
+              </>
+            )}
+          </div>
+          
+          <div className="nav-center">
+            <button 
+              onClick={handleLogoClick}
+              className="nav-logo nav-logo-secondary"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
               <svg 
                 viewBox="0 0 283.05 227.86" 
                 className="nav-logo-svg"
@@ -288,7 +522,7 @@ export default function Navigation({ globalSettings }) {
                 </g>
                 <g>
                   <path d="M100.08,227.61c-1.17,0-2.34-1.17-2.34-2.34V33.07H2.59c-1.17,0-2.34-1.17-2.34-2.34s1.17-2.34,2.34-2.34h96.91c1.17,0,2.34,1.17,2.34,2.34v193.96c.58,1.76-.58,2.93-1.75,2.93" fill="currentColor"></path>
-                  <path d="M100.09,227.87v-.5c.514,0,1.007-.257,1.318-.688.366-.505.435-1.186.194-1.915l-.013-.078V30.73c0-1.035-1.055-2.09-2.09-2.09H2.59c-1.035,0-2.09,1.055-2.09,2.09s1.055,2.09,2.09,2.09h95.4v192.45c0,1.035,1.055,2.09,2.09,2.09v.5c-1.307,0-2.59-1.283-2.59-2.59V33.32H2.59c-1.307,0-2.59-1.283-2.59-2.59s1.283-2.59,2.59-2.59h96.91c1.307,0,2.59,1.283,2.59,2.59v193.92c.276.871.179,1.696-.276,2.325-.405.561-1.049.895-1.724.895Z" fill="currentColor"></path>
+                  <path d="M100.09,227.87v-.5c.514,0,1.007-.257,1.318-.688.366-.505.435-1.186.194-1.915l-.013-.078V30.73c0-1.035-1.055-2.09-2.09-2.09H2.59c-1.035,0-2.09,1.055-2.09,2.09s1.055,2.09,2.09,2.09h95.4v192.45c0,1.035,1.055,2.09,2.09,2.09v.5c-1.307,0-2.59-1.283-2.59-2.59V33.32H2.59c-1.307,0-2.59-1.283-2.59-2.59s1.283-2.59,2.59-2.59h96.91c1.307,0,2.59,1.283,2.59,2.59v193.92c.276.871.179,1.695-.276,2.325-.405.561-1.049.895-1.724.895Z" fill="currentColor"></path>
                 </g>
                 <g>
                   <path d="M72.06,227.61c-1.17,0-2.34-1.17-2.34-2.34V61.19H2.59c-1.17,0-2.34-1.17-2.34-2.34s1.17-2.34,2.34-2.34h69.47c1.17,0,2.34,1.17,2.34,2.34v166.42c0,1.17-1.17,2.34-2.34,2.34" fill="currentColor"></path>
@@ -307,10 +541,11 @@ export default function Navigation({ globalSettings }) {
                   <path d="M211,227.86c-1.307,0-2.59-1.283-2.59-2.59V58.85c0-1.307,1.283-2.59,2.59-2.59h69.47c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-66.3v163.24c0,1.902-1.273,3.18-3.17,3.18ZM211,56.76c-1.035,0-2.09,1.055-2.09,2.09v166.42c0,1.035,1.055,2.09,2.09,2.09,1.622,0,2.67-1.052,2.67-2.68V60.94h66.8c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-69.47Z" fill="currentColor"></path>
                 </g>
               </svg>
-            </div>
+            </button>
           </div>
 
           <div className="nav-right">
+    
             <button 
               onClick={() => setIsContactModalOpen(true)}
               className="nav-link"
@@ -319,35 +554,31 @@ export default function Navigation({ globalSettings }) {
                 border: 'none',
                 cursor: 'pointer',
                 opacity: 1,
-                transition: 'opacity 0.3s ease',
-                marginRight: '2rem',
+                transition: 'all 0.3s ease',
+                marginLeft: '1.5rem',
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: '1.1rem',
                 fontWeight: '400',
-                color: isScrolled ? '#245148' : '#f5f5f0',
+                color: '#245148',
                 textDecoration: 'none'
               }}
             >
               Contact
             </button>
-            <button 
-              className="locale-button"
-              style={{
-                opacity: 1,
-                transition: 'opacity 0.3s ease'
-              }}
-            >
-              <span style={{ opacity: 1 }}>EN</span>
-              <span style={{ opacity: 0.4 }}> JP</span>
-            </button>
+            
           </div>
         </div>
       </nav>
 
-      {/* Contact Modal */}
       <ContactModal 
         isOpen={isContactModalOpen} 
         onClose={() => setIsContactModalOpen(false)} 
+      />
+
+      <AboutModal
+        isOpen={isAboutModalOpen}
+        onClose={() => setIsAboutModalOpen(false)}
+        aboutData={aboutData}
       />
     </>
   )

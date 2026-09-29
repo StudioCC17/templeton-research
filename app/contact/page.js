@@ -1,7 +1,6 @@
 // app/page.js
-// Includes the InsightOverlay mount point so ?article=slug opens an overlay.
+// Updated to include inline expandableItems in services query
 
-import { Suspense } from 'react'
 import { client } from '@/lib/sanity'
 import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
@@ -18,10 +17,10 @@ import FullBleedVideoSection from '@/components/FullBleedVideoSection'
 import FullBleedImageSection from '@/components/FullBleedImageSection'
 import HeroTextSection from '@/components/HeroTextSection'
 import QuoteSection from '@/components/QuoteSection'
-import InsightsSection from '@/components/InsightsSection'
-import InsightOverlay from '@/components/InsightOverlay'
 import Footer from '@/components/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
+
+
 
 async function getHomepageData() {
   const query = `{
@@ -98,17 +97,6 @@ async function getHomepageData() {
               _type,
               title,
               content
-            },
-            _type == "textCard" => {
-              _key,
-              _type,
-              title,
-              body,
-              expandableItems[]{
-                _key,
-                title,
-                content
-              }
             }
           },
           image {
@@ -150,48 +138,25 @@ async function getHomepageData() {
           text,
           link
         },
-        "teamMemberRefs": teamMembers[]._ref,
-        "teamMembers": teamMembers[]->{
-          _id,
-          profileImage {
-            asset,
-            alt
-          },
-          name,
-          jobTitle,
-          location,
-          bio
-        }
+        "teamMembers": teamMembers[]{
+          "member": @-> {
+            _id,
+            profileImage {
+              asset,
+              alt
+            },
+            name,
+            jobTitle,
+            location,
+            bio
+          }
+        }[].member
       },
       careersSection {
         headline,
         introduction,
         contactEmail,
         internshipInfo
-      },
-      insightsSection {
-        enabled,
-        headline,
-        introduction,
-        displayMode,
-        articleCount,
-        "featuredArticleRefs": featuredArticles[]._ref,
-        "featuredArticles": featuredArticles[]->{
-          _id,
-          title,
-          slug,
-          publishDate,
-          category,
-          excerpt,
-          featuredImage {
-            asset,
-            alt
-          }
-        },
-        callToAction {
-          text,
-          link
-        }
       },
       fullBleedImage3 {
         image {
@@ -225,14 +190,8 @@ async function getHomepageData() {
           link,
           openInNewTab
         }
-      },
-      aboutSection {
-    headline,
-    copy,
-    image { asset, alt },
-    callToAction { text, link }
-  }
-},
+      }
+    },
     "footerSettings": *[_type == "footerSettings"][0]{
       companyInfo {
         logo {
@@ -276,51 +235,13 @@ async function getHomepageData() {
       }
     }
   }`
-
+  
   const data = await client.fetch(query)
   return data
 }
 
-async function getLatestInsightArticles(count = 3) {
-  const query = `*[_type == "insightArticle"] | order(featured desc, publishDate desc) [0...$count]{
-    _id,
-    title,
-    slug,
-    publishDate,
-    category,
-    excerpt,
-    featuredImage {
-      asset,
-      alt
-    }
-  }`
-  return await client.fetch(query, { count })
-}
-
 export default async function Home() {
   const { homepage, globalSettings, footerSettings } = await getHomepageData()
-
-  if (homepage?.seniorTeamSection?.teamMemberRefs && homepage?.seniorTeamSection?.teamMembers) {
-    const refs = homepage.seniorTeamSection.teamMemberRefs
-    homepage.seniorTeamSection.teamMembers.sort((a, b) => {
-      return refs.indexOf(a._id) - refs.indexOf(b._id)
-    })
-  }
-
-  let insightArticles = []
-  const insightsConfig = homepage?.insightsSection
-  if (insightsConfig?.enabled !== false) {
-    if (insightsConfig?.displayMode === 'manual') {
-      const refs = insightsConfig.featuredArticleRefs || []
-      const fetched = insightsConfig.featuredArticles || []
-      insightArticles = refs
-        .map((id) => fetched.find((a) => a._id === id))
-        .filter(Boolean)
-    } else {
-      const count = insightsConfig?.articleCount || 3
-      insightArticles = await getLatestInsightArticles(count)
-    }
-  }
 
   if (!homepage) {
     return (
@@ -332,60 +253,66 @@ export default async function Home() {
 
   return (
     <main className="homepage">
-      <Navigation globalSettings={globalSettings} aboutData={globalSettings?.aboutSection} />
+      {/* Navigation */}
+      <Navigation globalSettings={globalSettings} />
 
-      <HeroSection
+      {/* Hero Section 1 */}
+      <HeroSection 
         heroData={homepage.heroSection}
         defaultPreheader="Fast finders, analysts and problem solvers"
         defaultHeadline="Providing clarity when there is uncertainty"
       />
 
+      {/* Random Image Grid with Approach Toggles */}
+      <RandomImageGrid 
+        imageGridData={homepage.imageGridSection}
+        approachData={homepage.approachSection}
+      />
+
+      {/* Full Bleed Image Section 1 */}
+      {homepage.fullBleedImage1 && (
+        <FullBleedImageSection 
+          imageData={homepage.fullBleedImage1.image}
+          height={homepage.fullBleedImage1.height || "60vh"}
+          minHeight={`${homepage.fullBleedImage1.minHeight || 500}px`}
+        />
+      )}
+
+      {/* Services Section */}
       {homepage.servicesSection && (
         <ServicesSection servicesData={homepage.servicesSection} />
       )}
 
+      {/* Full Bleed Image Section 2 */}
       {homepage.fullBleedImage2 && (
-        <FullBleedImageSection
+        <FullBleedImageSection 
           imageData={homepage.fullBleedImage2.image}
           height={homepage.fullBleedImage2.height || "60vh"}
           minHeight={`${homepage.fullBleedImage2.minHeight || 450}px`}
         />
       )}
 
+      {/* Team Section */}
       {homepage.seniorTeamSection && (
-        <TeamSection
-          teamData={homepage.seniorTeamSection}
+        <TeamSection 
+          teamData={homepage.seniorTeamSection} 
           careersData={homepage.careersSection}
         />
       )}
 
-      {homepage.insightsSection && insightArticles.length > 0 && (
-        <Suspense fallback={null}>
-          <InsightsSection
-            insightsData={homepage.insightsSection}
-            articles={insightArticles}
-          />
-        </Suspense>
-      )}
-
+      {/* Full Bleed Image Section 3 */}
       {homepage.fullBleedImage3 && (
-        <FullBleedImageSection
+        <FullBleedImageSection 
           imageData={homepage.fullBleedImage3.image}
           height={homepage.fullBleedImage3.height || "60vh"}
-          minHeight={`${homepage.fullBleedImage3.minHeight || 400}px`}
+          minHeight={`${homepage.fullBleedImage3.minHeight || 500}px`}
         />
       )}
 
+      {/* Footer */}
       <Footer footerData={footerSettings} />
 
-      {/*
-        InsightOverlay watches the ?article=slug query param and renders
-        a full-screen overlay when present. Wrapped in Suspense because it
-        uses useSearchParams() which Next.js requires.
-      */}
-      <Suspense fallback={null}>
-        <InsightOverlay />
-      </Suspense>
+
     </main>
   )
 }

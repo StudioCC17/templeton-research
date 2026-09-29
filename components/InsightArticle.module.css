@@ -1,0 +1,547 @@
+/* components/InsightArticle.module.css
+ * Styles for the shared article body renderer.
+ * Used by both the overlay and the dedicated /insights/[slug] page.
+ *
+ * Typography is tuned for sustained long-form reading.
+ */
+
+/* ============================================================
+ * ARTICLE WRAPPER
+ * ============================================================ */
+
+.article {
+  background-color: var(--color-cream);
+  color: var(--color-green);
+}
+
+.articleInner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  
+}
+
+/* ============================================================
+ * HERO
+ * ============================================================ */
+
+.hero {
+  padding: 4rem 0 3rem 0;
+}
+
+/* Image-less hero gets more breathing room */
+.heroTypographic {
+  padding: 6rem 0 3rem 0;
+}
+
+.footerMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.footerCategory {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+
+.footerDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: var(--color-border);
+  flex-shrink: 0;
+}
+
+.footerDate {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-grey);
+  letter-spacing: 0.02em;
+}
+
+.heroTitle {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-green);
+  margin: 0 0 1.5rem 0;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+}
+
+.heroExcerpt {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--color-green);
+  margin: 0 0 2rem 0;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  opacity: 0.85;
+}
+
+/* ----- Author row ----- */
+
+.heroAuthor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+
+}
+
+.heroAuthorImage {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background-color: rgba(196, 210, 207, 0.3);
+}
+
+.heroAuthorImage img {
+  object-fit: cover;
+}
+
+.heroAuthorText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.heroAuthorName {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-red);
+}
+
+.heroAuthorRole {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--color-grey);
+}
+
+/* ============================================================
+ * FEATURED IMAGE
+ * ============================================================ */
+
+.featuredImage {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+  padding: 0 1.5rem;
+}
+
+.featuredImageInner {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: rgba(196, 210, 207, 0.3);
+}
+
+.featuredImageInner img {
+  object-fit: cover;
+}
+
+.featuredImageCaption {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.85rem;
+  color: var(--color-grey);
+  margin-top: 0.75rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ============================================================
+ * BODY — base prose
+ * ============================================================ */
+
+.body {
+  padding: 0 0 4rem 0;
+}
+
+.body p {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-green);
+  margin: 0 0 1.5rem 0;
+}
+
+.body p:last-child {
+  margin-bottom: 0;
+}
+
+.body h2 {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-green);
+  margin: 3rem 0 1rem 0;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+.body h3 {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--color-green);
+  margin: 2.5rem 0 1rem 0;
+  font-size: clamp(1.35rem, 2vw, 1.5rem);
+}
+
+.body h4 {
+  font-family: var(--font-body), var(--font-fallback);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-green);
+  margin: 2rem 0 0.75rem 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+}
+
+.body ul,
+.body ol {
+  margin: 0 0 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.body li {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+}
+
+.body li::marker {
+  color: var(--color-red);
+}
+
+.body a {
+  color: var(--color-red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.body a:hover {
+  opacity: 0.7;
+}
+
+.body strong {
+  font-weight: 600;
+}
+
+.body em {
+  font-style: italic;
+}
+
+/* ----- Blockquote (the standard portable text quote style) ----- */
+
+.body blockquote {
+  margin: 2.5rem 0;
+  padding: 0 0 0 1.5rem;
+  border-left: 2px solid var(--color-red);
+  font-family: var(--font-heading), var(--font-fallback);
+  font-size: 1.25rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--color-green);
+}
+
+/* ============================================================
+ * PULL QUOTE — custom block, larger and more prominent
+ * ============================================================ */
+
+.pullQuote {
+  margin: 3rem 0;
+  padding: 2rem 0 2rem 1.75rem;
+  border-left: 3px solid var(--color-red);
+}
+
+.pullQuoteText {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--color-green);
+  margin: 0 0 1rem 0;
+}
+
+.pullQuoteAttribution {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-grey);
+  letter-spacing: 0.02em;
+}
+
+.pullQuoteAttribution::before {
+  content: '— ';
+}
+
+/* ============================================================
+ * INLINE IMAGES — three width modes
+ * ============================================================ */
+
+.inlineImage {
+  margin: 2.5rem 0;
+}
+
+/* "Inset" — matches text width (default) */
+.inlineImageInset {
+  /* No special positioning — sits within the text column */
+}
+
+/* "Wide" — breaks out slightly past the text column */
+.inlineImageWide {
+  margin-left: -4rem;
+  margin-right: -4rem;
+}
+
+/* "Full bleed" — escapes the article column entirely */
+.inlineImageFull {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  max-width: 100vw;
+}
+
+.inlineImageInner {
+  position: relative;
+  width: 100%;
+  background-color: rgba(196, 210, 207, 0.3);
+  overflow: hidden;
+}
+
+.inlineImageInner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.inlineImageCaption {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.85rem;
+  color: var(--color-grey);
+  margin-top: 0.75rem;
+  font-style: italic;
+  line-height: 1.5;
+  padding: 0 1rem;
+}
+
+.inlineImageFull .inlineImageCaption {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================================
+ * VIDEO EMBED
+ * ============================================================ */
+
+.videoEmbed {
+  margin: 2.5rem 0;
+}
+
+.videoEmbedInner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-green);
+  overflow: hidden;
+}
+
+.videoEmbedInner iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.videoEmbedCaption {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.85rem;
+  color: var(--color-grey);
+  margin-top: 0.75rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ============================================================
+ * FOOTER — original publication, tags, related articles
+ * ============================================================ */
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding: 3rem 0;
+  margin-top: 2rem;
+}
+
+.originalPub {
+  margin-bottom: 2rem;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.9rem;
+  color: var(--color-grey);
+}
+
+.originalPubLink {
+  color: var(--color-red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-grey);
+  background-color: rgba(196, 210, 207, 0.3);
+  padding: 0.4rem 0.75rem;
+  border-radius: 2px;
+}
+
+/* ============================================================
+ * RELATED ARTICLES
+ * ============================================================ */
+
+.related {
+  padding: 4rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-cream);
+}
+
+.relatedInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.relatedHeading {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  color: var(--color-green);
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.01em;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.relatedCard {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+}
+
+.relatedCard:hover {
+  opacity: 0.75;
+}
+
+.relatedCardImage {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: rgba(196, 210, 207, 0.3);
+}
+
+.relatedCardImage img {
+  object-fit: cover;
+}
+
+.relatedCardMeta {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-red);
+  margin-bottom: 0.5rem;
+}
+
+.relatedCardTitle {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 300;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--color-green);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+ * RESPONSIVE
+ * ============================================================ */
+
+@media (max-width: 768px) {
+  .articleInner {
+    padding: 0 1.25rem;
+  }
+
+  .hero {
+    padding: 2.5rem 0 2rem 0;
+  }
+
+  .heroTypographic {
+    padding: 3.5rem 0 2rem 0;
+  }
+
+  .featuredImage {
+    padding: 0 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .inlineImageWide {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .related {
+    padding: 3rem 1.25rem;
+  }
+}
+
+/* ============================================================
+ * ACCESSIBILITY — reduced motion
+ * ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .body a,
+  .relatedCard,
+  .inlineImageInner img {
+    transition: none;
+  }
+}

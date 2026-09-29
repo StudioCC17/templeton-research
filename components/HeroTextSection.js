@@ -1,81 +1,299 @@
-// components/HeroTextSection.js
-// Single portrait image with centered H1 text overlay
+// components/HeroSection.js
+// Updated with subtle video parallax effect similar to GKC website
+// Video moves slower than scroll for depth effect
 
 'use client'
 
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 
-export default function HeroTextSection({ heroTextData }) {
-  // Default image if none provided
-  const defaultImage = {
-    alt: 'Portrait image',
-    url: 'https://cdn.sanity.io/images/jzefrw3z/production/f46db0a703e6845b759c4d870270ceed223f048a-1500x842.jpg'
+export default function HeroSection({ 
+  heroData, 
+  defaultPreheader = '', 
+  defaultHeadline = '',
+  className = 'hero-section' 
+}) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [showPreheader, setShowPreheader] = useState(false)
+  const [showHeadlines, setShowHeadlines] = useState(false)
+  const [headlineLines, setHeadlineLines] = useState([])
+  const [scrollOpacity, setScrollOpacity] = useState(1)
+  
+  const sectionRef = useRef(null)
+  const headlineRef = useRef(null)
+  const videoRef = useRef(null) // New ref for video element
+  
+  const mediaType = heroData?.mediaType || 'image'
+  const hasMedia = (mediaType === 'image' && heroData?.images?.length > 0) || 
+                   (mediaType === 'video' && heroData?.videos?.length > 0)
+
+  const headline = heroData?.headline || defaultHeadline
+  const preheader = heroData?.preheader || defaultPreheader
+
+  // Helper function to get video URL
+  const getVideoUrl = (videoAsset) => {
+    if (!videoAsset?.asset?._ref) return null
+    
+    try {
+      const parts = videoAsset.asset._ref.split('-')
+      if (parts.length >= 3) {
+        const id = parts[1]
+        const extension = parts[2]
+        return `https://cdn.sanity.io/files/jzefrw3z/production/${id}.${extension}`
+      }
+    } catch (error) {
+      console.error('Error generating video URL:', error)
+    }
+    return null
   }
 
-  const image = heroTextData?.image || defaultImage
-  const headline = heroTextData?.headline || 'Fact finders, analysts and problem solvers'
+  // Split headline into 2 lines
+  useEffect(() => {
+    if (!headline) return
+    
+    const words = headline.split(' ')
+    const midPoint = Math.ceil(words.length / 2)
+    
+    // Try to split at a natural break point (like "when there is")
+    let splitIndex = midPoint
+    
+    // Look for natural break points
+    const breakWords = ['when', 'there', 'is', 'and', 'or', 'but', 'that', 'which', 'where']
+    for (let i = Math.floor(words.length * 0.3); i <= Math.floor(words.length * 0.7); i++) {
+      if (breakWords.includes(words[i]?.toLowerCase())) {
+        splitIndex = i + 1
+        break
+      }
+    }
+    
+    const firstLine = words.slice(0, splitIndex).join(' ')
+    const secondLine = words.slice(splitIndex).join(' ')
+    
+    setHeadlineLines([firstLine, secondLine].filter(line => line.trim()))
+  }, [headline])
+
+  // Intersection observer for animation trigger
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isVisible) {
+            setIsVisible(true)
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current)
+      }
+    }
+  }, [isVisible])
+
+  // Enhanced scroll effect with video parallax
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect()
+        const sectionHeight = rect.height
+        const scrollProgress = Math.max(0, -rect.top) / sectionHeight
+        
+        // Text fade effect (unchanged)
+        const fadeStart = 0
+        const fadeEnd = 0.15
+        
+        let opacity = 1
+        if (scrollProgress > fadeStart) {
+          opacity = Math.max(0, 1 - (scrollProgress - fadeStart) / (fadeEnd - fadeStart))
+        }
+        
+        setScrollOpacity(opacity)
+        
+        // Video parallax effect - only if we have a video
+        if (videoRef.current && mediaType === 'video') {
+          // Calculate parallax offset
+          // Negative value means video moves up slower than scroll (creating depth)
+          const parallaxSpeed = 0.5 // Adjust this value (0-1) for more/less parallax
+          const yPos = scrollProgress * sectionHeight * parallaxSpeed
+          
+          // Apply transform to video element
+          videoRef.current.style.transform = `translate3d(0, ${yPos}px, 0) scale(1.1)`
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Initial call
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [mediaType])
+
+  // Sequential animation timing
+  useEffect(() => {
+    if (isVisible) {
+      // Start preheader animation immediately
+      const preheaderTimer = setTimeout(() => {
+        setShowPreheader(true)
+      }, 100) // Small delay for smooth entry
+      
+      // Start headline animations much sooner - reduced to 250ms
+      const headlineTimer = setTimeout(() => {
+        setShowHeadlines(true)
+      }, 250) // Much faster headline entry
+      
+      return () => {
+        clearTimeout(preheaderTimer)
+        clearTimeout(headlineTimer)
+      }
+    }
+  }, [isVisible])
+
+  // Reset animation states when heroData changes
+  useEffect(() => {
+    setIsVisible(false)
+    setShowPreheader(false)
+    setShowHeadlines(false)
+  }, [heroData])
 
   return (
-    <section 
-      className="hero-text-section"
-      style={{
-        position: 'relative',
-        height: '100vh',
-        minHeight: '600px',
+    <section ref={sectionRef} className={className}>
+      {hasMedia && (
+        <div className="hero-background">
+          {mediaType === 'image' && heroData.images?.[0] && (
+            <>
+              <Image
+                src={urlFor(heroData.images[0]).url()}
+                alt={heroData.images[0].alt || 'Hero image'}
+                fill
+                className="hero-image"
+                priority
+              />
+              <div className="hero-overlay" />
+            </>
+          )}
+          
+          {mediaType === 'video' && heroData.videos?.[0] && (
+            <>
+              <video
+                ref={videoRef}
+                className="hero-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster={heroData.videos[0].poster ? urlFor(heroData.videos[0].poster).url() : undefined}
+                aria-label={heroData.videos[0].alt || 'Background video'}
+                style={{
+                  // Initial scale to accommodate parallax movement
+                  transform: 'translate3d(0, 0, 0) scale(1.1)',
+                  transition: 'none', // Remove any default transitions
+                  willChange: 'transform' // Optimize for transforms
+                }}
+              >
+                <source 
+                  src={getVideoUrl(heroData.videos[0])} 
+                  type="video/mp4" 
+                />
+                Your browser does not support the video tag.
+              </video>
+              <div className="hero-video-overlay" />
+            </>
+          )}
+        </div>
+      )}
+      
+      <div className="hero-content" style={{ 
+        textAlign: 'center !important',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
-        backgroundColor: '#f5f5f0'
-      }}
-    >
-      {/* Centered Image - 30% width */}
-      <div 
-        style={{
-          position: 'relative',
-          width: '30%',
-          height: '80%',
-          zIndex: 1
-        }}
-      >
-        <Image
-          src={image.asset ? urlFor(image).url() : image.url}
-          alt={image.alt || 'Hero text background'}
-          fill
-          style={{ objectFit: 'cover' }}
-          priority
-        />
-      </div>
-      
-      {/* Overlaid Text - Perfectly Centered */}
-      <div 
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 10,
-          textAlign: 'center',
-          color: '#f5f5f0',
-          maxWidth: '800px',
-          padding: '0 2rem'
-        }}
-      >
-        <h1 
-          style={{
-            fontFamily: 'var(--font-heading), serif',
-            fontSize: 'clamp(2.5rem, 7vw, 4.5rem)',
-            fontWeight: 300,
-            lineHeight: 1.1,
-            letterSpacing: '-0.04em',
-            margin: 0,
-            textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
+        height: '100%',
+        width: '100%',
+        paddingBottom: 0,
+        opacity: scrollOpacity, // Apply scroll-based opacity
+        transition: 'opacity 0.1s ease-out'
+      }}>
+        {/* Preheader with controlled fade-in animation (slower) */}
+        <p 
+          className={`hero-preheader hero-animate-up ${showPreheader ? 'hero-animate-visible' : ''}`}
+          style={{ 
+            transitionDuration: '0.4s', // Increased by 0.2s from 0.2s
+            transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            textAlign: 'center !important'
           }}
         >
-          {headline}
-        </h1>
+          {preheader}
+        </p>
+        
+        {/* Headline with line-by-line animation (first line starts immediately) */}
+        <div ref={headlineRef} className="hero-headline-container" style={{ 
+          textAlign: 'center !important',
+          width: '100%'
+        }}>
+          {headlineLines.length > 0 ? (
+            headlineLines.map((line, index) => (
+              <h1 
+                key={index}
+                className={`hero-headline hero-headline-line ${showHeadlines ? 'animate-line' : ''}`}
+                style={{ 
+                  transitionDelay: index === 0 ? '0s' : `${index * 0.08}s`, // First line has no delay, subsequent lines stagger
+                  transitionDuration: '0.425s',
+                  marginBottom: index === headlineLines.length - 1 ? 0 : '0em',
+                  textAlign: 'center !important'
+                }}
+              >
+                {line}
+              </h1>
+            ))
+          ) : (
+            <h1 
+              className={`hero-headline hero-animate-up ${showHeadlines ? 'hero-animate-visible' : ''}`}
+              style={{ 
+                transitionDuration: '0.425s',
+                transitionDelay: '0s', // No delay for single headline
+                textAlign: 'center !important'
+              }}
+            >
+              {headline}
+            </h1>
+          )}
+        </div>
       </div>
+      
+      {/* Additional CSS for enhanced parallax effect */}
+      <style jsx>{`
+        .hero-video {
+          /* Ensure smooth parallax performance */
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          transform-style: preserve-3d;
+          -webkit-transform-style: preserve-3d;
+        }
+        
+        /* Disable parallax on mobile for better performance */
+        @media (max-width: 768px) {
+          .hero-video {
+            transform: translate3d(0, 0, 0) scale(1) !important;
+          }
+        }
+        
+        /* Respect reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+          .hero-video {
+            transform: translate3d(0, 0, 0) scale(1) !important;
+          }
+        }
+      `}</style>
     </section>
   )
 }

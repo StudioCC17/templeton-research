@@ -1,319 +1,350 @@
 // components/ContactModal.js
-// Contact form modal with modern styling matching the site design
+// Slide-up contact modal that mirrors the team member modal.
+// Rendered through a portal into document.body so that the smooth-scroll
+// wrapper's transform cannot break position: fixed (which was leaving the
+// modal positioned off-screen). Class names are unique to avoid any CSS
+// collisions with old styles in globals.css.
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
+
+const INITIAL_FORM = {
+  name: '',
+  email: '',
+  company: '',
+  message: '',
+}
 
 export default function ContactModal({ isOpen, onClose }) {
-  const [shouldMount, setShouldMount] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    subject: '',
-    message: ''
-  })
-  
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState('')
+  const [form, setForm] = useState(INITIAL_FORM)
+  const [status, setStatus] = useState('idle') // idle | submitting | success | error
 
+  // Portals need the DOM, which only exists in the browser.
   useEffect(() => {
-    if (isOpen) {
-      setShouldMount(true)
-      setIsVisible(false)
-      document.body.style.overflow = 'hidden'
-      requestAnimationFrame(() => {
-        setIsVisible(true)
-      })
-    } else if (shouldMount) {
-      setIsVisible(false)
-      setTimeout(() => {
-        setShouldMount(false)
-        document.body.style.overflow = 'unset'
-      }, 200)
-    }
-  }, [isOpen, shouldMount])
+    setMounted(true)
+  }, [])
 
-  // Close modal on escape key
+  // Animate in: double rAF so the off-screen start state paints before
+  // we flip to visible, guaranteeing the slide/fade actually plays.
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = 'hidden'
-    }
-
+    if (!isOpen) return
+    document.body.style.overflow = 'hidden'
+    let raf2
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setIsVisible(true))
+    })
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
+      cancelAnimationFrame(raf1)
+      if (raf2) cancelAnimationFrame(raf2)
     }
-  }, [isOpen, onClose])
+  }, [isOpen])
+
+  // Slide out, then tell the parent to unmount once the transition ends.
+  const handleClose = useCallback(() => {
+    setIsVisible(false)
+    document.body.style.overflow = ''
+    setTimeout(() => {
+      onClose()
+      setForm(INITIAL_FORM)
+      setStatus('idle')
+    }, 600)
+  }, [onClose])
+
+  // Restore scroll lock if the component unmounts mid-animation.
+  useEffect(() => {
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  // Close on Escape.
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) handleClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, handleClose])
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus('')
+    if (status === 'submitting') return
+    setStatus('submitting')
 
     try {
-      // Replace this with your actual form submission logic
-      // This could be a POST request to your API endpoint
-      const response = await fetch('/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       })
-
-      if (response.ok) {
-        setSubmitStatus('success')
-        setFormData({ name: '', email: '', company: '', subject: '', message: '' })
-        setTimeout(() => {
-          onClose()
-          setSubmitStatus('')
-        }, 2000)
-      } else {
-        setSubmitStatus('error')
-      }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      setSubmitStatus('error')
-    } finally {
-      setIsSubmitting(false)
+      if (!res.ok) throw new Error('Request failed')
+      setStatus('success')
+    } catch (err) {
+      setStatus('error')
     }
   }
 
-  if (!shouldMount) return null
+  if (!isOpen || !mounted) return null
 
-  return (
-    <div 
-      className={`contact-modal-overlay ${isVisible ? 'contact-modal-overlay--visible' : ''}`}
-      onClick={onClose}
+  const fieldStyle = {
+    width: '100%',
+    background: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid rgba(36, 81, 72, 0.3)',
+    borderRadius: 0,
+    padding: '0.35rem 0',
+    fontFamily: 'var(--font-body), var(--font-fallback)',
+    fontSize: '1.05rem',
+    fontWeight: 400,
+    lineHeight: 1.5,
+    color: '#245148',
+    outline: 'none',
+    appearance: 'none',
+    transition: 'border-color 0.25s ease',
+  }
+
+  const labelStyle = {
+    display: 'block',
+    fontFamily: 'var(--font-body), var(--font-fallback)',
+    fontSize: '0.8rem',
+    fontWeight: 600,
+    letterSpacing: '0.04em',
+    textTransform: 'uppercase',
+    color: '#245148',
+    opacity: 0.55,
+
+  }
+
+  const modal = (
+    <div
+      className="tr-contact-overlay"
+      onClick={handleClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 99999,
+        backgroundColor: isVisible ? '#245148a3' : '#24514800',
+        transition: 'background-color 0.4s ease',
+        overflowY: 'scroll',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+      }}
     >
-      <div 
-        className={`contact-modal-content ${isVisible ? 'contact-modal-content--visible' : ''}`}
+      <div
+        className="tr-contact-box"
         onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: '#f5f5f0',
+          width: '40%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          marginTop: '10vh',
+          height: '100%',
+          transform: isVisible ? 'translateY(0)' : 'translateY(100vh)',
+          transition: 'transform 0.6s cubic-bezier(0.32, 0.72, 0, 1)',
+          position: 'relative',
+        }}
       >
-        {/* Close button */}
+        {/* Close Button */}
         <button
-          onClick={onClose}
-          className="contact-modal-close-button"
+          onClick={handleClose}
+          aria-label="Close modal"
+          style={{
+            position: 'absolute',
+            top: '1.5rem',
+            right: '1.5rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            zIndex: 10,
+            padding: 0,
+            color: '#245148',
+          }}
         >
-          ×
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
 
-        {/* Modal header */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h2 
-            style={{
-              fontFamily: 'var(--font-heading), serif',
-              fontSize: '2.5rem',
-              fontWeight: 300,
-              color: '#245148',
-              margin: '0 0 1rem 0',
-              lineHeight: 1.2
-            }}
-          >
-            Get in Touch
-          </h2>
-          <p className="contact-modal-description">
-          We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
-          </p>
-        </div>
+        <div className="tr-contact-content" style={{ padding: '1.5rem 1.5rem 2rem' }}>
+          {/* Heading */}
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-heading), serif',
+                fontSize: '2rem',
+                fontWeight: 300,
+                lineHeight: 1.1,
+                color: '#245148',
+                margin: 0,
+              }}
+            >
+              Get in touch
+            </h2>
+          </div>
 
-        {/* Contact form */}
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'grid', gap: '1.5rem' }}>
-            {/* Name and Email row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div>
-                <label 
-                  htmlFor="name"
-                  className="contact-modal-label"
-                >
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="contact-modal-input"
-                />
-              </div>
-
-              <div>
-                <label 
-                  htmlFor="email"
-                  className="contact-modal-label"
-                >
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="contact-modal-input"
-                />
-              </div>
-            </div>
-
-            {/* Company and Subject row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div>
-                <label 
-                  htmlFor="company"
-                  className="contact-modal-label"
-                >
-                  Company
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="contact-modal-input"
-                />
-              </div>
-
-              <div>
-                <label 
-                  htmlFor="subject"
-                  className="contact-modal-label"
-                >
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="contact-modal-input"
-                />
-              </div>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label 
-                htmlFor="message"
-                className="contact-modal-label"
-              >
-                Message *
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
+          {status === 'success' ? (
+            <div style={{ paddingTop: '1rem' }}>
+              <p
                 style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  border: '1px solid #245148',
-                  borderRadius: '4px',
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: '1.1rem',
+                  lineHeight: 1.55,
+                  color: '#245148',
+                  margin: 0,
+                }}
+              >
+                Thanks - your message is on its way. We will be in touch shortly.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} noValidate>
+              <div style={{ marginBottom: '1.75rem' }}>
+                <label htmlFor="contact-name" style={labelStyle}>Name</label>
+                <input
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                  style={fieldStyle}
+                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
+                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
+                />
+              </div>
+
+              <div style={{ marginBottom: '1.75rem' }}>
+                <label htmlFor="contact-email" style={labelStyle}>Email</label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                  style={fieldStyle}
+                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
+                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
+                />
+              </div>
+
+              <div style={{ marginBottom: '1.75rem' }}>
+                <label htmlFor="contact-company" style={labelStyle}>Company <span style={{ opacity: 0.6, fontWeight: 400 }}>(optional)</span></label>
+                <input
+                  id="contact-company"
+                  name="company"
+                  type="text"
+                  value={form.company}
+                  onChange={handleChange}
+                  style={fieldStyle}
+                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
+                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
+                />
+              </div>
+
+              <div style={{ marginBottom: '2.25rem' }}>
+                <label htmlFor="contact-message" style={labelStyle}>Message</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  required
+                  rows={4}
+                  value={form.message}
+                  onChange={handleChange}
+                  style={{ ...fieldStyle, resize: 'vertical', minHeight: '90px' }}
+                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
+                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
+                />
+              </div>
+
+              {status === 'error' && (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-body), var(--font-fallback)',
+                    fontSize: '0.9rem',
+                    color: '#BB7860',
+                    marginTop: 0,
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  Something went wrong sending your message. Please try again.
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  backgroundColor: '#BB7860',
+                  color: '#f5f5f0',
+                  border: 'none',
+                  padding: '0.75rem 1.6rem',
+                  borderRadius: '2px',
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: '1rem',
-                  backgroundColor: 'white',
-                  color: '#245148',
-                  resize: 'vertical',
-                  minHeight: '120px'
+                  fontWeight: 400,
+                  cursor: status === 'submitting' ? 'default' : 'pointer',
+                  opacity: status === 'submitting' ? 0.6 : 1,
+                  transition: 'background-color 0.3s ease, opacity 0.3s ease',
+                  width: '100%',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  textTransform: 'uppercase',
                 }}
-              />
-            </div>
-
-            {/* Submit status */}
-            {submitStatus === 'success' && (
-              <div 
-                style={{
-                  padding: '1rem',
-                  backgroundColor: '#d4edda',
-                  border: '1px solid #c3e6cb',
-                  borderRadius: '4px',
-                  color: '#155724',
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '0.9rem'
-                }}
+                onMouseEnter={(e) => { if (status !== 'submitting') e.currentTarget.style.backgroundColor = '#A66850' }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#BB7860' }}
               >
-                Thank you! Your message has been sent successfully.
-              </div>
-            )}
-
-            {submitStatus === 'error' && (
-              <div 
-                style={{
-                  padding: '1rem',
-                  backgroundColor: '#f8d7da',
-                  border: '1px solid #f5c6cb',
-                  borderRadius: '4px',
-                  color: '#721c24',
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '0.9rem'
-                }}
-              >
-                Sorry, there was an error sending your message. Please try again.
-              </div>
-            )}
-
-            {/* Submit button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="contact-modal-submit-button"
-            >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </button>
-          </div>
-        </form>
+                {status === 'submitting' ? 'Sending...' : 'Send message'}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
 
-      <style jsx>{`
-        .contact-modal-content input:focus,
-        .contact-modal-content textarea:focus {
-          outline: none;
-          border-color: #BB7860;
-          box-shadow: 0 0 0 2px rgba(187, 120, 96, 0.2);
+      {/* Styles */}
+      <style jsx global>{`
+        .tr-contact-overlay::-webkit-scrollbar {
+          display: none;
         }
 
-        .contact-modal-content button[type="submit"]:hover:not(:disabled) {
-          background-color: #A66850;
-          transform: translateY(-1px);
+        .tr-contact-box textarea::placeholder,
+        .tr-contact-box input::placeholder {
+          color: rgba(36, 81, 72, 0.4);
+        }
+
+        @media (max-width: 1024px) {
+          .tr-contact-box {
+            width: 75% !important;
+          }
         }
 
         @media (max-width: 768px) {
-          .contact-modal-content {
-            padding: 2rem !important;
-            margin: 1rem !important;
+          .tr-contact-box {
+            width: 100% !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            min-height: 100vh;
           }
 
-          .contact-modal-content > div:nth-child(3) > div:first-child,
-          .contact-modal-content > div:nth-child(3) > div:nth-child(2) {
-            grid-template-columns: 1fr !important;
+          .tr-contact-content {
+            padding: 1.5rem 1.5rem 2rem !important;
           }
         }
       `}</style>
     </div>
   )
+
+  return createPortal(modal, document.body)
 }

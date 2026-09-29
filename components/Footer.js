@@ -1,17 +1,15 @@
 // components/Footer.js
-// Footer component with Sanity CMS integration
-// Updated to use dynamic footer settings from Sanity including logo
+// Updated footer with email addresses under each office location
+// "Email us" now opens the shared contact modal via a window event.
 
-import React from 'react'
+'use client'
+
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function Footer({ footerData }) {
-  // Debug: Log the footer data to see what we're receiving
-  console.log('Footer footerData:', footerData)
-  console.log('Logo data:', footerData?.companyInfo?.logo)
-
-  // Fallback data if Sanity data isn't available
+function FooterInner({ footerData }) {
   const defaultFooterData = {
     companyInfo: {
       companyName: 'TEMPLETON',
@@ -25,6 +23,7 @@ export default function Footer({ footerData }) {
           line1: '15 Upper Grosvenor Street,',
           line2: 'Mayfair, London, W1K 7PJ'
         },
+        email: 'london@templetonresearch.com',
         order: 1
       },
       {
@@ -33,6 +32,7 @@ export default function Footer({ footerData }) {
           line1: '125 Park Avenue,',
           line2: 'New York, NY 10017'
         },
+        email: 'newyork@templetonresearch.com',
         order: 2
       },
       {
@@ -41,6 +41,7 @@ export default function Footer({ footerData }) {
           line1: '3-2-5 Kasumigaseki,',
           line2: 'Chiyoda-ku, Tokyo 100-6390'
         },
+        email: 'tokyo@templetonresearch.com',
         order: 3
       }
     ]
@@ -48,257 +49,355 @@ export default function Footer({ footerData }) {
 
   const footer = footerData || defaultFooterData
   const sortedOffices = footer.offices?.sort((a, b) => (a.order || 0) - (b.order || 0)) || defaultFooterData.offices
-
-  // Check if we have a valid logo
   const hasLogo = footer.companyInfo?.logo?.asset || footer.companyInfo?.logo?.asset?.url
-  console.log('Has logo:', hasLogo)
-  console.log('Logo asset:', footer.companyInfo?.logo?.asset)
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const openLegal = (slug) => (e) => {
+    e.preventDefault()
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('legal', slug)
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
+  // Open the contact modal that lives in Navigation. Navigation listens
+  // for this event and sets its modal open state to true.
+  const openContactModal = (e) => {
+    e.preventDefault()
+    window.dispatchEvent(new Event('open-contact-modal'))
+  }
 
   return (
-    <footer 
-      className="footer-section"
-      style={{
-        backgroundColor: '#245148',
-        padding: '2rem 2rem 2rem 2rem',
-        borderTop: '0px solid #245148'
-      }}
-    >
-      <div 
-        className="footer-container"
+    <>
+      {/* Main Footer */}
+      <footer 
+        className="footer-section"
         style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
-          textAlign: 'center'
+          backgroundColor: 'var(--color-green)',
+          padding: '0rem',
+          borderTop: '1px solid rgba(245, 245, 240, 0.2)'
         }}
       >
-        {/* Logo/Company name */}
         <div 
-          className="footer-logo"
+          className="footer-container"
           style={{
-            marginBottom: '7rem'
-          }}
-        >
-          {hasLogo ? (
-            // Show logo if available
-            <div className="footer-logo-container">
-              {/* Try multiple ways to get the image URL */}
-              {(() => {
-                let imageUrl;
-                let imageWidth = footer.companyInfo.logo.width || 200;
-                let imageHeight = footer.companyInfo.logo.height || 60;
-                let altText = footer.companyInfo.logo.alt || 'Company Logo';
-
-                // Try different ways to get the URL
-                if (footer.companyInfo.logo.asset?.url) {
-                  imageUrl = footer.companyInfo.logo.asset.url;
-                } else if (footer.companyInfo.logo.asset) {
-                  imageUrl = urlFor(footer.companyInfo.logo).url();
-                } else {
-                  imageUrl = urlFor(footer.companyInfo.logo).url();
-                }
-
-                console.log('Image URL:', imageUrl);
-
-                return (
-                  <Image
-                    src={imageUrl}
-                    alt={altText}
-                    width={imageWidth}
-                    height={imageHeight}
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto'
-                    }}
-                  />
-                );
-              })()}
-
-            </div>
-          ) : (
-            // Fallback to text if no logo
-            <>
-              <h1 
-                className="footer-company-name"
-                style={{
-                  fontFamily: 'var(--font-heading), serif',
-                  fontSize: 'clamp(2rem, 4vw, 2rem)',
-                  fontWeight: '300',
-                  letterSpacing: '0.1em',
-                  color: '#f5f5f0',
-                  margin: '0'
-                }}
-              >
-                {footer.companyInfo?.companyName || defaultFooterData.companyInfo.companyName}
-              </h1>
-              <div 
-                className="footer-tagline"
-                style={{
-                  fontFamily: 'var(--font-heading), serif',
-                  fontSize: '0.875rem',
-                  fontWeight: '400',
-                  letterSpacing: '0.05em',
-                  color: '#f5f5f0',
-                  marginTop: '0.5rem',
-                  textTransform: 'uppercase'
-                }}
-              >
-                {footer.companyInfo?.tagline || defaultFooterData.companyInfo.tagline}
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Office locations - dynamic grid based on number of offices */}
-        <div 
-          className="footer-offices"
-          style={{
+ 
+            margin: '0 auto',
             display: 'grid',
-            gridTemplateColumns: `repeat(${Math.min(sortedOffices.length, 4)}, 1fr)`,
-            gap: '4rem',
-            maxWidth: '1200px',
-            margin: '0 auto'
+            gridTemplateColumns: '1fr 1fr',
+            gap: '0',
+            position: 'relative',
+            minHeight: '400px',
+            textAlign: 'left'
           }}
         >
-          {sortedOffices.map((office, index) => (
-            <div key={office.city || index} className="footer-office">
-              <h3 
-                className="footer-office-city"
+          {/* Vertical Divider */}
+          <div 
+            className="footer-divider"
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '0',
+              bottom: '0',
+              width: '1px',
+              backgroundColor: 'rgba(245, 245, 240, 0.2)',
+              transform: 'translateX(-50%)',
+              zIndex: 1
+            }} 
+          />
+
+          {/* Left Side - Tagline and Links */}
+          <div 
+            className="footer-left"
+            style={{
+              paddingRight: '4rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '1.25rem',
+              position: 'relative'
+            }}
+          >
+            {/* Top Section - Tagline */}
+            <div>
+              {/* Tagline */}
+              <h2 
                 style={{
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  letterSpacing: '0.05em',
+                  fontFamily: 'var(--font-heading), serif',
+                  fontWeight: 300,
+                  lineHeight: 1.2,
                   color: '#f5f5f0',
-                  marginBottom: '1rem',
-                  textTransform: 'uppercase'
+                  paddingRight: '45%'
                 }}
               >
-                {office.city}
-              </h3>
-              <div 
-                className="footer-office-address"
-                style={{
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '1rem',
-                  fontWeight: '400',
-                  lineHeight: '1.6',
-                  color: '#f5f5f0'
-                }}
-              >
-                <div>{office.address?.line1}</div>
-                <div>{office.address?.line2}</div>
-              </div>
+                Providing clarity when there is uncertainty
+              </h2>
             </div>
-          ))}
-        </div>
 
-        {/* Optional Footer Navigation */}
-        {footer.footerNavigation?.enabled && footer.footerNavigation.navigationSections && (
-          <div 
-            className="footer-navigation"
-            style={{
-              marginTop: '4rem',
-              paddingTop: '3rem',
-              borderTop: '1px solid #245148'
-            }}
-          >
-            <div 
-              style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(${Math.min(footer.footerNavigation.navigationSections.length, 4)}, 1fr)`,
-                gap: '2rem',
-                maxWidth: '800px',
-                margin: '0 auto'
-              }}
-            >
-              {footer.footerNavigation.navigationSections.map((section, sectionIndex) => (
-                <div key={sectionIndex} className="footer-nav-section">
-                  <h4 
-                    style={{
-                      fontFamily: 'var(--font-body), var(--font-fallback)',
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: '#245148',
-                      marginBottom: '1rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
-                    }}
-                  >
-                    {section.sectionTitle}
-                  </h4>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                    {section.links?.map((link, linkIndex) => (
-                      <li key={linkIndex} style={{ marginBottom: '0.5rem' }}>
-                        <a 
-                          href={link.url}
-                          target={link.openInNewTab ? '_blank' : '_self'}
-                          rel={link.openInNewTab ? 'noopener noreferrer' : undefined}
-                          style={{
-                            fontFamily: 'var(--font-body), var(--font-fallback)',
-                            fontSize: '1.1rem',
-                            color: '#245148',
-                            textDecoration: 'none',
-                            transition: 'opacity 0.3s ease'
-                          }}
-                          onMouseOver={(e) => e.target.style.opacity = '0.7'}
-                          onMouseOut={(e) => e.target.style.opacity = '1'}
-                        >
-                          {link.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Optional Social Media Links */}
-        {footer.socialMedia?.enabled && footer.socialMedia.links && (
-          <div 
-            className="footer-social"
-            style={{
-              marginTop: '3rem',
-              paddingTop: '2rem',
-              borderTop: footer.footerNavigation?.enabled ? 'none' : '1px solid #245148'
-            }}
-          >
+            {/* Bottom Section - LinkedIn and Subscribe Links */}
             <div 
               style={{
                 display: 'flex',
-                justifyContent: 'center',
-                gap: '2rem',
-                flexWrap: 'wrap'
+                flexDirection: 'column',
+                marginTop: '3rem'
               }}
             >
-              {footer.socialMedia.links.map((social, index) => (
+              <a 
+                href="#"
+                onClick={openContactModal}
+                style={{
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  color: '#f5f5f0',
+                  lineHeight: 1.5,
+                  textDecoration: 'none',
+                  position: 'relative',
+                  display: 'inline-block',
+                  cursor: 'pointer'
+                }}
+                onMouseOver={(e) => e.target.style.opacity = '0.6'}
+                onMouseOut={(e) => e.target.style.opacity = '1'}
+              >
+                Email us
+                <svg 
+                  style={{
+                    position: 'absolute',
+                    marginTop: '2px',
+                    marginLeft: '1px'
+                  }}
+                  width="12" 
+                  height="12" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 17L17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
+              </a>
+              <a 
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  color: '#f5f5f0',
+                  lineHeight: 1.5,
+                  textDecoration: 'none',
+                  position: 'relative',
+                  display: 'inline-block'
+                }}
+                onMouseOver={(e) => e.target.style.opacity = '0.6'}
+                onMouseOut={(e) => e.target.style.opacity = '1'}
+              >
+                Follow us on LinkedIn
+                <svg 
+                  style={{
+                    position: 'absolute',
+                    marginTop: '2px',
+                    marginLeft: '1px'
+                  }}
+                  width="12" 
+                  height="12" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 17L17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
+              </a>
+              
+            </div>
+
+            {/* Logo positioned bottom right within left section */}
+            <div 
+              className="footer-micro-logo"
+              style={{
+                position: 'absolute',
+                bottom: '1rem',
+                right: '1.25rem'
+              }}
+            >
+              <svg 
+                viewBox="0 0 283.05 227.86" 
+                style={{
+                  width: '60px',
+                  height: '40px',
+                  color: '#f5f5f0',
+                  fill: '#f5f5f0'
+                }}
+              >
+                <g>
+                  <path d="M128.1,227.61c-1.17,0-2.34-1.17-2.34-2.34V5.52H3.17C1.42,5.52.25,4.35.25,2.59.25,1.42,1.42.25,2.59.25h124.93c1.17,0,2.34,1.17,2.34,2.34v222.09c.58,1.76-.58,2.93-1.75,2.93" fill="#f5f5f0"></path>
+                  <path d="M128.11,227.86v-.5c.514,0,1.007-.257,1.319-.688.365-.505.434-1.185.194-1.914l-.013-.078V2.59c0-1.035-1.055-2.09-2.09-2.09H2.59C1.555.5.5,1.555.5,2.59c0,1.628,1.048,2.68,2.67,2.68h122.84v220c0,1.035,1.055,2.09,2.09,2.09v.5c-1.307,0-2.59-1.283-2.59-2.59V5.77H3.17c-1.896,0-3.17-1.278-3.17-3.18C0,1.283,1.283,0,2.59,0h124.93c1.307,0,2.59,1.283,2.59,2.59v222.051c.276.871.179,1.695-.276,2.324-.405.561-1.049.895-1.724.895Z" fill="#f5f5f0"></path>
+                </g>
+                <g>
+                  <path d="M100.08,227.61c-1.17,0-2.34-1.17-2.34-2.34V33.07H2.59c-1.17,0-2.34-1.17-2.34-2.34s1.17-2.34,2.34-2.34h96.91c1.17,0,2.34,1.17,2.34,2.34v193.96c.58,1.76-.58,2.93-1.75,2.93" fill="#f5f5f0"></path>
+                  <path d="M100.09,227.87v-.5c.514,0,1.007-.257,1.318-.688.366-.505.435-1.186.194-1.915l-.013-.078V30.73c0-1.035-1.055-2.09-2.09-2.09H2.59c-1.035,0-2.09,1.055-2.09,2.09s1.055,2.09,2.09,2.09h95.4v192.45c0,1.035,1.055,2.09,2.09,2.09v.5c-1.307,0-2.59-1.283-2.59-2.59V33.32H2.59c-1.307,0-2.59-1.283-2.59-2.59s1.283-2.59,2.59-2.59h96.91c1.307,0,2.59,1.283,2.59,2.59v193.92c.276.871.179,1.695-.276,2.325-.405.561-1.049.895-1.724.895Z" fill="#f5f5f0"></path>
+                </g>
+                <g>
+                  <path d="M72.06,227.61c-1.17,0-2.34-1.17-2.34-2.34V61.19H2.59c-1.17,0-2.34-1.17-2.34-2.34s1.17-2.34,2.34-2.34h69.47c1.17,0,2.34,1.17,2.34,2.34v166.42c0,1.17-1.17,2.34-2.34,2.34" fill="#f5f5f0"></path>
+                  <path d="M72.06,227.86c-1.307,0-2.59-1.283-2.59-2.59V61.44H2.59c-1.307,0-2.59-1.283-2.59-2.59s1.283-2.59,2.59-2.59h69.47c1.307,0,2.59,1.283,2.59,2.59v166.42c0,1.307-1.283,2.59-2.59,2.59ZM2.59,56.76c-1.035,0-2.09,1.055-2.09,2.09s1.055,2.09,2.09,2.09h67.38v164.33c0,1.035,1.055,2.09,2.09,2.09s2.09-1.055,2.09-2.09V58.85c0-1.035-1.055-2.09-2.09-2.09H2.59Z" fill="#f5f5f0"></path>
+                </g>
+                <g>
+                  <path d="M155.54,227.61c-1.17,0-2.34-1.17-2.34-2.34V2.59c0-1.17,1.17-2.34,2.34-2.34h124.93c1.17,0,2.34,1.17,2.34,2.34s-1.17,2.34-2.34,2.34h-122.6v219.74c0,1.76-1.17,2.93-2.34,2.93" fill="#f5f5f0"></path>
+                  <path d="M155.54,227.86c-1.307,0-2.59-1.283-2.59-2.59V2.59C152.95,1.283,154.233,0,155.54,0h124.93c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-122.35v219.49c0,1.959-1.337,3.173-2.58,3.18v.01ZM155.54.5c-1.035,0-2.09,1.055-2.09,2.09v222.68c0,1.032,1.048,2.083,2.08,2.09v-.01c1.005,0,2.09-1.024,2.09-2.68V4.68h122.85c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-124.93Z" fill="#f5f5f0"></path>
+                </g>
+                <g>
+                  <path d="M183.56,227.61c-1.17,0-2.34-1.17-2.34-2.34V30.72c0-1.17,1.17-2.34,2.34-2.34h96.91c1.17,0,2.34,1.17,2.34,2.34s-1.17,2.34-2.34,2.34h-94.57v191.62c0,1.76-1.17,2.93-2.34,2.93" fill="#f5f5f0"></path>
+                  <path d="M183.56,227.86c-1.307,0-2.59-1.283-2.59-2.59V30.72c0-1.307,1.283-2.59,2.59-2.59h96.91c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-94.319v191.37c0,1.964-1.345,3.18-2.591,3.18ZM183.56,28.63c-1.035,0-2.09,1.055-2.09,2.09v194.55c0,1.035,1.055,2.09,2.09,2.09,1.006,0,2.091-1.024,2.091-2.68V32.81h94.819c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-96.91Z" fill="#f5f5f0"></path>
+                </g>
+                <g>
+                  <path d="M211,227.61c-1.17,0-2.34-1.17-2.34-2.34V58.85c0-1.17,1.17-2.34,2.34-2.34h69.47c1.17,0,2.34,1.17,2.34,2.34s-1.17,2.34-2.34,2.34h-66.55v163.49c0,1.76-1.17,2.93-2.92,2.93" fill="#f5f5f0"></path>
+                  <path d="M211,227.86c-1.307,0-2.59-1.283-2.59-2.59V58.85c0-1.307,1.283-2.59,2.59-2.59h69.47c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-66.3v163.24c0,1.902-1.273,3.18-3.17,3.18ZM211,56.76c-1.035,0-2.09,1.055-2.09,2.09v166.42c0,1.035,1.055,2.09,2.09,2.09,1.622,0,2.67-1.052,2.67-2.68V60.94h66.8c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-69.47Z" fill="#f5f5f0"></path>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          {/* Right Side - Office Locations */}
+          <div 
+            style={{
+              padding: '1.25rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              position: 'relative'
+            }}
+          >
+            {/* Office locations grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '0rem',
+              alignContent: 'start',
+            }}>
+              {sortedOffices.map((office, index) => (
+                <div key={office.city || index}>
+                  <h4 
+                    style={{
+                      fontFamily: 'var(--font-body), var(--font-fallback)',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      color: '#f5f5f0',
+                      marginBottom: '.25rem',
+                      textTransform: 'uppercase',
+                      lineHeight: 1.3
+                    }}
+                  >
+                    {office.city}
+                  </h4>
+                  <div 
+                    style={{
+                      fontFamily: 'var(--font-body), var(--font-fallback)',
+                      fontSize: '0.9rem',
+                      fontWeight: 400,
+                      lineHeight: 1.6,
+                      color: '#f5f5f0'
+                    }}
+                  >
+                    <div>{office.address?.line1}</div>
+                    <div>{office.address?.line2}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom - Legal links */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: '1.25rem',
+              marginTop: '3rem'
+            }}>
+              {[
+                { label: 'Privacy Policy', slug: 'privacy-policy' },
+                { label: 'Cookie Policy', slug: 'cookie-policy' },
+                { label: 'Terms of Use', slug: 'terms-of-use' },
+              ].map(({ label, slug }) => (
                 <a
-                  key={index}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={label}
+                  href={`?legal=${slug}`}
+                  onClick={openLegal(slug)}
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: '0.9rem',
-                    color: '#BB7860',
+                    fontWeight: 400,
+                    color: '#f5f5f0',
                     textDecoration: 'none',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    fontWeight: '500',
-                    transition: 'opacity 0.3s ease'
+                    lineHeight: 1.5,
                   }}
-                  onMouseOver={(e) => e.target.style.opacity = '0.7'}
-                  onMouseOut={(e) => e.target.style.opacity = '1'}
                 >
-                  {social.platform}
+                  {label}
                 </a>
               ))}
             </div>
           </div>
-        )}
+        </div>
 
-      </div>
-    </footer>
+        {/* Responsive Styles */}
+        <style jsx>{`
+          @media (max-width: 1024px) {
+            .footer-container {
+              grid-template-columns: 1fr !important;
+              gap: 4rem !important;
+            }
+            
+            .footer-container > div:first-child {
+              padding-right: 0 !important;
+            }
+            
+            .footer-container > div:last-child {
+              padding-left: 0 !important;
+              grid-template-columns: 1fr !important;
+              gap: 2rem !important;
+            }
+          }
+
+          @media (max-width: 768px) {
+            .footer-section {
+              padding: 1.25rem !important;
+            }
+            
+            .footer-container > div:first-child {
+              padding: 0 !important;
+            }
+            
+            .footer-left {
+              padding: 0 !important;
+            }
+            
+            .footer-divider {
+              display: none !important;
+            }
+            
+            .footer-micro-logo {
+              display: none !important;
+            }
+          }
+        `}</style>
+      </footer>
+    </>
+  )
+}
+
+export default function Footer(props) {
+  return (
+    <Suspense fallback={null}>
+      <FooterInner {...props} />
+    </Suspense>
   )
 }

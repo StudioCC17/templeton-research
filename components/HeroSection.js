@@ -1,11 +1,10 @@
 // components/HeroSection.js
-// Updated with sequential animation: preheader first, then line-by-line headlines
-// Zoom effect removed
-// Text centered both horizontally and vertically
+// Layout: Text section on cream background, then full-height video below
+// Hero text animates in line by line using GSAP SplitText
 
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 
@@ -13,28 +12,134 @@ export default function HeroSection({
   heroData, 
   defaultPreheader = '', 
   defaultHeadline = '',
-  className = 'hero-section' 
+  className = '' 
 }) {
-  const [isVisible, setIsVisible] = useState(false)
-  const [showPreheader, setShowPreheader] = useState(false)
-  const [showHeadlines, setShowHeadlines] = useState(false)
-  const [headlineLines, setHeadlineLines] = useState([])
-  const [scrollOpacity, setScrollOpacity] = useState(1)
-  
+  const [mounted, setMounted] = useState(false)
+  const videoRef = useRef(null)
   const sectionRef = useRef(null)
-  const headlineRef = useRef(null)
+  const heroTextRef = useRef(null)
   
   const mediaType = heroData?.mediaType || 'image'
-  const hasMedia = (mediaType === 'image' && heroData?.images?.length > 0) || 
-                   (mediaType === 'video' && heroData?.videos?.length > 0)
 
-  const headline = heroData?.headline || defaultHeadline
-  const preheader = heroData?.preheader || defaultPreheader
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // GSAP SplitText animation - letter by letter opacity fade
+  useEffect(() => {
+    if (!mounted || !heroTextRef.current) return
+
+    let splitInstance = null
+
+    const initAnimation = async () => {
+      try {
+        const gsapModule = await import('gsap')
+        const splitTextModule = await import('gsap/SplitText')
+        
+        const gsap = gsapModule.default
+        const SplitText = splitTextModule.SplitText
+        
+        gsap.registerPlugin(SplitText)
+
+        // Fade whole block from 0 to 0.5 first
+        gsap.fromTo(heroTextRef.current, 
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6, ease: 'power2.out' }
+        )
+
+        // Split the hero text into individual characters
+        splitInstance = new SplitText(heroTextRef.current, {
+          type: 'chars',
+          charsClass: 'hero-split-char',
+          tag: 'span'
+        })
+
+        // Set initial state - all chars at 0.5 opacity
+        gsap.set(splitInstance.chars, {
+          opacity: 0.2
+        })
+
+        // Animate each char from 0.5 to 1 opacity, staggered left to right (3x faster)
+        gsap.to(splitInstance.chars, {
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out',
+          stagger: 0.01,
+          delay: 0
+        })
+      } catch (error) {
+        console.error('GSAP animation error:', error)
+        if (heroTextRef.current) {
+          heroTextRef.current.style.opacity = '1'
+        }
+      }
+    }
+
+    initAnimation()
+
+    return () => {
+      if (splitInstance) {
+        splitInstance.revert()
+      }
+    }
+  }, [mounted])
+
+  // GSAP video fade-in on canplaythrough
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || mediaType !== 'video') return
+
+    let hasAnimated = false
+
+    const fadeIn = async () => {
+      if (hasAnimated) return
+      hasAnimated = true
+      
+      const gsap = (await import('gsap')).default
+      gsap.to(video, {
+        opacity: 1,
+        duration: 1,
+        ease: 'power2.out'
+      })
+    }
+
+    if (video.readyState >= 4) {
+      fadeIn()
+    } else {
+      video.addEventListener('canplaythrough', fadeIn, { once: true })
+    }
+
+    return () => video.removeEventListener('canplaythrough', fadeIn)
+  }, [mediaType, mounted])
+
+  // Parallax effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (videoRef.current && sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect()
+        const scrollProgress = -rect.top / window.innerHeight
+        const translateY = scrollProgress * 50
+        videoRef.current.style.transform = `translateY(${translateY}px)`
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Select random video on mount
+  const selectedVideo = useMemo(() => {
+    if (!mounted || !heroData?.videos?.length) return null
+    const randomIndex = Math.floor(Math.random() * heroData.videos.length)
+    return heroData.videos[randomIndex]
+  }, [mounted, heroData?.videos])
+
+  const hasMedia = (mediaType === 'image' && heroData?.images?.length > 0) || 
+                   (mediaType === 'video' && selectedVideo)
 
   // Helper function to get video URL
   const getVideoUrl = (videoAsset) => {
     if (!videoAsset?.asset?._ref) return null
-    
     try {
       const parts = videoAsset.asset._ref.split('-')
       if (parts.length >= 3) {
@@ -48,210 +153,109 @@ export default function HeroSection({
     return null
   }
 
-  // Split headline into 2 lines
-  useEffect(() => {
-    if (!headline) return
-    
-    const words = headline.split(' ')
-    const midPoint = Math.ceil(words.length / 2)
-    
-    // Try to split at a natural break point (like "when there is")
-    let splitIndex = midPoint
-    
-    // Look for natural break points
-    const breakWords = ['when', 'there', 'is', 'and', 'or', 'but', 'that', 'which', 'where']
-    for (let i = Math.floor(words.length * 0.3); i <= Math.floor(words.length * 0.7); i++) {
-      if (breakWords.includes(words[i]?.toLowerCase())) {
-        splitIndex = i + 1
-        break
-      }
-    }
-    
-    const firstLine = words.slice(0, splitIndex).join(' ')
-    const secondLine = words.slice(splitIndex).join(' ')
-    
-    setHeadlineLines([firstLine, secondLine].filter(line => line.trim()))
-  }, [headline])
-
-  // Intersection observer for animation trigger
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isVisible) {
-            setIsVisible(true)
-          }
-        })
-      },
-      { threshold: 0.2 }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
-    }
-  }, [isVisible])
-
-  // Scroll-based fade effect for hero text
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect()
-        const sectionHeight = rect.height
-        const scrollProgress = Math.max(0, -rect.top) / sectionHeight
-        
-        // Fade out the text much faster as user scrolls down
-        // Text starts fading immediately and is fully transparent at 15%
-        const fadeStart = 0
-        const fadeEnd = 0.15
-        
-        let opacity = 1
-        if (scrollProgress > fadeStart) {
-          opacity = Math.max(0, 1 - (scrollProgress - fadeStart) / (fadeEnd - fadeStart))
-        }
-        
-        setScrollOpacity(opacity)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Initial call
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  // Sequential animation timing
-  useEffect(() => {
-    if (isVisible) {
-      // Start preheader animation immediately
-      const preheaderTimer = setTimeout(() => {
-        setShowPreheader(true)
-      }, 100) // Small delay for smooth entry
-      
-      // Start headline animations much sooner - reduced to 250ms
-      const headlineTimer = setTimeout(() => {
-        setShowHeadlines(true)
-      }, 250) // Much faster headline entry
-      
-      return () => {
-        clearTimeout(preheaderTimer)
-        clearTimeout(headlineTimer)
-      }
-    }
-  }, [isVisible])
-
-  // Reset animation states when heroData changes
-  useEffect(() => {
-    setIsVisible(false)
-    setShowPreheader(false)
-    setShowHeadlines(false)
-  }, [heroData])
-
   return (
-    <section ref={sectionRef} className={className}>
+    <>
+      {/* Text Section */}
+      <section 
+        className="hero-text-section"
+        style={{
+          backgroundColor: '#f5f5f0',
+          display: 'flex',
+          alignItems: 'flex-end',
+          padding: '250px 1.5% 2rem 1.5%'
+        }}
+      >
+        <div 
+          style={{
+
+            width: '100%'
+          }}
+        >
+          <h1 
+            ref={heroTextRef}
+            className="hero-text"
+            style={{
+              color: '#245148',
+              margin: 0,
+              maxWidth: '100%',
+              paddingRight: '16%',
+              opacity: 0,
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }}
+          >
+            We are an investigative research firm supporting decision-makers operating in complex environments, often where information is scarce or overabundant.
+          </h1>
+        </div>
+      </section>
+
+      {/* Video/Image Section */}
       {hasMedia && (
-        <div className="hero-background">
+        <section 
+          ref={sectionRef}
+          style={{
+            position: 'relative',
+            height: '85vh',
+            minHeight: '500px',
+            overflow: 'hidden'
+          }}
+        >
           {mediaType === 'image' && heroData.images?.[0] && (
             <>
               <Image
                 src={urlFor(heroData.images[0]).url()}
                 alt={heroData.images[0].alt || 'Hero image'}
                 fill
-                className="hero-image"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
                 priority
               />
               <div className="hero-overlay" />
             </>
           )}
           
-          {mediaType === 'video' && heroData.videos?.[0] && (
+          {mediaType === 'video' && selectedVideo && (
             <>
               <video
-                className="hero-video"
+                ref={videoRef}
                 autoPlay
                 muted
                 loop
                 playsInline
-                poster={heroData.videos[0].poster ? urlFor(heroData.videos[0].poster).url() : undefined}
-                aria-label={heroData.videos[0].alt || 'Background video'}
-              >
-                <source 
-                  src={getVideoUrl(heroData.videos[0])} 
-                  type="video/mp4" 
-                />
-                Your browser does not support the video tag.
-              </video>
-              <div className="hero-video-overlay" />
-            </>
-          )}
-        </div>
-      )}
-      
-      <div className="hero-content" style={{ 
-        textAlign: 'center !important',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        width: '100%',
-        paddingBottom: 0,
-        opacity: scrollOpacity,
-        transition: 'opacity 0.1s ease-out'
-      }}>
-        {/* Preheader with controlled fade-in animation (slower) */}
-        <p 
-          className={`hero-preheader hero-animate-up ${showPreheader ? 'hero-animate-visible' : ''}`}
-          style={{ 
-            transitionDuration: '0.4s', // Increased by 0.2s from 0.2s
-            transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-            textAlign: 'center !important'
-          }}
-        >
-          {preheader}
-        </p>
-        
-        {/* Headline with line-by-line animation (first line starts immediately) */}
-        <div ref={headlineRef} className="hero-headline-container" style={{ 
-          textAlign: 'center !important',
-          width: '100%'
-        }}>
-          {headlineLines.length > 0 ? (
-            headlineLines.map((line, index) => (
-              <h1 
-                key={index}
-                className={`hero-headline hero-headline-line ${showHeadlines ? 'animate-line' : ''}`}
-                style={{ 
-                  transitionDelay: index === 0 ? '0s' : `${index * 0.08}s`, // First line has no delay, subsequent lines stagger
-                  transitionDuration: '0.425s',
-                  marginBottom: index === headlineLines.length - 1 ? 0 : '0em',
-                  textAlign: 'center !important'
+                preload="auto"
+                poster={selectedVideo.poster ? urlFor(selectedVideo.poster).url() : undefined}
+                style={{
+                  position: 'absolute',
+                  top: '-10%',
+                  left: 0,
+                  width: '100%',
+                  height: '140%',
+                  objectFit: 'cover',
+                  willChange: 'transform',
+                  opacity: 0
                 }}
               >
-                {line}
-              </h1>
-            ))
-          ) : (
-            <h1 
-              className={`hero-headline hero-animate-up ${showHeadlines ? 'hero-animate-visible' : ''}`}
-              style={{ 
-                transitionDuration: '0.425s',
-                transitionDelay: '0s', // No delay for single headline
-                textAlign: 'center !important'
-              }}
-            >
-              {headline}
-            </h1>
+                <source src={getVideoUrl(selectedVideo)} type="video/mp4" />
+              </video>
+              <div className="hero-video-overlay" />
+
+
+            </>
           )}
-        </div>
-      </div>
-    </section>
+        </section>
+      )}
+
+      <style jsx>{`
+        :global(.hero-text div),
+        :global(.hero-text span) {
+          display: inline;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          :global(.hero-split-char) {
+            opacity: 1 !important;
+          }
+        }
+      `}</style>
+    </>
   )
 }

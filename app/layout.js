@@ -1,6 +1,6 @@
 // app/layout.js
 // Fixed layout.js with async scripts for Vercel deployment
-
+import LegalOverlayMount from '@/components/LegalOverlayMount'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -37,7 +37,11 @@ export default function RootLayout({ children }) {
           src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.39/dist/lenis.min.js"
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <LegalOverlayMount />
+      </body>
+
     </html>
   )
 }

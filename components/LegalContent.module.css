@@ -1,0 +1,194 @@
+/* components/LegalContent.module.css
+ * Typography for the static legal documents (privacy / cookie / terms).
+ * Tuned to match InsightArticle.module.css so the legal overlay reads
+ * identically to an article. Adds table styling the article renderer lacks.
+ *
+ * All colour / font tokens come from globals.css custom properties.
+ */
+
+/* ============================================================
+ * WRAPPER
+ * ============================================================ */
+
+.doc {
+  background-color: var(--color-cream);
+  color: var(--color-green);
+}
+
+.inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ============================================================
+ * HEADER
+ * ============================================================ */
+
+.header {
+  padding: 4rem 0 2.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-green);
+  margin: 0 0 1rem 0;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.lastUpdated {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-grey);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* ============================================================
+ * BODY — prose
+ * ============================================================ */
+
+.body {
+  padding: 0 0 4rem 0;
+}
+
+.body h2 {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-green);
+  margin: 2.75rem 0 1rem 0;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+}
+
+.body h3 {
+  font-family: var(--font-heading), var(--font-fallback);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--color-green);
+  margin: 2rem 0 0.75rem 0;
+  font-size: clamp(1.25rem, 2vw, 1.4rem);
+}
+
+.body p {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-green);
+  margin: 0 0 1.25rem 0;
+}
+
+.body ul {
+  margin: 0 0 1.5rem 0;
+  padding-left: 1.5rem;
+  list-style: disc;
+}
+
+.body li {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-green);
+  margin-bottom: 0.4rem;
+}
+
+.body li::marker {
+  color: var(--color-red);
+}
+
+.body a {
+  color: var(--color-red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.body a:hover {
+  opacity: 0.7;
+}
+
+.body strong {
+  font-weight: 600;
+}
+
+/* Address / contact blocks — multi-line paragraphs */
+.address {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--color-green);
+  margin: 0 0 1.5rem 0;
+}
+
+/* ============================================================
+ * TABLE — cookie policy
+ * ============================================================ */
+
+.tableWrap {
+  overflow-x: auto;
+  margin: 0 0 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-green);
+  line-height: 1.5;
+  vertical-align: top;
+}
+
+.table th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-red);
+  white-space: nowrap;
+}
+
+/* ============================================================
+ * RESPONSIVE
+ * ============================================================ */
+
+@media (max-width: 768px) {
+  .inner {
+    padding: 0 1.25rem;
+  }
+
+  .header {
+    padding: 2.5rem 0 2rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================================================
+ * ACCESSIBILITY — reduced motion
+ * ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .body a {
+    transition: none;
+  }
+}
