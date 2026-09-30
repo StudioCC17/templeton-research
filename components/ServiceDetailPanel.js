@@ -89,8 +89,9 @@ const bodyComponents = {
   },
 }
 
-export default function ServiceDetailPanel({ isOpen, onClose, item }) {
+export default function ServiceDetailPanel({ isOpen, onClose, item, number, nextNumber, nextTitle, onNext }) {
   const [isRendered, setIsRendered] = useState(false)
+  const contentRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
   const [expanded, setExpanded] = useState({})
   const closeTimer = useRef(null)
@@ -138,10 +139,56 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
     }
   }, [])
 
-  // Collapse all cards each time a different service is opened.
+  // Collapse all cards and scroll back to the top each time a different service is opened.
+  // If the panel is already showing (i.e. switching via "Next"), fade the new content up.
+  const isVisibleRef = useRef(false)
+  useEffect(() => { isVisibleRef.current = isVisible }, [isVisible])
+  const innerRef = useRef(null)
+  const nextRef = useRef(null)
   useEffect(() => {
     setExpanded({})
+    if (contentRef.current) contentRef.current.scrollTop = 0
+    if (!isVisibleRef.current || !innerRef.current) return
+    let cancelled = false
+    ;(async () => {
+      const gsap = window.gsap || (await import('gsap')).default
+      if (cancelled || !innerRef.current) return
+      gsap.fromTo(
+        [innerRef.current, nextRef.current].filter(Boolean),
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', delay: 0.05, overwrite: true }
+      )
+    })()
+    return () => { cancelled = true }
   }, [item])
+
+  // Opens the contact modal with this service pre-filled (listened for in Navigation).
+  const enquire = () =>
+    window.dispatchEvent(new CustomEvent('open-contact-modal', { detail: { service: item?.title } }))
+
+  // GSAP open/close for the toggles: animates to the content's real height
+  // (height: 'auto') so it's smooth whatever the length, unlike a max-height hack.
+  const bodyRefs = useRef({})
+  useEffect(() => {
+    let cancelled = false
+    const run = async () => {
+      const gsap = window.gsap || (await import('gsap')).default
+      if (cancelled) return
+      Object.entries(bodyRefs.current).forEach(([k, el]) => {
+        if (!el) return
+        const open = !!expanded[k]
+        gsap.to(el, {
+          height: open ? 'auto' : 0,
+          opacity: open ? 1 : 0,
+          duration: open ? 0.6 : 0.45,
+          ease: open ? 'power3.out' : 'power3.inOut',
+          overwrite: true,
+        })
+      })
+    }
+    run()
+    return () => { cancelled = true }
+  }, [expanded])
 
   const toggleCard = (key) =>
   setExpanded((prev) => (prev[key] ? {} : { [key]: true }))
@@ -218,6 +265,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
 
         {/* Scrollable content */}
         <div
+          ref={contentRef}
           className="service-detail-content"
           style={{
             flex: 1,
@@ -229,8 +277,54 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
               'opacity 0.5s ease 0.12s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.12s',
           }}
         >
+          <div ref={innerRef} className="sd-inner">
           {/* Title now shown on the left, above the prose (see ServicesSection).
              Kept on the dialog's aria-label above for accessibility. */}
+
+          {/* Service label + numbered title - mirrors the "Next" block at the bottom */}
+          {title && (
+            <div style={{ marginBottom: '1.75rem' }}>
+              <span
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: 'var(--text-preheader-size)',
+                  fontWeight: 'var(--text-preheader-weight)',
+                  letterSpacing: '0.03em',
+                  color: 'var(--color-red)',
+                  marginBottom: '0.25rem',
+                }}
+              >
+                Service
+              </span>
+              <span
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: '1.1rem',
+                  color: 'var(--color-cream)',
+                }}
+              >
+                {number ? `${number}. ` : ''}{title}
+              </span>
+            </div>
+          )}
+
+          {/* Preheader for the toggle list */}
+          <span
+            style={{
+              display: 'block',
+              fontFamily: 'var(--font-body), var(--font-fallback)',
+              fontSize: 'var(--text-preheader-size)',
+              fontWeight: 'var(--text-preheader-weight)',
+              lineHeight: '1.4',
+              letterSpacing: '0.03em',
+              color: 'var(--color-red)',
+              marginBottom: '6px',
+            }}
+          >
+            What we do
+          </span>
 
           {cards.map((card, i) => {
             const key = card._key || i
@@ -244,26 +338,36 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.5rem',
+                    gap: '0.65rem',
                     cursor: 'pointer',
-                    padding: '0.35rem 0',
+                    padding: '0.25rem 0',
                     transition: 'opacity 0.2s ease',
                   }}
                 >
+                  {/* Thin plus that morphs into a minus when open (vertical stroke rotates flat) */}
                   <span
+                    aria-hidden="true"
                     style={{
-                      width: '0.625rem',
-                      height: '0.625rem',
+                      width: '0.75rem',
+                      height: '0.75rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                       flexShrink: 0,
+                      color: isExpanded ? 'var(--color-red)' : 'var(--color-cream)',
+                      transition: 'color 0.3s ease',
                     }}
                   >
-                    <svg width="10" height="10" viewBox="0 0 10 10" style={{ fill: 'var(--color-cream)' }}>
-                      <polygon points="0,0 8,5 0,10" />
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round">
+                      <line x1="1" y1="6" x2="11" y2="6" />
+                      <line
+                        x1="6" y1="1" x2="6" y2="11"
+                        style={{
+                          transformOrigin: '6px 6px',
+                          transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }}
+                      />
                     </svg>
                   </span>
                   {card.title && (
@@ -271,6 +375,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
                       style={{
                         color: isExpanded ? 'var(--color-red)' : 'var(--color-cream)',
                         fontWeight: 400,
+                        fontFamily: 'var(--font-body), var(--font-fallback)',
+                        fontSize: '1.1rem', // matches the service titles ("01. ...", "Next")
                         lineHeight: 1.55,
                         margin: '0px',
                         borderBottom: isExpanded ? '0px solid' : '0.5px solid transparent',
@@ -281,14 +387,17 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
                   )}
                 </div>
 
-                {/* Collapsible supporting text */}
+                {/* Collapsible supporting text - height/opacity animated by GSAP (see effect above) */}
                 <div
+                  ref={(el) => {
+                    if (el) bodyRefs.current[key] = el
+                    else delete bodyRefs.current[key]
+                  }}
                   style={{
-                    maxHeight: isExpanded ? '1500px' : '0px',
-                    opacity: isExpanded ? 1 : 0,
+                    height: 0,
+                    opacity: 0,
                     paddingRight: '15%',
                     overflow: 'hidden',
-                    transition: 'max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease',
                   }}
                 >
                   <div style={{ padding: '0.5rem 0 0.75rem 1.125rem' }}>
@@ -298,10 +407,79 @@ export default function ServiceDetailPanel({ isOpen, onClose, item }) {
               </div>
             )
           })}
+
+          {/* Enquire - sits straight under the list */}
+          <button
+            type="button"
+            className="sd-enquire"
+            onClick={enquire}
+            style={{
+              marginTop: '2rem',
+              backgroundColor: 'var(--color-red)',
+              color: 'var(--color-cream)',
+              border: 'none',
+              borderRadius: '2px',
+              padding: '0.75rem 1.6rem',
+              fontFamily: 'var(--font-body), var(--font-fallback)',
+              fontSize: '1rem',
+              fontWeight: 400,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
+            }}
+          >
+            Enquire
+          </button>
+          </div>
         </div>
+
+        {/* Next service - keeps people moving through the services without closing the panel */}
+        {nextTitle && (
+          <div ref={nextRef} className="sd-next-wrap" style={{ padding: '0 2rem 2rem' }}>
+            <button type="button" className="sd-next" onClick={onNext}>
+              <span className="sd-next-label">Next</span>
+              <span>
+                {nextNumber}. {nextTitle}{' '}
+                <span aria-hidden="true" className="sd-next-arrow">&rarr;</span>
+              </span>
+            </button>
+          </div>
+        )}
       </div>
 
       <style jsx>{`
+        .sd-enquire:hover {
+          background-color: #A66850 !important;
+        }
+        .sd-next {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.25rem;
+          width: 100%;
+          background: none;
+          border: none;
+          border-top: 1px solid rgba(245, 245, 240, 0.25);
+          padding: 1.25rem 0 0;
+          cursor: pointer;
+          text-align: left;
+          font-family: var(--font-body), var(--font-fallback);
+          font-size: 1.1rem;
+          color: var(--color-cream);
+        }
+        .sd-next-label {
+          font-size: var(--text-preheader-size);
+          font-weight: var(--text-preheader-weight);
+          letter-spacing: 0.03em;
+          color: var(--color-red);
+        }
+        .sd-next-arrow {
+          display: inline-block;
+          transition: transform 0.3s ease;
+        }
+        .sd-next:hover .sd-next-arrow {
+          transform: translateX(4px);
+        }
         .service-detail-content::-webkit-scrollbar {
           width: 0;
           background: transparent;

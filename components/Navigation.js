@@ -19,6 +19,7 @@ export default function Navigation({ globalSettings, aboutData }) {
   const [hasLoaded, setHasLoaded] = useState(false)
   const [currentSection, setCurrentSection] = useState('hero')
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [contactService, setContactService] = useState(null) // pre-fills the form when opened from a service
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -27,7 +28,10 @@ export default function Navigation({ globalSettings, aboutData }) {
 
   // Let other components (e.g. the footer) open the contact modal.
   useEffect(() => {
-    const open = () => setIsContactModalOpen(true)
+    const open = (e) => {
+      setContactService(e?.detail?.service || null)
+      setIsContactModalOpen(true)
+    }
     window.addEventListener('open-contact-modal', open)
     return () => window.removeEventListener('open-contact-modal', open)
   }, [])
@@ -572,7 +576,8 @@ export default function Navigation({ globalSettings, aboutData }) {
 
       <ContactModal 
         isOpen={isContactModalOpen} 
-        onClose={() => setIsContactModalOpen(false)} 
+        onClose={() => { setIsContactModalOpen(false); setContactService(null) }} 
+        service={contactService}
       />
 
       <AboutModal

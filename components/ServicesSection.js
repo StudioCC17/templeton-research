@@ -115,6 +115,31 @@ export default function ServicesSection({ servicesData }) {
   // Leave activeIndex set so the left prose stays in place while it fades back out.
   const closeDetail = () => setIsDetailOpen(false)
 
+  // "Next service" link inside the detail panel (wraps round to the first).
+  const services = servicesData?.services || []
+  const nextIndex = activeIndex === null || services.length < 2 ? null : (activeIndex + 1) % services.length
+  const nextService = nextIndex === null ? null : services[nextIndex]
+  // Smooth hand-off between services: fade the current left prose and panel
+  // content out, swap, then each side animates back in (left via the SplitText
+  // letter fade, right via the panel's own fade-up on item change).
+  const switchingRef = useRef(false)
+  const openNext = async () => {
+    if (!nextService || switchingRef.current) return
+    switchingRef.current = true
+    const done = () => {
+      openDetail(nextService, nextIndex)
+      switchingRef.current = false
+    }
+    try {
+      const gsap = window.gsap || (await import('gsap')).default
+      const targets = [proseRef.current, document.querySelector('.sd-inner'), document.querySelector('.sd-next-wrap')].filter(Boolean)
+      if (!targets.length) return done()
+      gsap.to(targets, { opacity: 0, y: -8, duration: 0.3, ease: 'power2.in', onComplete: done })
+    } catch (e) {
+      done()
+    }
+  }
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -289,30 +314,6 @@ export default function ServicesSection({ servicesData }) {
                       <div key={activeIndex} ref={proseRef} style={{ opacity: 0 }}>
 
                         
-                        {prose.length > 0 && activeService?.title && (
-
-                          
-                          <span
-                            style={{
-                              display: 'block',
-                              fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: '1.3rem',
-                              fontWeight: '400',
-                              lineHeight: '1.4',
-                              letterSpacing: '0.05em',
-                              textTransform: 'uppercase',
-                              color: 'var(--color-red)',
-                              marginBottom: '1rem',
-                              borderBottom: '1px solid',
-                              textTransform: 'none',
-                              marginBottom: '13px',
-                              letterSpacing: '0.03em',
-                              display: 'inline-block'
-                            }}
-                          >
-                            {activeService.title}
-                          </span>
-                        )}
                         {prose.length > 0 ? (
                           <PortableText value={prose} components={PROSE_COMPONENTS} />
                         ) : (
@@ -368,19 +369,18 @@ export default function ServicesSection({ servicesData }) {
                   <div
                     key={service._key || index}
                     className="service-item"
-                    style={{ borderTop: index === 0 ? 'none' : '1px solid rgb(224 224 224)' }}
+
                   >
                     <div
                       onClick={() => openDetail(service, index)}
                       className="service-header"
                       style={{
-                        padding: '1.5rem 0',
                         cursor: 'pointer',
                         opacity: isDetailOpen && activeIndex !== index ? 0.3 : 1,
                         transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                         <span
                           className="service-number"
                           style={{
@@ -391,6 +391,8 @@ export default function ServicesSection({ servicesData }) {
                             color: 'var(--color-red)',
                             margin: 0,
                             flexShrink: 0,
+                            width: '1.75em', // fixed column so every title/summary lines up
+                            fontVariantNumeric: 'tabular-nums',
                           }}
                         >
                           {number}.
@@ -417,7 +419,7 @@ export default function ServicesSection({ servicesData }) {
                               marginTop: '0.25rem',
                               paddingRight: '25%',
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: '1.1rem',
+                              fontSize: '0.956rem',
                               fontWeight: 400,
                               lineHeight: 1.4,
                               color: '#24514882',
@@ -426,6 +428,12 @@ export default function ServicesSection({ servicesData }) {
                             {service.summary || SERVICE_SUMMARIES[service.title] || SERVICE_FILL}
                           </p>
                         </div>
+                        <span className="service-arrow" aria-hidden="true">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="M13 6l6 6-6 6" />
+                          </svg>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -442,6 +450,10 @@ export default function ServicesSection({ servicesData }) {
         isOpen={isDetailOpen}
         onClose={closeDetail}
         item={detailItem}
+        number={activeIndex === null ? null : String(activeIndex + 1).padStart(2, '0')}
+        nextNumber={nextIndex === null ? null : String(nextIndex + 1).padStart(2, '0')}
+        nextTitle={nextService?.title}
+        onNext={openNext}
       />
 
       <style jsx global>{`
@@ -464,6 +476,12 @@ export default function ServicesSection({ servicesData }) {
           width: 1px;
           background-color: rgb(224, 224, 224);
           transform: translateX(-50%);
+          transition: background-color 0.4s ease;
+        }
+
+        /* On the green panel, match the rule above the "Next" link */
+        .services-has-expanded .services-split::after {
+          background-color: rgba(245, 245, 240, 0.25);
         }
 
         .services-left-crossfade {
@@ -506,8 +524,44 @@ export default function ServicesSection({ servicesData }) {
           pointer-events: none;
         }
 
-        .service-item:last-child {
-          border-bottom: 1px solid rgb(224 224 224);
+        /* ── Service rows: plain, with subtle dividers between them ── */
+        .service-item + .service-item {
+          border-top: 1px solid rgba(36, 81, 72, 0.1);
+        }
+
+        .service-header {
+          padding: 1.5rem 0;
+        }
+
+        /* Plain arrow (no circle) - just slides across on hover */
+        .service-arrow {
+          flex-shrink: 0;
+          align-self: center;
+          display: flex;
+          color: var(--color-red);
+        }
+
+        .service-arrow svg {
+          transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .service-header:hover .service-arrow svg {
+          transform: translateX(4px);
+        }
+
+        .service-header .service-summary {
+          transition: color 0.3s ease;
+        }
+
+        .service-header:hover .service-summary {
+          color: var(--color-green) !important;
+        }
+
+        /* Desktop: calm the expanded prose down to the same size as the section headline. */
+        @media (min-width: 1025px) {
+          .services-left-crossfade > div:last-child .hero-text {
+            font-size: 2.5rem !important;
+          }
         }
 
         :global(.services-split-char) {
@@ -598,6 +652,8 @@ export default function ServicesSection({ servicesData }) {
           .service-header h3,
           .service-header .service-number,
           .service-header .service-summary { font-size: 1.15rem !important; }
+
+          .service-header { padding: 1.1rem 0; }
         }
 
         /* ── Wide ── */
