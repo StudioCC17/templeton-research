@@ -164,7 +164,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
           <div className={styles.ctaRow}>
             <Link
               href={cta.link}
-              className={`${styles.ctaLink} u-link`}
+              className={styles.ctaLink}
               onClick={(e) => {
                 // Open the all-insights overlay (InsightsIndexOverlay) over the homepage
                 e.preventDefault()
@@ -173,7 +173,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
                 window.history.pushState(null, '', `${window.location.pathname}?${params.toString()}`)
               }}
             >
-              {cta.text}
+              View all
               <span aria-hidden="true" className={styles.ctaArrow}>
                 <Arrow style={{ marginLeft: 0 }} />
               </span>

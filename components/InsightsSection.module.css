@@ -276,16 +276,24 @@ display: inline-block;
 }
 
 .ctaLink {
-  /* Same style as "Have a question? Get in touch" in Services */
+  /* Same as the Enquire button in the service panel */
+  display: inline-block;
+  background-color: var(--color-red);
+  color: var(--color-cream);
+  border: none;
+  border-radius: 2px;
+  padding: 0.35rem 1rem 0.4em;
   font-family: var(--font-body), var(--font-fallback);
-  font-size: var(--step-1);
-  font-weight: 600;
+  font-size: var(--step-0);
+  font-weight: 400;
   line-height: 1.4;
-  color: var(--color-red);
   text-decoration: none;
-  display: inline-flex;
-  align-items: baseline; /* arrow sits on the text baseline */
-  gap: 0.3em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.ctaLink:hover {
+  background-color: #A66850;
 }
 
 .ctaArrow {
