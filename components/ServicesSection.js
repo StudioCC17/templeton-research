@@ -365,7 +365,7 @@ export default function ServicesSection({ servicesData }) {
                     >
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                         <div style={{ flex: 1 }}>
-                          {/* Small "01 / 03" preheader above each title */}
+                          {/* Small "01" preheader above each title */}
                           <span
                             className="service-count"
                             style={{
@@ -379,7 +379,7 @@ export default function ServicesSection({ servicesData }) {
                               fontVariantNumeric: 'tabular-nums',
                             }}
                           >
-                            {String(index + 1).padStart(2, '0')} / {String(servicesData.services.length).padStart(2, '0')}
+                            {String(index + 1).padStart(2, '0')}
                           </span>
                           <h3
                             className="service-title"
@@ -395,7 +395,6 @@ export default function ServicesSection({ servicesData }) {
                             }}
                           >
                             {service.title}
-                            <Arrow className="service-arrow" style={{ verticalAlign: 'calc(0.23em + 2px)' }} />
                           </h3>
                           <p
                             className="service-summary"
