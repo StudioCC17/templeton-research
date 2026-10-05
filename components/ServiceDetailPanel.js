@@ -474,7 +474,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           width: 100%;
           background: none;
           border: none;
-          border-top: 1px solid rgba(245, 245, 240, 0.25);
+          border-top: 1px solid var(--color-border-on-dark);
           padding: 1.25rem 0 0;
           cursor: pointer;
           text-align: left;

@@ -616,7 +616,7 @@ export default function ServicesSection({ servicesData }) {
 
         /* On the green panel, match the rule above the "Next" link */
         .services-has-expanded .services-split::after {
-          background-color: rgba(245, 245, 240, 0.25);
+          background-color: var(--color-border-on-dark);
           transition: background-color 0.5s cubic-bezier(0.65, 0, 0.35, 1);
         }
 

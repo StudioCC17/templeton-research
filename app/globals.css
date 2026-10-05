@@ -31,7 +31,8 @@
   --color-cream-dark: #efefe9;                  /* panels (e.g. Careers), image placeholders */
   --color-sage: #e6e6dc;                        /* pale stone with a hint of the brand green - Insights background */
   /* Lines */
-  --color-border: #c4d2cf;                      /* dividers */
+  --color-border: #d3dcd9;                      /* dividers on cream (paler than the old #c4d2cf) */
+  --color-border-on-dark: rgba(245, 245, 240, 0.18); /* dividers on the dark green */
   --color-line-field: var(--color-border);       /* form field underlines at rest (red draws in on focus) */
   /* Overlay */
   --color-overlay: #245148a3;                   /* dim behind modals */
@@ -2234,7 +2235,7 @@ display: none
 nav.navigation.navigation--scrolled.navigation--inverse {
   /* beats the per-section "...-section-scroll { background: cream !important }" rules */
   background: var(--color-green) !important;
-  border-bottom-color: rgba(245, 245, 240, 0.25); /* same as the open panel's centre line */
+  border-bottom-color: var(--color-border-on-dark); /* same as the open panel's centre line */
 }
 .navigation--scrolled .nav-logo-secondary svg {
   transition: color 0.4s ease;

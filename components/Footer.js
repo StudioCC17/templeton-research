@@ -78,7 +78,7 @@ function FooterInner({ footerData }) {
         style={{
           backgroundColor: 'var(--color-green)',
           padding: '0rem',
-          borderTop: '1px solid rgba(245, 245, 240, 0.2)'
+          borderTop: '1px solid var(--color-border-on-dark)'
         }}
       >
         <div 
@@ -103,7 +103,7 @@ function FooterInner({ footerData }) {
               top: '0',
               bottom: '0',
               width: '1px',
-              backgroundColor: 'rgba(245, 245, 240, 0.2)',
+              backgroundColor: 'var(--color-border-on-dark)',
               transform: 'translateX(-50%)',
               zIndex: 1
             }} 

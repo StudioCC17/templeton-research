@@ -83,7 +83,7 @@ export default function OfficesStrip({ offices = [] }) {
         .offices-strip {
           background-color: var(--color-green);
           /* sits right under the green footer, so a faint line separates them */
-          border-top: 1px solid rgba(245, 245, 240, 0.25);
+          border-top: 1px solid var(--color-border-on-dark);
           padding: 4.5rem 1.5% 4.5rem;
         }
         .offices-list {
