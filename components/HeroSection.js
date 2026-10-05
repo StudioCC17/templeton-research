@@ -16,7 +16,7 @@ export default function HeroSection({
 }) {
   const [mounted, setMounted] = useState(false)
   const videoRef = useRef(null)
-  const mediaRef = useRef(null) // wraps poster + video; this is what the parallax moves
+  const mediaRef = useRef(null) // wraps poster + video
   const sectionRef = useRef(null)
   const heroTextRef = useRef(null)
   
@@ -121,41 +121,6 @@ export default function HeroSection({
     }
   }, [mediaType, mounted, selectedVideo])
 
-  // Parallax with GSAP ScrollTrigger: the media drifts as the section scrolls
-  // through the viewport. scrub smooths it so it glides rather than jitters.
-  useEffect(() => {
-    const media = mediaRef.current
-    const section = sectionRef.current
-    if (!media || !section) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    let ctx
-    let cancelled = false
-    ;(async () => {
-      const gsap = (await import('gsap')).default
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      if (cancelled) return
-      gsap.registerPlugin(ScrollTrigger)
-      ctx = gsap.context(() => {
-        gsap.fromTo(
-          media,
-          { y: -50 },
-          {
-            y: 40,
-            ease: 'none',
-            force3D: true,
-            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
-          }
-        )
-      })
-    })()
-
-    return () => {
-      cancelled = true
-      if (ctx) ctx.revert()
-    }
-  }, [selectedVideo])
-
   const hasMedia = (mediaType === 'image' && heroData?.images?.length > 0) || 
                    (mediaType === 'video' && heroData?.videos?.length > 0) // render the (cream) space straight away; the video is picked on mount
 
@@ -238,16 +203,12 @@ export default function HeroSection({
           
           {mediaType === 'video' && selectedVideo && (
             <>
-              {/* Poster + video share one wrapper so the parallax moves both together */}
+              {/* Poster + video share one wrapper */}
               <div
                 ref={mediaRef}
                 style={{
                   position: 'absolute',
-                  top: '-10%',
-                  left: 0,
-                  width: '100%',
-                  height: '140%',
-                  willChange: 'transform'
+                  inset: 0
                 }}
               >
                 {/* Poster shows instantly; the video fades in over it once its first frame is ready */}
