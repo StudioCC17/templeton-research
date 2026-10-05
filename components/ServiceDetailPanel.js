@@ -330,6 +330,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
           {cards.map((card, i) => {
             const key = card._key || i
             const isExpanded = !!expanded[key]
+            // While one toggle is open, the others fade back (hover brings them up)
+            const isDimmed = Object.keys(expanded).length > 0 && !isExpanded
             return (
               <div key={key}>
                 {/* Sub-header toggle */}
@@ -342,7 +344,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
                     gap: '0.65rem',
                     cursor: 'pointer',
                     padding: '0.25rem 0',
-                    transition: 'opacity 0.2s ease',
+                    opacity: isDimmed ? 0.4 : 1,
+                    transition: 'opacity 0.4s ease',
                   }}
                 >
                   {/* Thin plus that morphs into a minus when open (vertical stroke rotates flat) */}
@@ -450,6 +453,9 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
       </div>
 
       <style jsx>{`
+        .sd-toggle-header:hover {
+          opacity: 1 !important;
+        }
         .sd-enquire:hover {
           background-color: #A66850 !important;
         }
