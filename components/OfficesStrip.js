@@ -81,7 +81,9 @@ export default function OfficesStrip({ offices = [] }) {
 
       <style jsx>{`
         .offices-strip {
-          background-color: var(--color-sage); /* same pale green-stone as Insights */
+          background-color: var(--color-green);
+          /* sits right above the green footer, so a faint line separates them */
+          border-bottom: 1px solid rgba(245, 245, 240, 0.25);
           padding: 4.5rem 1.5% 4.5rem;
         }
         .offices-list {
@@ -110,13 +112,13 @@ export default function OfficesStrip({ offices = [] }) {
           font-family: var(--font-heading), serif;
           font-size: var(--step-2);
           line-height: 1.2;
-          color: var(--color-green);
+          color: var(--color-cream);
         }
         .office-time {
           font-family: var(--font-body), var(--font-fallback);
           font-size: var(--step--1);
           line-height: 1.4;
-          color: var(--color-text-secondary);
+          color: rgba(245, 245, 240, 0.6); /* faded cream on the green */
           font-variant-numeric: tabular-nums;
         }
         .office-clock-wrap :global(.office-clock) {
