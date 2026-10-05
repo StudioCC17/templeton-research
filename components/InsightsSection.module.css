@@ -274,36 +274,6 @@ display: inline-block;
   opacity: 1;
 }
 
-.ctaLink {
-  /* Same as the Enquire button in the service panel */
-  display: inline-block;
-  background-color: var(--color-red);
-  color: var(--color-cream);
-  border: none;
-  border-radius: 2px;
-  padding: 0.35rem 1rem 0.4em;
-  font-family: var(--font-body), var(--font-fallback);
-  font-size: var(--step-0);
-  font-weight: 600;
-  line-height: 1.4;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.ctaLink:hover {
-  background-color: #A66850;
-}
-
-.ctaArrow {
-  display: inline-block;
-  transition: transform 0.3s ease;
-}
-
-.ctaLink:hover .ctaArrow {
-  transform: translate(2px, -2px);
-}
-
 /* ============================================================
  * RESPONSIVE — TABLET (2 cols)
  * ============================================================ */

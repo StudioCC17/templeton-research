@@ -416,22 +416,9 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           {/* Enquire - sits straight under the list */}
           <button
             type="button"
-            className="sd-enquire"
+            className="btn-primary" /* shared button style (globals.css) */
             onClick={enquire}
-            style={{
-              marginTop: '2rem',
-              backgroundColor: 'var(--color-red)',
-              color: 'var(--color-cream)',
-              border: 'none',
-              borderRadius: '2px',
-              padding: '0.35rem 1rem 0.4em',
-              fontFamily: 'var(--font-body), var(--font-fallback)',
-              fontSize: 'var(--step-0)',
-              fontWeight: 600,
-              textTransform: 'none',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s',
-            }}
+            style={{ marginTop: '2rem' }}
           >
             Enquire
             <Arrow />
@@ -459,9 +446,6 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
       <style jsx>{`
         .sd-toggle-header:hover {
           opacity: 1 !important;
-        }
-        .sd-enquire:hover {
-          background-color: #A66850 !important;
         }
         .sd-next {
           display: flex;

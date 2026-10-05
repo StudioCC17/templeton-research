@@ -540,8 +540,13 @@ p {
   transform: scaleX(1);
 }
 
-/* Primary button - matches the Enquire / View all insights buttons */
+/* Primary button - Enquire, View all insights, Send message, About > Enquire.
+   Hover: darker red sweeps in from the left, the arrow loops out and back in,
+   and the button lifts 1px. Same soft expo ease as the rest of the site. */
 .btn-primary {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-block;
   background-color: var(--color-red);
   color: var(--color-cream);
@@ -554,10 +559,40 @@ p {
   line-height: 1.4;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.btn-primary:hover {
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background-color: #A66850;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-primary:hover::before,
+.btn-primary:focus-visible::before {
+  transform: scaleX(1);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  transform: translateY(-1px);
+}
+.btn-primary:hover .arrow,
+.btn-primary:focus-visible .arrow {
+  animation: btnArrowLoop 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes btnArrowLoop {
+  0%   { transform: translate(0, 0); opacity: 1; }
+  40%  { transform: translate(0.5em, -0.5em); opacity: 0; }
+  41%  { transform: translate(-0.5em, 0.5em); opacity: 0; }
+  100% { transform: translate(0, 0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary,
+  .btn-primary::before { transition: none; }
+  .btn-primary:hover .arrow { animation: none; }
 }
 
 /* Navigation loaded state - fades in */
