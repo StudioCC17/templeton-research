@@ -64,8 +64,8 @@ export default function Navigation({ globalSettings, aboutData }) {
   const showSticky = showSecondaryNav || headerInverse
 
   // Each time the sticky header slides in (first scroll, and again after going
-  // back to the top), its micro logo fades in pair by pair from the outside
-  // edges inwards, meeting in the centre.
+  // back to the top), its micro logo fades in pair by pair from the centre
+  // outwards in both directions.
   const stickyLogoRef = useRef(null)
   useEffect(() => {
     const svg = stickyLogoRef.current
@@ -79,8 +79,8 @@ export default function Navigation({ globalSettings, aboutData }) {
       gsap.set(g, { autoAlpha: 0 })
       return
     }
-    // Marks, outermost first: left 3 + right 6, then 2 + 5, then the centre pair 1 + 4
-    const pairs = [[g[2], g[5]], [g[1], g[4]], [g[0], g[3]]]
+    // Marks, centre pair first (1 + 4), then 2 + 5, then the outermost 3 + 6
+    const pairs = [[g[0], g[3]], [g[1], g[4]], [g[2], g[5]]]
     gsap.set(g, { autoAlpha: 0 })
     pairs.forEach((pair, i) => {
       gsap.to(pair, { autoAlpha: 1, duration: 1, ease: 'sine.inOut', delay: 0.2 + i * 0.12 }) // long, overlapping, gentle fades
