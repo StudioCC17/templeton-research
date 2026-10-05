@@ -399,7 +399,7 @@ export default function TeamSection({ teamData, careersData }) {
               
               <div 
                 className="careers-rich-text"
-                style={{ marginTop: '0.5rem' }}
+                style={{ marginTop: 0 }}
               >
                 <PortableText 
                   value={careers.content} 
@@ -408,7 +408,7 @@ export default function TeamSection({ teamData, careersData }) {
               </div>
 
               {/* Careers buttons - each opens ApplyModal in its own version */}
-              <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
+              <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <button type="button" className="btn-primary" onClick={() => { setApplyType('cv'); setIsApplyOpen(true) }}>
                   Submit your CV
                   <Arrow />
@@ -649,7 +649,7 @@ export default function TeamSection({ teamData, careersData }) {
           line-height: 1.2;
           color: var(--color-green);
           display: block !important;
-          margin-bottom: 30px;
+          margin-bottom: 0.75rem; /* tighter to the copy below */
           width: 70%;
         }
 
