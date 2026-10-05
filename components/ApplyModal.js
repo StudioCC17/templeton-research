@@ -302,7 +302,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 <span style={labelStyle}>CV <span style={{ opacity: 0.6, fontWeight: 400 }}>(PDF or Word, max 4MB)</span></span>
                 <label
                   htmlFor="apply-cv"
-                  className="u-link"
+                  className="u-link file-pick"
                   style={{
                     display: 'inline-block',
                     marginTop: '0.5rem',
@@ -310,7 +310,6 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                     fontSize: 'var(--step-0)',
                     fontWeight: 400,
                     color: 'var(--color-red)',
-                    opacity: 0.6, // faded, like the "(PDF or Word…)" hint
                     cursor: 'pointer',
                   }}
                 >

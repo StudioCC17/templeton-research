@@ -591,6 +591,22 @@ p {
   .btn-primary:hover .arrow { animation: none; }
 }
 
+/* "Choose file" on the careers form: faded red, full red on hover,
+   arrow nudges up and right like the other arrow links */
+.file-pick {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+.file-pick .arrow {
+  transition: transform 0.3s ease;
+}
+.file-pick:hover {
+  opacity: 1;
+}
+.file-pick:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
 /* No underline on links that carry an arrow - the arrow is their hover cue */
 .u-link:has(.arrow)::after,
 .nav-contact::after,
