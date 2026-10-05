@@ -137,6 +137,11 @@ function FooterInner({ footerData }) {
               </h2>
             </div>
 
+            {/* Bottom row - lines up with the legal links on the right */}
+            <div className="footer-bottom-left">
+              <span>© {new Date().getFullYear()} Templeton Research</span>
+            </div>
+
             {/* Logo positioned bottom right within left section */}
             <div 
               className="footer-micro-logo"
@@ -267,12 +272,35 @@ function FooterInner({ footerData }) {
                   {label}
                 </a>
               ))}
+              {/* Back to top - pushed to the far right of the row */}
+              <a
+                href="#top"
+                className="footer-col-link"
+                style={{ marginLeft: 'auto' }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              >
+                Back to top<Arrow direction="up" />
+              </a>
             </div>
           </div>
         </div>
 
         {/* Responsive Styles */}
         <style jsx>{`
+          .footer-bottom-left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-top: 3rem;
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--step--1);
+            font-weight: 400;
+            line-height: 1.425;
+            color: var(--color-cream);
+          }
           .footer-cols {
             display: grid;
             grid-template-columns: 1fr 1fr;

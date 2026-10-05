@@ -10,6 +10,7 @@ const PATHS = {
   // Horizontal arrows have a longer tail (3 units past the usual box)
   right: ['M1.5 12h18', 'M13 5.5l6.5 6.5-6.5 6.5'],
   left: ['M22.5 12h-18', 'M11 5.5L4.5 12l6.5 6.5'],
+  up: ['M12 22.5v-18', 'M5.5 11L12 4.5l6.5 6.5'],
 }
 
 // Two looks:
@@ -23,11 +24,13 @@ const LOOK = {
 
 export default function Arrow({ direction = 'up-right', className = '', style = {} }) {
   const isLeft = direction === 'left'
-  const look = direction === 'up-right' ? LOOK.small : LOOK.full
+  const look = direction === 'up-right' ? LOOK.small : LOOK.full // 'up' uses the full look too
   const horizontal = direction === 'right' || direction === 'left'
+  const vertical = direction === 'up'
   // Wider box for the longer tail; same height, so it still sits on the line
-  const viewBox = direction === 'right' ? '1 4 19 16' : direction === 'left' ? '4 4 19 16' : '4 4 16 16'
+  const viewBox = direction === 'right' ? '1 4 19 16' : direction === 'left' ? '4 4 19 16' : vertical ? '4 4 16 19' : '4 4 16 16'
   const width = horizontal ? `calc(${look.size} * 19 / 16)` : look.size
+  const height = vertical ? `calc(${look.size} * 19 / 16)` : look.size
   return (
     <svg
       className={`arrow ${className}`.trim()}
@@ -36,14 +39,14 @@ export default function Arrow({ direction = 'up-right', className = '', style = 
       stroke="currentColor"
       strokeWidth={look.stroke} // ~0.06em: matches the stroke of regular-weight Acumin
       // Horizontal arrows: crisp, sharp ends and point; the small diagonal stays rounded
-      strokeLinecap={horizontal ? 'butt' : 'round'}
-      strokeLinejoin={horizontal ? 'miter' : 'round'}
+      strokeLinecap={horizontal || vertical ? 'butt' : 'round'}
+      strokeLinejoin={horizontal || vertical ? 'miter' : 'round'}
       aria-hidden="true"
       focusable="false"
       style={{
         display: 'inline-block',
         width,
-        height: look.size,
+        height,
         verticalAlign: look.align,
         flexShrink: 0,
         overflow: 'visible',
