@@ -24,7 +24,7 @@ const bodyComponents = {
         style={{
           color: 'var(--color-cream)',
           fontFamily: 'var(--font-heading), var(--font-fallback)',
-          fontSize: 'var(--step-2)',
+          fontSize: 'var(--step-1)',
           fontWeight: 400,
           lineHeight: 1.55,
           marginBottom: '1.1rem',
