@@ -72,8 +72,8 @@ export default function Navigation({ globalSettings, aboutData }) {
     { label: 'About us', href: '#approach', section: 'approach' },
     { label: 'Services', href: '#services', section: 'services' },
     { label: 'Team', href: '#team', section: 'team' },
-    { label: 'Insights', href: '#insights', section: 'insights' },
-    { label: 'Careers', href: '#careers', section: 'careers' }
+    { label: 'Careers', href: '#careers', section: 'careers' },
+    { label: 'Insights', href: '#insights', section: 'insights' }
   ]
 
   // Close mobile menu when clicking a nav item
