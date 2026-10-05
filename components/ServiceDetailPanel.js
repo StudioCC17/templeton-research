@@ -419,13 +419,13 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
               color: 'var(--color-cream)',
               border: 'none',
               borderRadius: '2px',
-              padding: '0.75rem 1.6rem',
+              padding: '0.35rem 1rem 0.4em',
               fontFamily: 'var(--font-body), var(--font-fallback)',
               fontSize: 'var(--step-0)',
               fontWeight: 400,
-              textTransform: 'uppercase',
+              textTransform: 'lowercase',
               cursor: 'pointer',
-              transition: 'background-color 0.3s ease',
+              transition: 'background-color 0.3s',
             }}
           >
             Enquire
