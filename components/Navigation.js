@@ -63,21 +63,27 @@ export default function Navigation({ globalSettings, aboutData }) {
   const headerInverse = servicesOpen && overServices
   const showSticky = showSecondaryNav || headerInverse
 
-  // The first time the sticky header slides in, its micro logo fades in pair by
-  // pair from the outside edges inwards, meeting in the centre. Plays once per visit.
+  // Each time the sticky header slides in (first scroll, and again after going
+  // back to the top), its micro logo fades in pair by pair from the outside
+  // edges inwards, meeting in the centre.
   const stickyLogoRef = useRef(null)
-  const stickyLogoPlayed = useRef(false)
   useEffect(() => {
-    if (!showSticky || stickyLogoPlayed.current || !stickyLogoRef.current) return
-    stickyLogoPlayed.current = true
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const g = stickyLogoRef.current.querySelectorAll('g')
+    const svg = stickyLogoRef.current
+    if (!svg) return
+    const g = svg.querySelectorAll('g')
     if (g.length < 6) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    gsap.killTweensOf(g)
+    if (!showSticky) {
+      // header has gone away - reset so the sequence plays again next time
+      gsap.set(g, { autoAlpha: 0 })
+      return
+    }
     // Marks, outermost first: left 3 + right 6, then 2 + 5, then the centre pair 1 + 4
     const pairs = [[g[2], g[5]], [g[1], g[4]], [g[0], g[3]]]
     gsap.set(g, { autoAlpha: 0 })
     pairs.forEach((pair, i) => {
-      gsap.to(pair, { autoAlpha: 1, duration: 0.8, ease: 'power2.out', delay: 0.25 + i * 0.18, clearProps: 'visibility' })
+      gsap.to(pair, { autoAlpha: 1, duration: 0.6, ease: 'power2.out', delay: 0.2 + i * 0.12 })
     })
   }, [showSticky])
 
