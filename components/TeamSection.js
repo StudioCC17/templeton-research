@@ -655,7 +655,7 @@ export default function TeamSection({ teamData, careersData }) {
             display: flex;
             flex-direction: column;
             align-self: stretch;
-            padding-top: 2.5vw !important; /* a touch less than 3.5vw to allow for the heading's built-in line space */
+            padding-top: 2.9vw !important; /* a touch less than 3.5vw to allow for the heading's built-in line space */
           }
           .careers-buttons {
             margin-top: auto;
