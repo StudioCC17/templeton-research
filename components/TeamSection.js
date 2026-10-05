@@ -181,7 +181,6 @@ export default function TeamSection({ teamData, careersData }) {
        
           <h2 
             ref={headlineRef}
-            data-reveal="rise"
             className="hero-text"
             style={{ color: 'var(--color-green)', opacity: 0 }}
           >
@@ -363,7 +362,6 @@ export default function TeamSection({ teamData, careersData }) {
 
             <div 
               className="careers-content"
-              data-reveal="stagger"
               style={{
                 // Text column = the 40% beside the image, with even gutters:
                 // ~3.5vw from the image, ~4vw from the screen edge, and room top/bottom

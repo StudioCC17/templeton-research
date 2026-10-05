@@ -281,7 +281,7 @@ export default function ServicesSection({ servicesData }) {
                   right: 0,
                   pointerEvents: isDetailOpen ? 'none' : 'auto',
                 }}>
-                  <h3 ref={headlineRef} data-reveal="rise" className="hero-text" style={{ color: 'var(--color-green)', lineHeight: '1.265', opacity: 0 }}>
+                  <h3 ref={headlineRef} className="hero-text" style={{ color: 'var(--color-green)', lineHeight: '1.265', opacity: 0 }}>
                     {servicesData.headline || 'Tailored investigative and research services that provide clarity and confidence for high-stakes decisions.'}
                   </h3>
                   {servicesData.introduction && (
@@ -346,7 +346,7 @@ export default function ServicesSection({ servicesData }) {
 
           {/* ── Right: service list ── */}
           <div className="services-split-right">
-            <div className="services-list" data-reveal="stagger">
+            <div className="services-list" data-reveal="line">
               {servicesData.services.map((service, index) => {
                 return (
                   <div

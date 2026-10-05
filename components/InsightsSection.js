@@ -131,13 +131,13 @@ export default function InsightsSection({ insightsData, articles = [] }) {
       <div className={styles.inner}>
         <div className={styles.header}>
           <div>
-            <h2 ref={headlineRef} data-reveal="rise" className={cx('hero-text', styles.headline)} style={{ opacity: 0 }}>
+            <h2 ref={headlineRef} className={cx('hero-text', styles.headline)} style={{ opacity: 0 }}>
               {headline}
             </h2>
           </div>
 
           {intro && (
-            <div className={styles.intro} data-reveal="fade">
+            <div className={styles.intro}>
               <PortableText
                 value={intro}
                 components={{

@@ -10,7 +10,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Arrow from '@/components/Arrow'
 import FormSuccess from '@/components/FormSuccess'
-import { staggerIn, fadeOut } from '@/lib/motion'
+import { fadeOut } from '@/lib/motion'
 
 const INITIAL_FORM = {
   name: '',
@@ -41,14 +41,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
   const [isVisible, setIsVisible] = useState(false)
   const [form, setForm] = useState(INITIAL_FORM)
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
-  const contentRef = useRef(null)
   const formRef = useRef(null)
 
-  // Once the box has started sliding up, the heading and fields cascade in
-  useEffect(() => {
-    if (!isVisible || !contentRef.current) return
-    staggerIn(contentRef.current.querySelectorAll(':scope > div:first-child, :scope > form > *'), { delay: 0.18, y: 12, stagger: 0.04, duration: 0.8 })
-  }, [isVisible])
   const [cvFile, setCvFile] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -236,7 +230,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
           </svg>
         </button>
 
-        <div ref={contentRef} className="tr-contact-content" style={{ padding: '1.5rem 1.5rem 2rem' }}>
+        <div className="tr-contact-content" style={{ padding: '1.5rem 1.5rem 2rem' }}>
           {/* Heading */}
           <div style={{ marginBottom: '2.5rem' }}>
             <h2

@@ -1,6 +1,6 @@
 // components/FormSuccess.js
 // Thank-you state for the forms: a small red tick draws itself, then the
-// message rises in underneath (GSAP, house ease).
+// message fades in underneath (GSAP, house ease).
 
 'use client'
 
@@ -14,7 +14,7 @@ export default function FormSuccess({ children }) {
 
   useEffect(() => {
     if (!wrapRef.current) return
-    staggerIn(wrapRef.current.children, { y: 12, stagger: 0.12, duration: 0.9 })
+    staggerIn(wrapRef.current.children, { y: 0, stagger: 0.12, duration: 0.9 })
     if (tickRef.current && !prefersReducedMotion()) {
       gsap.fromTo(tickRef.current, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.8, ease: EASE, delay: 0.1 })
     }

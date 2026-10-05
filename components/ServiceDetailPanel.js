@@ -8,7 +8,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
-import { staggerIn } from '@/lib/motion'
 
 // ── Backdrop toggle ──────────────────────────────────────────────
 // Set to 'var(--color-overlay)' to activate the dim later. 'transparent' = no backdrop.
@@ -142,19 +141,27 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
   }, [])
 
   // Collapse all cards and scroll back to the top each time a different service is opened.
+  // If the panel is already showing (i.e. switching via "Next"), fade the new content up.
+  const isVisibleRef = useRef(false)
+  useEffect(() => { isVisibleRef.current = isVisible }, [isVisible])
   const innerRef = useRef(null)
   const nextRef = useRef(null)
   useEffect(() => {
     setExpanded({})
     if (contentRef.current) contentRef.current.scrollTop = 0
+    if (!isVisibleRef.current || !innerRef.current) return
+    let cancelled = false
+    ;(async () => {
+      const gsap = window.gsap || (await import('gsap')).default
+      if (cancelled || !innerRef.current) return
+      gsap.fromTo(
+        [innerRef.current, nextRef.current].filter(Boolean),
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', delay: 0.05, overwrite: true }
+      )
+    })()
+    return () => { cancelled = true }
   }, [item])
-
-  // Content cascades in - title, "What we do", each toggle, Enquire, then Next -
-  // when the panel opens and again each time you move to another service.
-  useEffect(() => {
-    if (!isVisible || !innerRef.current) return
-    staggerIn([...innerRef.current.children, nextRef.current], { delay: 0.12, y: 12, stagger: 0.045, duration: 0.8 })
-  }, [item, isVisible])
 
   // Opens the contact modal with this service pre-filled (listened for in Navigation).
   const enquire = () =>
