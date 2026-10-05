@@ -621,7 +621,7 @@ export default function TeamSection({ teamData, careersData }) {
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ marginTop: '1.5rem' }}
+                  style={{ marginTop: '2.5rem' }}
                 >
                   LinkedIn<Arrow />
                 </a>
