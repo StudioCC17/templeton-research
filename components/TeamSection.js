@@ -338,7 +338,8 @@ export default function TeamSection({ teamData, careersData }) {
         {careers.content && (
           <div 
             id="careers"
-            className="careers-section"
+            className="careers-section line-top" /* top border only */
+            data-reveal="line"
             style={{
               position: 'relative',
               display: 'flex',
