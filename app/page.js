@@ -321,7 +321,9 @@ export default async function Home() {
         .map((id) => fetched.find((a) => a._id === id))
         .filter(Boolean)
     } else {
-      const count = insightsConfig?.articleCount || 3
+      // Large screens show a row of 5 (smaller screens show the first 3 - see
+      // InsightsSection.module.css), so fetch at least 5
+      const count = Math.max(insightsConfig?.articleCount || 3, 5)
       insightArticles = await getLatestInsightArticles(count)
     }
   }

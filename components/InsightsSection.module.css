@@ -81,6 +81,28 @@
     height: 350px;
 }
 
+/* Up to 1400px wide: a row of 3 (extra articles hidden) */
+.grid > *:nth-child(n + 4) {
+  display: none;
+}
+
+/* Large screens: a row of 5 portrait tiles */
+@media (min-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+    height: auto;
+  }
+  .grid > *:nth-child(n + 4) {
+    display: block;
+  }
+  .grid > *:nth-child(n + 6) {
+    display: none;
+  }
+  .grid > * {
+    aspect-ratio: 3 / 4;
+  }
+}
+
 /* ============================================================
  * TILE
  * ============================================================ */
