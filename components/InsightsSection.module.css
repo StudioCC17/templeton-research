@@ -58,6 +58,7 @@
   max-width: 30em;
   /* nudge so the last line sits on the heading's baseline */
   padding-bottom: 0.35em;
+  padding-right: 5rem; /* sits in from the right edge */
 }
 
 /* Supporting text - paler green (secondary text colour) */
@@ -279,6 +280,7 @@ display: inline-block;
   .intro {
     margin-top: 0.75rem;
     padding-bottom: 0;
+    padding-right: 0;
   }
 
   .grid {
