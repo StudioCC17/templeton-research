@@ -392,8 +392,6 @@ export default function TeamSection({ teamData, careersData }) {
                 padding: '2rem 4vw 2.5rem 3.5vw'
               }}
             >
-              {/* Small red label, like the service numbers - ties the panel to the team above */}
-              <span className="careers-label">Careers</span>
               <span className="preheader-label">
                 {careers.headline}
               </span>
@@ -409,7 +407,7 @@ export default function TeamSection({ teamData, careersData }) {
               </div>
 
               {/* Careers buttons - each opens ApplyModal in its own version */}
-              <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
+              <div style={{ marginTop: '3.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <button type="button" className="btn-primary" onClick={() => { setApplyType('cv'); setIsApplyOpen(true) }}>
                   Submit your CV
                   <Arrow />

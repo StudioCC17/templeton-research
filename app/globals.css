@@ -2272,14 +2272,4 @@ nav.navigation.navigation--scrolled.navigation--inverse {
   opacity: 0.6;
 }
 
-/* Careers: small red label above the heading (same style as the service numbers) */
-.careers-label {
-  display: block;
-  font-family: var(--font-body), var(--font-fallback);
-  font-size: var(--text-preheader-size);
-  font-weight: var(--text-preheader-weight);
-  letter-spacing: var(--tracking-bold);
-  color: var(--color-red);
-  margin-bottom: 0.5rem;
-}
 
