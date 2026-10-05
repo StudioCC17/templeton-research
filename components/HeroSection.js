@@ -182,8 +182,8 @@ export default function HeroSection({
           ref={sectionRef}
           style={{
             position: 'relative',
-            height: '71.5vh', // 10% taller than 65vh
-            minHeight: '418px', // 10% taller than 380px
+            height: '78.65vh', // 10% taller than 71.5vh
+            minHeight: '460px', // 10% taller than 418px
             overflow: 'hidden',
             backgroundColor: 'var(--color-cream)' // matches the page while the media loads
           }}
