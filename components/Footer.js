@@ -153,7 +153,7 @@ function FooterInner({ footerData }) {
                   fontSize: 'var(--step--1)',
                   fontWeight: 600,
                   color: 'var(--color-cream)',
-                  lineHeight: 1.27,
+                  lineHeight: 1.425,
                   textDecoration: 'none',
                   position: 'relative',
                   display: 'inline-block',
@@ -172,7 +172,7 @@ function FooterInner({ footerData }) {
                   fontSize: 'var(--step--1)',
                   fontWeight: 600,
                   color: 'var(--color-cream)',
-                  lineHeight: 1.27,
+                  lineHeight: 1.425,
                   textDecoration: 'none',
                   position: 'relative',
                   display: 'inline-block'
@@ -268,7 +268,7 @@ function FooterInner({ footerData }) {
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       fontSize: 'var(--step--1)',
                       fontWeight: 400,
-                      lineHeight: 1.36,
+                      lineHeight: 1.52,
                       color: 'var(--color-cream)'
                     }}
                   >
@@ -303,7 +303,7 @@ function FooterInner({ footerData }) {
                     fontWeight: 400,
                     color: 'var(--color-cream)',
                     textDecoration: 'none',
-                    lineHeight: 1.27,
+                    lineHeight: 1.425,
                   }}
                 >
                   {label}

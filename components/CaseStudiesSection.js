@@ -149,7 +149,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
               fontFamily: 'var(--font-body), var(--font-fallback)',
               fontSize: '1.2rem',
               fontWeight: '400',
-              lineHeight: '1.36',
+              lineHeight: '1.52',
               color: 'rgba(245, 245, 240, 0.9)',
               maxWidth: '600px',
               margin: '0 auto',
@@ -171,7 +171,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                         fontFamily: 'var(--font-body), var(--font-fallback)',
                         fontSize: '1.2rem',
                         fontWeight: '400',
-                        lineHeight: '1.36',
+                        lineHeight: '1.52',
                         color: 'rgba(245, 245, 240, 0.9)',
                         margin: '0 0 1rem 0'
                       }}>
@@ -401,7 +401,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                       fontFamily: 'var(--font-body), var(--font-fallback)',
                                       fontSize: '1.1rem',
                                       fontWeight: 400,
-                                      lineHeight: '1.36',
+                                      lineHeight: '1.52',
                                       color: 'var(--color-cream)',
                                       marginBottom: '1.5rem'
                                     }}
@@ -470,7 +470,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                       fontSize: '1.1rem',
                                       color: 'var(--color-cream)',
                                       marginBottom: '0.5rem',
-                                      lineHeight: '1.36'
+                                      lineHeight: '1.52'
                                     }}
                                   >
                                     {children}
@@ -483,7 +483,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                       fontSize: '1.1rem',
                                       color: 'var(--color-cream)',
                                       marginBottom: '0.5rem',
-                                      lineHeight: '1.36'
+                                      lineHeight: '1.52'
                                     }}
                                   >
                                     {children}

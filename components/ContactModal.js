@@ -208,7 +208,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step-1)',
-                  lineHeight: 1.32,
+                  lineHeight: 1.472,
                   color: 'var(--color-green)',
                   margin: 0,
                 }}

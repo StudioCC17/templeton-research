@@ -80,7 +80,7 @@ const PROSE_COMPONENTS = {
         fontSize: 'var(--step-0)',
         color: 'var(--color-cream)',
         marginBottom: '0.6rem',
-        lineHeight: 1.32,
+        lineHeight: 1.472,
       }}>
         {children}
       </li>
@@ -91,7 +91,7 @@ const PROSE_COMPONENTS = {
         fontSize: 'var(--step-0)',
         color: 'var(--color-cream)',
         marginBottom: '0.6rem',
-        lineHeight: 1.32,
+        lineHeight: 1.472,
       }}>
         {children}
       </li>
@@ -356,7 +356,7 @@ export default function ServicesSection({ servicesData }) {
                       marginTop: '1.5rem',
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       fontSize: 'var(--step-0)',
-                      lineHeight: 1.36,
+                      lineHeight: 1.52,
                       color: 'var(--color-green)',
                     }}>
                       {servicesData.introduction}

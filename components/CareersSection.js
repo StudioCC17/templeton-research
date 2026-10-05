@@ -79,7 +79,7 @@ export default function CareersSection({ careersData }) {
                           fontFamily: 'var(--font-body), var(--font-fallback)',
                           fontSize: '1.1rem',
                           fontWeight: '400',
-                          lineHeight: '1.27',
+                          lineHeight: '1.425',
                           color: 'var(--color-green)',
                           margin: '0 0 1rem 0',
                           textAlign: 'left'

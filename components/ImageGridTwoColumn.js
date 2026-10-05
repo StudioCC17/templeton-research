@@ -103,7 +103,7 @@ export default function ImageGridTwoColumn() {
             fontFamily: 'var(--font-body), var(--font-fallback)',
             fontSize: '1rem',
             fontWeight: 400,
-            lineHeight: 1.36,
+            lineHeight: 1.52,
             color: 'var(--color-green)'
           }}
         >
@@ -212,7 +212,7 @@ export default function ImageGridTwoColumn() {
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: '.95rem',
                 fontWeight: 400,
-                lineHeight: 1.23,
+                lineHeight: 1.377,
                 color: 'var(--color-text-secondary)',
                 margin: 0,
                 paddingRight: '40%'
