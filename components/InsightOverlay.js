@@ -131,12 +131,12 @@ export default function InsightOverlay() {
 
     const fast = reduceMotion()
     const tl = gsap.timeline({ defaults: { overwrite: true } })
-    tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: fast ? 0.15 : 0.6, ease: 'power2.out' }, 0)
+    tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: fast ? 0.15 : 0.35, ease: 'power2.out' }, 0)
     tl.fromTo(
       overlay,
       { autoAlpha: 0, yPercent: fast ? 0 : 4 },
-      { autoAlpha: 1, yPercent: 0, duration: fast ? 0.15 : 0.9, ease: 'expo.out', force3D: true },
-      fast ? 0 : 0.05
+      { autoAlpha: 1, yPercent: 0, duration: fast ? 0.15 : 0.6, ease: 'expo.out', force3D: true },
+      0
     )
     return () => tl.kill()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -212,12 +212,12 @@ export default function InsightOverlay() {
     const headerBits = root.querySelectorAll('article > header > *')
     const rest = root.querySelectorAll(':scope > article > :not(header), :scope > nav')
     if (reduceMotion()) return
-    const tl = gsap.timeline({ delay: 0.1 })
+    const tl = gsap.timeline()
     if (headerBits.length) {
-      tl.fromTo(headerBits, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.07 })
+      tl.fromTo(headerBits, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'expo.out', stagger: 0.05 })
     }
     if (rest.length) {
-      tl.fromTo(rest, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05 }, '-=0.6')
+      tl.fromTo(rest, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'expo.out', stagger: 0.04 }, '-=0.45')
     }
     return () => tl.kill()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,9 +234,8 @@ export default function InsightOverlay() {
       const params = new URLSearchParams(searchParams.toString())
       params.delete('article')
       const queryString = params.toString()
-      router.push(queryString ? `${pathname}?${queryString}` : pathname, {
-        scroll: false,
-      })
+      // pushState (not router.push) so closing doesn't re-render the page on the server
+      window.history.pushState(null, '', queryString ? `${pathname}?${queryString}` : pathname)
 
       // Restore focus to whatever was focused before we opened
       if (previousFocusRef.current && previousFocusRef.current.focus) {
@@ -257,8 +256,8 @@ export default function InsightOverlay() {
     const fast = reduceMotion()
     gsap
       .timeline({ onComplete: finish, defaults: { overwrite: true } })
-      .to(overlay, { autoAlpha: 0, yPercent: fast ? 0 : 3, duration: fast ? 0.15 : 0.45, ease: 'power3.in' }, 0)
-      .to(backdrop, { autoAlpha: 0, duration: fast ? 0.15 : 0.5, ease: 'power2.inOut' }, fast ? 0 : 0.1)
+      .to(overlay, { autoAlpha: 0, yPercent: fast ? 0 : 3, duration: fast ? 0.15 : 0.35, ease: 'power3.in' }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: fast ? 0.15 : 0.35, ease: 'power2.inOut' }, fast ? 0 : 0.05)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router, searchParams])
 
@@ -269,7 +268,7 @@ export default function InsightOverlay() {
       if (!slug) return
       const params = new URLSearchParams(searchParams.toString())
       params.set('article', slug)
-      router.push(`${pathname}?${params.toString()}`, { scroll: false })
+      window.history.pushState(null, '', `${pathname}?${params.toString()}`)
     },
     [pathname, router, searchParams]
   )

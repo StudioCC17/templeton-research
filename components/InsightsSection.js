@@ -130,14 +130,16 @@ function InsightTile({ article, index }) {
   const dateLabel = formatDate(article.publishDate)
   const staggerDelay = `${0.15 + index * 0.08}s`
 
-  // Tiles use router.push so the URL updates without a full page navigation —
-  // this is what lets the overlay open smoothly over the homepage.
+  // Tiles update the URL with history.pushState rather than router.push.
+  // Next.js keeps useSearchParams in sync with pushState, but skips the server
+  // re-render (and Sanity re-fetch) that router.push triggers - so the overlay
+  // opens the instant you click.
   const handleClick = (e) => {
     if (!slug) return
     e.preventDefault()
     const params = new URLSearchParams(searchParams.toString())
     params.set('article', slug)
-    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+    window.history.pushState(null, '', `${pathname}?${params.toString()}`)
   }
 
   // Fallback href so cmd-click / right-click "open in new tab" still works —
