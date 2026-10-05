@@ -219,7 +219,8 @@ export default function HeroSection({
             position: 'relative',
             height: '72vh', // was 85vh - 15% shorter
             minHeight: '425px', // was 500px
-            overflow: 'hidden'
+            overflow: 'hidden',
+            backgroundColor: 'var(--color-cream)' // matches the page while the media loads
           }}
         >
           {mediaType === 'image' && heroData.images?.[0] && (
