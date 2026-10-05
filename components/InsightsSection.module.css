@@ -93,12 +93,10 @@ position: relative;
        Only the hover colour is a CSS transition, with no delay. */
     opacity: 0;
     transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     /* Soft green-tinted shadow, very faint at rest, deepens on hover */
     box-shadow: 0 1px 2px rgba(36, 81, 72, 0.04), 0 4px 12px -6px rgba(36, 81, 72, 0.08);
     background-color: #2451480d;
-    border: 1px solid rgb(224, 224, 224); /* same hairline as the Careers section */
     border-radius: 14px;
     overflow: hidden;
         padding-right: 10%;
@@ -108,7 +106,6 @@ position: relative;
 
 .tile:hover {
     background-color: #ffffffa3;
-    border-color: #ffffff;
     box-shadow: 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
 }
 
