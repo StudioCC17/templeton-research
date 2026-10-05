@@ -413,7 +413,7 @@ export default function ServicesSection({ servicesData }) {
 
           {/* ── Right: service list ── */}
           <div className="services-split-right">
-            <div className="services-list" data-reveal="line" ref={listRef} onMouseLeave={leaveList}>
+            <div className="services-list" ref={listRef} onMouseLeave={leaveList}>
               {servicesData.services.map((service, index) => {
                 return (
                   <div
@@ -576,24 +576,12 @@ export default function ServicesSection({ servicesData }) {
         }
 
         /* ── Service rows: plain, with subtle dividers between them ── */
-        /* Divider drawn as a line that can draw in on scroll (--line, see ScrollReveal) */
         .service-item {
           position: relative;
         }
-        .service-item + .service-item::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: rgba(36, 81, 72, 0.1);
-          transform: scaleX(var(--line, 1));
-          transform-origin: left center;
-        }
 
         .service-header {
-          padding: 1.5rem 0;
+          padding: 1rem 0;
         }
 
         /* Hover movement is transform-only (see layoutRows) - keep it on the GPU */
