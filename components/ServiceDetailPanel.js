@@ -24,7 +24,7 @@ const bodyComponents = {
         style={{
           // Answers in the body font (was Minion) - to switch back, use
           // fontFamily 'var(--font-heading)' and fontSize 'var(--text-service-title-size)'
-          color: 'rgba(245, 245, 240, 0.85)', // softened cream
+          color: 'rgba(245, 245, 240, 0.7)', // softened cream
           fontFamily: 'var(--font-body), var(--font-fallback)',
           fontSize: 'var(--step-0)',
           fontWeight: 400,
@@ -62,7 +62,7 @@ const bodyComponents = {
     bullet: ({ children }) => (
       <li
         style={{
-          color: 'rgba(245, 245, 240, 0.85)',
+          color: 'rgba(245, 245, 240, 0.7)',
           fontFamily: 'var(--font-body), var(--font-fallback)',
           fontSize: 'var(--step-0)', // matches the answer paragraphs
           lineHeight: 1.472,
