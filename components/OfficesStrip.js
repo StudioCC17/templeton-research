@@ -33,12 +33,12 @@ function Clock({ h, m }) {
   const hourAngle = h * 30 + m * 0.5
   return (
     <svg className="office-clock" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="10.25" fill="none" stroke="currentColor" strokeWidth="1" />
-      <line x1="12" y1="12" x2="12" y2="6.75" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"
+      <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="0.6" />
+      <line x1="12" y1="12" x2="12" y2="6.5" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round"
         style={{ transform: `rotate(${hourAngle}deg)`, transformOrigin: '12px 12px' }} />
-      <line x1="12" y1="12" x2="12" y2="4.25" stroke="currentColor" strokeWidth="1" strokeLinecap="round"
+      <line x1="12" y1="12" x2="12" y2="3.5" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round"
         style={{ transform: `rotate(${minuteAngle}deg)`, transformOrigin: '12px 12px' }} />
-      <circle cx="12" cy="12" r="0.9" fill="currentColor" />
+      <circle cx="12" cy="12" r="0.7" fill="currentColor" />
     </svg>
   )
 }
@@ -71,15 +71,10 @@ export default function OfficesStrip({ offices = [] }) {
           const zone = TIME_ZONES[city.toLowerCase()]
           return (
             <li key={city} className="office">
+              {/* Clock above the city, red, centred */}
+              <span className="office-clock-wrap">{zone && now ? <Clock {...partsIn(zone, now)} /> : null}</span>
               <span className="office-city">{city}</span>
-              <span className="office-time">
-                {zone && now ? (
-                  <>
-                    <Clock {...partsIn(zone, now)} />
-                    {timeIn(zone, now)}
-                  </>
-                ) : ' '}
-              </span>
+              <span className="office-time">{zone && now ? timeIn(zone, now) : ' '}</span>
             </li>
           )
         })}
@@ -110,7 +105,16 @@ export default function OfficesStrip({ offices = [] }) {
         .office {
           display: flex;
           flex-direction: column;
+          align-items: center;
+          text-align: center;
           gap: 0.15rem;
+        }
+        .office-clock-wrap {
+          display: block;
+          width: 3.5rem;
+          height: 3.5rem;
+          margin-bottom: 0.75rem;
+          color: var(--color-red);
         }
         .office-city {
           font-family: var(--font-heading), serif;
@@ -119,19 +123,16 @@ export default function OfficesStrip({ offices = [] }) {
           color: var(--color-green);
         }
         .office-time {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4em;
           font-family: var(--font-body), var(--font-fallback);
           font-size: var(--step--1);
           line-height: 1.4;
           color: var(--color-text-secondary);
           font-variant-numeric: tabular-nums;
         }
-        .office-time :global(.office-clock) {
-          width: 1.05em;
-          height: 1.05em;
-          flex-shrink: 0;
+        .office-clock-wrap :global(.office-clock) {
+          display: block;
+          width: 100%;
+          height: 100%;
           overflow: visible;
         }
         @media (max-width: 1024px) {
