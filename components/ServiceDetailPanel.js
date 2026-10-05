@@ -423,7 +423,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
               fontFamily: 'var(--font-body), var(--font-fallback)',
               fontSize: 'var(--step-0)',
               fontWeight: 400,
-              textTransform: 'lowercase',
+              textTransform: 'none',
               cursor: 'pointer',
               transition: 'background-color 0.3s',
             }}
