@@ -249,7 +249,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
               style={{
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: 'var(--step--1)',
-                lineHeight: 1.5,
+                lineHeight: 1.27,
                 color: 'var(--color-green)', // supporting text - darker green, as before
                 opacity: 0.75,
                 margin: '0.75rem 0 0',
@@ -266,7 +266,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step-1)',
-                  lineHeight: 1.55,
+                  lineHeight: 1.32,
                   color: 'var(--color-green)',
                   margin: 0,
                 }}

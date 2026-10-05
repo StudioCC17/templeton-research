@@ -228,7 +228,7 @@ export default function ApproachSection({ approachData }) {
                                 fontFamily: 'var(--font-body), var(--font-fallback)',
                                 fontSize: '1rem',
                                 fontWeight: 400,
-                                lineHeight: 1.55,
+                                lineHeight: 1.32,
                                 color: 'rgb(108 119 117)',
                                 margin: 0
                               }}
@@ -295,7 +295,7 @@ export default function ApproachSection({ approachData }) {
                                 fontSize: '1rem',
                                 color: 'var(--color-green)',
                                 marginBottom: '0.5rem',
-                                lineHeight: 1.6
+                                lineHeight: 1.36
                               }}
                             >
                               {children}
@@ -308,7 +308,7 @@ export default function ApproachSection({ approachData }) {
                                 fontSize: '1rem',
                                 color: 'var(--color-green)',
                                 marginBottom: '0.5rem',
-                                lineHeight: 1.6
+                                lineHeight: 1.36
                               }}
                             >
                               {children}

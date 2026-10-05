@@ -80,7 +80,7 @@
 .body p {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  line-height: 1.65;
+  line-height: 1.4;
   color: var(--color-green);
   margin: 0 0 1.25rem 0;
 }
@@ -94,7 +94,7 @@
 .body li {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  line-height: 1.65;
+  line-height: 1.4;
   color: var(--color-green);
   margin-bottom: 0.4rem;
 }
@@ -123,7 +123,7 @@
 .address {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  line-height: 1.65;
+  line-height: 1.4;
   color: var(--color-green);
   margin: 0 0 1.5rem 0;
 }
@@ -151,7 +151,7 @@
   padding: 0.65rem 0.85rem;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-green);
-  line-height: 1.5;
+  line-height: 1.27;
   vertical-align: top;
 }
 

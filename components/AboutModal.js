@@ -20,7 +20,7 @@ const bodyComponents = {
           color: 'var(--color-green)',
           fontSize: 'var(--step-1)',
           fontWeight: 400,
-          lineHeight: 1.55,
+          lineHeight: 1.32,
           marginBottom: '1.5rem',
         }}
       >
@@ -240,7 +240,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                         color: 'var(--color-green)',
                         fontSize: 'var(--step-1)',
                         fontWeight: 400,
-                        lineHeight: 1.55,
+                        lineHeight: 1.32,
                         marginTop: i === 0 ? 0 : '1rem',
                         marginBottom: 0,
                       }}

@@ -154,7 +154,7 @@ export default function TeamSection({ teamData, careersData }) {
           fontFamily: 'var(--font-body), var(--font-fallback)',
           fontSize: 'var(--step-0)',
           fontWeight: 400,
-          lineHeight: 1.55,
+          lineHeight: 1.32,
           marginBottom: '1.5rem'
         }}>
           {children}
@@ -531,7 +531,7 @@ export default function TeamSection({ teamData, careersData }) {
                     color: 'var(--color-green)',
                     textDecoration: 'none',
                     display: 'block',
-                    lineHeight: 1.55
+                    lineHeight: 1.32
                   }}
                 >
                 
@@ -546,7 +546,7 @@ export default function TeamSection({ teamData, careersData }) {
                     color: 'var(--color-green)',
                     textDecoration: 'none',
                     display: 'block',
-                    lineHeight: 1.55
+                    lineHeight: 1.32
                   }}
                 >
                
@@ -593,7 +593,7 @@ export default function TeamSection({ teamData, careersData }) {
                         fontFamily: 'var(--font-body), var(--font-fallback)',
                         fontSize: 'var(--step-0)',
                         fontWeight: 400,
-                        lineHeight: 1.55,
+                        lineHeight: 1.32,
                         marginTop: i === 0 ? '0' : '1rem',
                         marginBottom: '0'
                       }}
@@ -616,7 +616,7 @@ export default function TeamSection({ teamData, careersData }) {
                     color: 'var(--color-red)',
                     textDecoration: 'none',
                     display: 'block',
-                    lineHeight: 1.55
+                    lineHeight: 1.32
                   }}
                 >
                   <br /> LinkedIn<Arrow />
