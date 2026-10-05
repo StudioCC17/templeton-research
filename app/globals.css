@@ -570,7 +570,7 @@ p {
   color: var(--color-cream);
   border: none;
   border-radius: 2px;
-  padding: 0.35rem 1rem 0.4em;
+  padding: 0.35rem .75rem 0.4em;
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1); /* same size as the small red preheaders */
   letter-spacing: var(--tracking-bold);
