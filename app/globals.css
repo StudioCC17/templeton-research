@@ -29,7 +29,7 @@
   /* Surfaces */
   --color-cream: #f5f5f0;                       /* page background + text on red/green */
   --color-cream-dark: #ebebe3;                  /* panels, image placeholders */
-  --color-sage: #ebe7de;                        /* earthy stone beige - Insights background */
+  --color-sage: #e6e6dc;                        /* pale stone with a hint of the brand green - Insights background */
   /* Lines */
   --color-border: #c4d2cf;                      /* dividers */
   --color-line-field: var(--color-border);       /* form field underlines at rest (red draws in on focus) */
