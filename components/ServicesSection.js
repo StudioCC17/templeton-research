@@ -442,7 +442,7 @@ export default function ServicesSection({ servicesData }) {
                               fontWeight: 'var(--text-preheader-weight)',
                               letterSpacing: '0.03em',
                               color: 'var(--color-red)',
-                              marginBottom: '0.25rem',
+                              marginBottom: 0, // number sits close to its title
                               fontVariantNumeric: 'tabular-nums',
                             }}
                           >

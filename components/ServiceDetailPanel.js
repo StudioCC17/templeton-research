@@ -285,7 +285,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           {/* Mirrors the "Next" block at the bottom: red "Service  01" label,
               cream title underneath, same sizes and spacing */}
           {title && (
-            <div style={{ marginBottom: '1.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            <div style={{ marginBottom: '1.75rem', display: 'flex', flexDirection: 'column', gap: 0 }}>
               <span
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
