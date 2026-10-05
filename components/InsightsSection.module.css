@@ -48,22 +48,9 @@
 }
 
 .headline {
-    font-family: var(--font-heading), var(--font-fallback);
-    font-weight: 300;
-    line-height: 1.05;
-    /* letter-spacing: -0.02em; */
-    color: var(--color-green);
-    margin: 0;
-    text-align: left;
-    font-family: var(--font-body), var(--font-fallback);
-    font-size: var(--step-2) !important;
-    font-weight: 400;
-    line-height: 1.4;
-    color: var(--color-red);
-    margin: 0;
-    border-bottom: 1px solid;
-    width: fit-content;
-    font-size: var(--text-display-size-lg);
+  /* Same Minion display style as the Services and Team headlines (.hero-text) */
+  color: var(--color-green);
+  margin: 0;
 }
 
 .intro {

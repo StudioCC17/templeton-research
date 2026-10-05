@@ -40,6 +40,7 @@ function cx(...classes) {
 
 export default function InsightsSection({ insightsData, articles = [] }) {
   const sectionRef = useRef(null)
+  const headlineRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -57,6 +58,42 @@ export default function InsightsSection({ insightsData, articles = [] }) {
 
     observer.observe(sectionRef.current)
     return () => observer.disconnect()
+  }, [])
+
+  // Headline: same letter-by-letter fade as the Services and Team headlines
+  useEffect(() => {
+    if (!headlineRef.current) return
+    let ctx
+    let split
+    let cancelled = false
+    ;(async () => {
+      try {
+        const gsap = (await import('gsap')).default
+        const { SplitText } = await import('gsap/SplitText')
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+        if (cancelled || !headlineRef.current) return
+        gsap.registerPlugin(SplitText, ScrollTrigger)
+        split = new SplitText(headlineRef.current, { type: 'chars', charsClass: 'services-split-char', tag: 'span' })
+        gsap.set(headlineRef.current, { opacity: 1 })
+        gsap.set(split.chars, { display: 'inline', opacity: 0.2 })
+        ctx = gsap.context(() => {
+          gsap.to(split.chars, {
+            opacity: 1,
+            duration: 1,
+            ease: 'power2.out',
+            stagger: 0.01,
+            scrollTrigger: { trigger: headlineRef.current, start: 'top 80%', once: true },
+          })
+        })
+      } catch (e) {
+        if (headlineRef.current) headlineRef.current.style.opacity = '1'
+      }
+    })()
+    return () => {
+      cancelled = true
+      if (ctx) ctx.revert()
+      if (split) split.revert()
+    }
   }, [])
 
   // Tiles rise in one after another once the section is on screen (GSAP).
@@ -94,7 +131,9 @@ export default function InsightsSection({ insightsData, articles = [] }) {
       <div className={styles.inner}>
         <div className={styles.header}>
           <div>
-            <h2 className={styles.headline}>{headline}</h2>
+            <h2 ref={headlineRef} className={cx('hero-text', styles.headline)} style={{ opacity: 0 }}>
+              {headline}
+            </h2>
           </div>
 
           {intro && (
