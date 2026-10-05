@@ -94,7 +94,7 @@ export default function InsightOverlay() {
   const overlayRef = useRef(null)
   const backdropRef = useRef(null)
   const closingRef = useRef(false)
-  const openTlRef = useRef(null) // open timeline - played in reverse to close
+  const openTlRef = useRef(null) // open timeline - killed before closing so they don't overlap
   const scrollContainerRef = useRef(null)
   const closeButtonRef = useRef(null)
   const previousFocusRef = useRef(null)
@@ -256,19 +256,13 @@ export default function InsightOverlay() {
       return
     }
 
-    // Close = the open animation played backwards. The ?article param is
-    // removed once it has fully reversed.
-    const tl = openTlRef.current
-    if (tl) {
-      tl.eventCallback('onReverseComplete', finish)
-      tl.reverse()
-      return
-    }
-    // Fallback if the open timeline isn't available for any reason
+    // Close: a quick, soft fade with the faintest drop - barely noticeable.
+    // Stop the open timeline first so the two never fight over the same values.
+    if (openTlRef.current) openTlRef.current.kill()
     gsap
-      .timeline({ onComplete: finish })
-      .to(overlay, { autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 0)
-      .to(backdrop, { autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 0)
+      .timeline({ onComplete: finish, defaults: { overwrite: true } })
+      .to(overlay, { autoAlpha: 0, yPercent: 1, duration: 0.25, ease: 'power1.inOut', force3D: true }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: 0.25, ease: 'power1.inOut' }, 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router, searchParams])
 
