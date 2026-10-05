@@ -157,7 +157,7 @@ export default function InsightsIndexOverlay() {
 
       <div ref={panelRef} className={styles.panel} role="dialog" aria-modal="true" aria-label="All insights">
         <button type="button" className={styles.closeButton} onClick={handleClose} aria-label="Close insights">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ width: 36, height: 36, display: 'block' }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.75" style={{ width: 36, height: 36, display: 'block' }}>
             <line x1="6" y1="6" x2="18" y2="18" strokeLinecap="round" />
             <line x1="18" y1="6" x2="6" y2="18" strokeLinecap="round" />
           </svg>

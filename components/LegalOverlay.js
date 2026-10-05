@@ -182,7 +182,7 @@ export default function LegalOverlay() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="0.75"
             style={{ width: '36px', height: '36px', display: 'block' }}
           >
             <line x1="6" y1="6" x2="18" y2="18" strokeLinecap="round" />
