@@ -34,9 +34,9 @@ function Clock({ h, m }) {
   return (
     <svg className="office-clock" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="0.6" />
-      <line x1="12" y1="12" x2="12" y2="6.5" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round"
+      <line x1="12" y1="12" x2="12" y2="6.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="butt"
         style={{ transform: `rotate(${hourAngle}deg)`, transformOrigin: '12px 12px' }} />
-      <line x1="12" y1="12" x2="12" y2="3.5" stroke="currentColor" strokeWidth="0.6" strokeLinecap="round"
+      <line x1="12" y1="12" x2="12" y2="3.5" stroke="currentColor" strokeWidth="0.5" strokeLinecap="butt"
         style={{ transform: `rotate(${minuteAngle}deg)`, transformOrigin: '12px 12px' }} />
       <circle cx="12" cy="12" r="0.7" fill="currentColor" />
     </svg>
