@@ -473,9 +473,7 @@ p {
 
 /* Contact button (main + sticky header): red outline + arrow, fills red on hover */
 .nav-contact {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+  display: inline-block;
   margin-left: 1.5rem;
   padding: 0.3rem 0.8rem 0.35rem;
   background: transparent;

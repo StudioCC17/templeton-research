@@ -230,8 +230,8 @@ position: relative;
   display: flex;
       bottom: 30px;
     position: absolute;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: baseline; /* arrow sits on the text baseline */
+  gap: 0.3em;
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 600;
@@ -244,8 +244,6 @@ display: inline-block;
     opacity: 1;
     transform: translateX(-4px);
     transition: opacity 0.3s ease, transform 0.3s ease;
-    margin-top: 3px;
-    font-size: var(--step--2);
 }
 
 .tile:hover .tileReadMoreArrow {
@@ -277,8 +275,8 @@ display: inline-block;
   color: var(--color-red);
   text-decoration: none;
   display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: baseline; /* arrow sits on the text baseline */
+  gap: 0.3em;
 }
 
 .ctaArrow {

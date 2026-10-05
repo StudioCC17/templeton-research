@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import Arrow from '@/components/Arrow'
 
 function FooterInner({ footerData }) {
   const defaultFooterData = {
@@ -162,24 +163,7 @@ function FooterInner({ footerData }) {
                 onMouseOut={(e) => e.target.style.opacity = '1'}
               >
                 Email us
-                <svg 
-                  style={{
-                    position: 'absolute',
-                    marginTop: '2px',
-                    marginLeft: '1px'
-                  }}
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7" />
-                  <path d="M7 7h10v10" />
-                </svg>
+<Arrow />
               </a>
               <a 
                 href="https://linkedin.com"
@@ -199,24 +183,7 @@ function FooterInner({ footerData }) {
                 onMouseOut={(e) => e.target.style.opacity = '1'}
               >
                 Follow us on LinkedIn
-                <svg 
-                  style={{
-                    position: 'absolute',
-                    marginTop: '2px',
-                    marginLeft: '1px'
-                  }}
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7" />
-                  <path d="M7 7h10v10" />
-                </svg>
+<Arrow />
               </a>
               
             </div>

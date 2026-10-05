@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
+import Arrow from '@/components/Arrow'
 
 // Careers section feature image (full-bleed, left). Sanity CDN domain is already
 // configured for next/image via the profile images.
@@ -571,24 +572,7 @@ export default function TeamSection({ teamData, careersData }) {
                     lineHeight: 1.55
                   }}
                 >
-                  <br /> LinkedIn <svg 
-                  style={{
-                    position: 'absolute',
-                    marginTop: '2px',
-                    marginLeft: '1px'
-                  }}
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7" />
-                  <path d="M7 7h10v10" />
-                </svg>
+                  <br /> LinkedIn<Arrow />
                 </a>
                 
             </div>

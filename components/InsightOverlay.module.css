@@ -233,9 +233,7 @@ border-top: 1px solid var(--color-border);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-red);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: inline-block; /* arrow sits on the text baseline (see Arrow.js) */
 }
 
 .footerNavTitle {

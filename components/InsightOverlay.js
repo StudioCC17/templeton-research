@@ -11,6 +11,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { client } from '@/lib/sanity'
 import InsightArticle from './InsightArticle'
 import styles from './InsightOverlay.module.css'
+import Arrow from '@/components/Arrow'
 
 // GROQ query for a single article by slug + navigation context (all slugs in order).
 // Returns the article AND a flat list of slugs so we can compute prev/next.
@@ -406,7 +407,7 @@ export default function InsightOverlay() {
                       disabled={!older}
                     >
                       <span className={styles.footerNavLabel}>
-                        <span aria-hidden="true">←</span> Previous
+                        <Arrow direction="left" />Previous
                       </span>
                       <h3 className={styles.footerNavTitle}>
                         {older?.title || 'No older article'}
@@ -420,7 +421,7 @@ export default function InsightOverlay() {
                       disabled={!newer}
                     >
                       <span className={styles.footerNavLabel}>
-                        Next <span aria-hidden="true">→</span>
+                        Next<Arrow direction="right" />
                       </span>
                       <h3 className={styles.footerNavTitle}>
                         {newer?.title || 'No newer article'}

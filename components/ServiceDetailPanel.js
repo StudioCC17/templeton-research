@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { PortableText } from '@portabletext/react'
+import Arrow from '@/components/Arrow'
 
 // ── Backdrop toggle ──────────────────────────────────────────────
 // Set to '#245148a3' to activate the dim later. 'transparent' = no backdrop.
@@ -429,6 +430,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
             }}
           >
             Enquire
+            <Arrow />
           </button>
           </div>
         </div>
@@ -439,8 +441,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
             <button type="button" className="sd-next" onClick={onNext}>
               <span className="sd-next-label">Next</span>
               <span>
-                {nextNumber}. {nextTitle}{' '}
-                <span aria-hidden="true" className="sd-next-arrow">&rarr;</span>
+                {nextNumber}. {nextTitle}
+                <span aria-hidden="true" className="sd-next-arrow"><Arrow direction="right" /></span>
               </span>
             </button>
           </div>

@@ -9,6 +9,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
+import Arrow from '@/components/Arrow'
 
 const INITIAL_FORM = {
   name: '',
@@ -292,8 +293,8 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 disabled={status === 'submitting'}
                 style={{
                   display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
+                  alignItems: 'baseline', // arrow sits on the text baseline
+                  gap: 0,
                   backgroundColor: '#BB7860',
                   color: '#f5f5f0',
                   border: 'none',
@@ -314,6 +315,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#BB7860' }}
               >
                 {status === 'submitting' ? 'Sending...' : 'Send message'}
+                {status !== 'submitting' && <Arrow />}
               </button>
             </form>
           )}

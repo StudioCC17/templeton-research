@@ -8,6 +8,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { PortableText } from '@portabletext/react'
 import ServiceDetailPanel from '@/components/ServiceDetailPanel'
+import Arrow from '@/components/Arrow'
 
 // Placeholder supporting line — swap for a real Sanity field (e.g. `summary`) later.
 const SERVICE_FILL =
@@ -338,24 +339,7 @@ export default function ServicesSection({ servicesData }) {
                   width: 'fit-content',
                 }}
               >
-                Have a question?  Get in touch <svg 
-                  style={{
-                    position: 'absolute',
-                    marginTop: '2px',
-                    marginLeft: '1px'
-                  }}
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M7 17L17 7" />
-                  <path d="M7 7h10v10" />
-                </svg></p>
+                Have a question?  Get in touch<Arrow /></p>
 
             </div>
           </div>
@@ -429,10 +413,7 @@ export default function ServicesSection({ servicesData }) {
                           </p>
                         </div>
                         <span className="service-arrow" aria-hidden="true">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M5 12h14" />
-                            <path d="M13 6l6 6-6 6" />
-                          </svg>
+                          <Arrow direction="right" style={{ marginLeft: 0 }} />
                         </span>
                       </div>
                     </div>
@@ -536,8 +517,10 @@ export default function ServicesSection({ servicesData }) {
         /* Plain arrow (no circle) - just slides across on hover */
         .service-arrow {
           flex-shrink: 0;
-          align-self: center;
-          display: flex;
+          align-self: baseline; /* sits on the same line as the service title */
+          display: block;
+          font-size: var(--step-1);
+          line-height: 1.4;
           color: var(--color-red);
         }
 

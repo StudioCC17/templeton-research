@@ -11,6 +11,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/lib/sanity'
 import styles from './InsightsSection.module.css'
+import Arrow from '@/components/Arrow'
 
 const CATEGORY_LABELS = {
   'industry-analysis': 'Industry analysis',
@@ -105,7 +106,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
             <Link href={cta.link} className={styles.ctaLink}>
               {cta.text}
               <span aria-hidden="true" className={styles.ctaArrow}>
-                →
+                <Arrow direction="right" style={{ marginLeft: 0 }} />
               </span>
             </Link>
           </div>
@@ -192,7 +193,7 @@ function InsightTile({ article, index }) {
       <div className={styles.tileReadMore}>
         Read article
         <span aria-hidden="true" className={styles.tileReadMoreArrow}>
-          →
+          <Arrow direction="right" style={{ marginLeft: 0 }} />
         </span>
       </div>
     </Link>
