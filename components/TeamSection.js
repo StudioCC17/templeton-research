@@ -384,7 +384,7 @@ export default function TeamSection({ teamData, careersData }) {
               </div>
 
               {/* Careers buttons - each opens ApplyModal in its own version */}
-              <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.75rem' }}>
+              <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <button type="button" className="btn-primary" onClick={() => { setApplyType('cv'); setIsApplyOpen(true) }}>
                   Submit your CV
                   <Arrow />
