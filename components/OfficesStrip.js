@@ -20,6 +20,29 @@ const TIME_ZONES = {
   tokyo: 'Asia/Tokyo',
 }
 
+// Hours + minutes in a time zone, as numbers (for the clock hands)
+const partsIn = (zone, now) => {
+  const p = new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: 'numeric', hour12: false, timeZone: zone }).formatToParts(now)
+  const get = (t) => Number(p.find((x) => x.type === t)?.value || 0)
+  return { h: get('hour') % 12, m: get('minute') }
+}
+
+// A tiny, minimal analogue clock: thin ring, two hands, no numerals
+function Clock({ h, m }) {
+  const minuteAngle = m * 6
+  const hourAngle = h * 30 + m * 0.5
+  return (
+    <svg className="office-clock" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="10.25" fill="none" stroke="currentColor" strokeWidth="1" />
+      <line x1="12" y1="12" x2="12" y2="6.75" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"
+        style={{ transform: `rotate(${hourAngle}deg)`, transformOrigin: '12px 12px' }} />
+      <line x1="12" y1="12" x2="12" y2="4.25" stroke="currentColor" strokeWidth="1" strokeLinecap="round"
+        style={{ transform: `rotate(${minuteAngle}deg)`, transformOrigin: '12px 12px' }} />
+      <circle cx="12" cy="12" r="0.9" fill="currentColor" />
+    </svg>
+  )
+}
+
 const timeIn = (zone, now) =>
   new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: zone }).format(now)
 
@@ -49,7 +72,14 @@ export default function OfficesStrip({ offices = [] }) {
           return (
             <li key={city} className="office">
               <span className="office-city">{city}</span>
-              <span className="office-time">{zone && now ? timeIn(zone, now) : ' '}</span>
+              <span className="office-time">
+                {zone && now ? (
+                  <>
+                    <Clock {...partsIn(zone, now)} />
+                    {timeIn(zone, now)}
+                  </>
+                ) : ' '}
+              </span>
             </li>
           )
         })}
@@ -89,11 +119,20 @@ export default function OfficesStrip({ offices = [] }) {
           color: var(--color-green);
         }
         .office-time {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4em;
           font-family: var(--font-body), var(--font-fallback);
           font-size: var(--step--1);
           line-height: 1.4;
           color: var(--color-text-secondary);
           font-variant-numeric: tabular-nums;
+        }
+        .office-time :global(.office-clock) {
+          width: 1.05em;
+          height: 1.05em;
+          flex-shrink: 0;
+          overflow: visible;
         }
         @media (max-width: 1024px) {
           .offices-list {
