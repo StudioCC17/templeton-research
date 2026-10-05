@@ -311,7 +311,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                     marginTop: '0.5rem',
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step-0)',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     color: 'var(--color-red)',
                     opacity: 0.6, // faded, like the "(PDF or Word…)" hint
                     cursor: 'pointer',
