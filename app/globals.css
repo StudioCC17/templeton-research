@@ -2213,3 +2213,27 @@ display: none
   }
 }
 
+/* Sticky header while a service is open: green with cream text, to match the
+   open service. Fades back to cream when the service closes. */
+.navigation--scrolled .nav-link,
+.navigation--scrolled .nav-contact,
+.navigation--scrolled .nav-logo,
+.navigation--scrolled .locale-button {
+  transition: color 0.4s ease, opacity 0.3s ease;
+}
+.navigation--scrolled .nav-hamburger-line {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.4s ease;
+}
+nav.navigation.navigation--scrolled.navigation--inverse {
+  border-bottom-color: var(--color-green);
+}
+.navigation--inverse .nav-link,
+.navigation--inverse .nav-contact,
+.navigation--inverse .nav-logo,
+.navigation--inverse .locale-button {
+  color: var(--color-cream) !important;
+}
+.navigation--inverse .nav-hamburger-line {
+  background-color: var(--color-cream);
+}
+

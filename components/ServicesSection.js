@@ -107,7 +107,36 @@ export default function ServicesSection({ servicesData }) {
   const headlineRef = useRef(null)
   const proseRef = useRef(null)
 
+  const sectionRef = useRef(null)
+
+  // Opening a service: glide the section up so its top sits right under the
+  // sticky header (the header turns green to match while a service is open).
+  const scrollSectionToTop = async () => {
+    const section = sectionRef.current
+    if (!section) return
+    const header = document.querySelector('nav.navigation--scrolled')
+    const headerH = header ? header.offsetHeight : 0
+    const target = Math.round(section.getBoundingClientRect().top + window.scrollY - headerH)
+    if (Math.abs(window.scrollY - target) < 2) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    try {
+      const gsap = (await import('gsap')).default
+      const { ScrollToPlugin } = await import('gsap/ScrollToPlugin')
+      gsap.registerPlugin(ScrollToPlugin)
+      gsap.to(window, { scrollTo: { y: target, autoKill: true }, duration: reduce ? 0 : 0.9, ease: 'power3.inOut' })
+    } catch (e) {
+      window.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
+    }
+  }
+
+  // Let the header know a service is open (it switches to green with cream text)
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('services-detail', { detail: { open: isDetailOpen } }))
+  }, [isDetailOpen])
+  useEffect(() => () => window.dispatchEvent(new CustomEvent('services-detail', { detail: { open: false } })), [])
+
   const openDetail = (service, index) => {
+    if (!isDetailOpen) scrollSectionToTop()
     const cards = (service.description || []).filter((b) => b._type === 'textCard')
     setDetailItem({ title: service.title, cards })
     setActiveIndex(index)
@@ -251,6 +280,7 @@ export default function ServicesSection({ servicesData }) {
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="services-section"
       style={{

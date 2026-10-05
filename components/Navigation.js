@@ -27,6 +27,14 @@ export default function Navigation({ globalSettings, aboutData }) {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [showSecondaryNav, setShowSecondaryNav] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // A service is open in the Services section: show the sticky header in green with cream text
+  const [servicesOpen, setServicesOpen] = useState(false)
+  useEffect(() => {
+    const onServices = (e) => setServicesOpen(!!e.detail?.open)
+    window.addEventListener('services-detail', onServices)
+    return () => window.removeEventListener('services-detail', onServices)
+  }, [])
+  const showSticky = showSecondaryNav || servicesOpen
 
   // Let other components (e.g. the footer) open the contact modal.
   // ---------- Page-load intro (GSAP) ----------
@@ -353,9 +361,9 @@ export default function Navigation({ globalSettings, aboutData }) {
         style={{
           backgroundColor: 'transparent',
           position: 'absolute',
-          opacity: showSecondaryNav ? 0 : 1,
-          visibility: showSecondaryNav ? 'hidden' : 'visible',
-          pointerEvents: showSecondaryNav ? 'none' : 'auto',
+          opacity: showSticky ? 0 : 1,
+          visibility: showSticky ? 'hidden' : 'visible',
+          pointerEvents: showSticky ? 'none' : 'auto',
           transition: 'all 0.2s ease, visibility 0.2s ease'
         }}
       >
@@ -452,16 +460,16 @@ export default function Navigation({ globalSettings, aboutData }) {
 
       {/* Secondary Navigation - Fixed, slides down using top position for iOS compatibility */}
       <nav 
-        className={`navigation navigation--scrolled navigation--${currentSection} ${currentSection}-section-scroll`}
+        className={`navigation navigation--scrolled navigation--${currentSection} ${currentSection}-section-scroll${servicesOpen ? ' navigation--inverse' : ''}`}
         style={{
-          backgroundColor: 'var(--color-cream)',
+          backgroundColor: servicesOpen ? 'var(--color-green)' : 'var(--color-cream)',
           position: 'fixed',
-          top: showSecondaryNav ? 0 : -60,
+          top: showSticky ? 0 : -60,
           left: 0,
           right: 0,
           zIndex: 50,
-          opacity: showSecondaryNav ? 1 : 0,
-          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          opacity: showSticky ? 1 : 0,
+          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.4s ease, border-color 0.4s ease',
         }}
       >
         {/* Hamburger for Secondary Nav */}
