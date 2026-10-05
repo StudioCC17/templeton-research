@@ -365,6 +365,22 @@ export default function ServicesSection({ servicesData }) {
                     >
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
                         <div style={{ flex: 1 }}>
+                          {/* Small "01 / 03" preheader above each title */}
+                          <span
+                            className="service-count"
+                            style={{
+                              display: 'block',
+                              fontFamily: 'var(--font-body), var(--font-fallback)',
+                              fontSize: 'var(--text-preheader-size)',
+                              fontWeight: 'var(--text-preheader-weight)',
+                              letterSpacing: '0.03em',
+                              color: 'var(--color-red)',
+                              marginBottom: '0.25rem',
+                              fontVariantNumeric: 'tabular-nums',
+                            }}
+                          >
+                            {String(index + 1).padStart(2, '0')} / {String(servicesData.services.length).padStart(2, '0')}
+                          </span>
                           <h3
                             className="service-title"
                             style={{
