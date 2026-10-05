@@ -70,28 +70,31 @@ export default function Navigation({ globalSettings, aboutData }) {
   useEffect(() => {
     const svg = stickyLogoRef.current
     if (!svg) return
-    const paths = svg.querySelectorAll('path')
+    const paths = Array.from(svg.querySelectorAll('path'))
+    // Dash each line by its real length, so it can draw from its start to its end
+    paths.forEach((p) => {
+      const len = Math.ceil(p.getTotalLength()) + 2
+      p.style.strokeDasharray = `${len}`
+      p.dataset.len = len
+    })
     gsap.killTweensOf(paths)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.set(paths, { strokeDasharray: 1, strokeDashoffset: 0 })
+      paths.forEach((p) => { p.style.strokeDashoffset = '0' })
       return
     }
     if (!showSticky) {
-      gsap.set(paths, { strokeDasharray: 1, strokeDashoffset: 1 }) // hidden, ready to draw
+      paths.forEach((p) => { p.style.strokeDashoffset = p.dataset.len }) // hidden, ready to draw
       return
     }
-    gsap.fromTo(
-      paths,
-      { strokeDasharray: 1, strokeDashoffset: 1 },
-      {
-        strokeDashoffset: 0,
-        duration: 0.75,
-        ease: 'power3.inOut',
-        delay: 0.2,
-        // pairs: (0,1) centre, (2,3) middle, (4,5) outer
-        stagger: (i) => Math.floor(i / 2) * 0.1,
-      }
-    )
+    paths.forEach((p) => { p.style.strokeDashoffset = p.dataset.len })
+    gsap.to(paths, {
+      strokeDashoffset: 0,
+      duration: 0.75,
+      ease: 'power3.inOut',
+      delay: 0.25,
+      // pairs: (0,1) centre, (2,3) middle, (4,5) outer
+      stagger: (i) => Math.floor(i / 2) * 0.1,
+    })
   }, [showSticky])
 
 
@@ -619,17 +622,17 @@ export default function Navigation({ globalSettings, aboutData }) {
                 strokeLinejoin="round"
                 style={{
                   width: '60px',
-                  height: '40px',
+                  height: '30px', // breathing room above and below in the header
                   overflow: 'visible'
                 }}
               >
                 {/* inner pair first in the DOM: drawn centre-out, each from its foot up then outwards */}
-                <path pathLength="1" d="M127.8 225.27V2.59H2.59" />
-                <path pathLength="1" d="M155.54 225.27V2.59H280.47" />
-                <path pathLength="1" d="M99.79 225.27V30.73H2.59" />
-                <path pathLength="1" d="M183.56 225.27V30.73H280.47" />
-                <path pathLength="1" d="M72.06 225.27V58.85H2.59" />
-                <path pathLength="1" d="M211 225.27V58.85H280.47" />
+                <path d="M127.8 225.27V2.59H2.59" />
+                <path d="M155.54 225.27V2.59H280.47" />
+                <path d="M99.79 225.27V30.73H2.59" />
+                <path d="M183.56 225.27V30.73H280.47" />
+                <path d="M72.06 225.27V58.85H2.59" />
+                <path d="M211 225.27V58.85H280.47" />
               </svg>
             </button>
           </div>
