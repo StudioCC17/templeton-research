@@ -69,6 +69,7 @@
 
   /* Service titles sit between step 1 and step 2 (about 18-21px) */
   --text-service-title-size: clamp(1.1rem, 1.0296rem + 0.3005vw, 1.3rem);
+  --text-logo-size: clamp(1.15rem, 1.0736rem + 0.326vw, 1.375rem); /* header wordmark: 22px on desktop, scales down on phones */
   --text-service-heading-size: clamp(1.035rem, 0.9716rem + 0.2705vw, 1.215rem); /* bold service titles (list + open panel) */
 
   /* Line heights - tighter as text gets bigger */
@@ -896,7 +897,7 @@ p.section-paragraph.approach-paragraph {
 }
 
 .logo-text {
-  font-size: var(--step-2);
+  font-size: var(--text-logo-size);
   font-weight: 300;
   letter-spacing: 0.23em;
   color: var(--color-cream);
@@ -1090,7 +1091,7 @@ p.section-paragraph.approach-paragraph {
   }
   
   .logo-text {
-    font-size: var(--step-2);
+    font-size: var(--text-logo-size);
   }
   
   .logo-subtext {
