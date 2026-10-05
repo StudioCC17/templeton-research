@@ -559,7 +559,7 @@ export default function ServicesSection({ servicesData }) {
                               marginBottom: 0, // global p adds 1rem here, which doubled the space under each service
                               paddingRight: '25%',
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: 'var(--step--1)',
+                              fontSize: 'calc(var(--step--1) * 0.94)',
                               fontWeight: 400,
                               lineHeight: 1.4,
                               color: 'var(--color-text-secondary)',

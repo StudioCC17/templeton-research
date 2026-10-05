@@ -210,7 +210,7 @@ export default function ImageGridTwoColumn() {
                 bottom: '1.5rem',
                 left: '1.5rem',
                 fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: '.95rem',
+                fontSize: 'calc(.95rem * 0.94)',
                 fontWeight: 400,
                 lineHeight: 1.377,
                 color: 'var(--color-text-secondary)',
