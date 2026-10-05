@@ -16,8 +16,7 @@ export default function HeroSection({
 }) {
   const [mounted, setMounted] = useState(false)
   const videoRef = useRef(null)
-  const mediaRef = useRef(null)
-  const tintRef = useRef(null) // the soft green tint over the video // wraps poster + video; this is what the parallax moves
+  const mediaRef = useRef(null) // wraps poster + video; this is what the parallax moves
   const sectionRef = useRef(null)
   const heroTextRef = useRef(null)
   
@@ -107,8 +106,7 @@ export default function HeroSection({
       if (hasAnimated) return
       hasAnimated = true
       const gsap = (await import('gsap')).default
-      // The tint fades in with the video so it never sits on its own over the cream
-      tween = gsap.to([video, tintRef.current].filter(Boolean), { opacity: 1, duration: 1.2, ease: 'expo.out' })
+      tween = gsap.to(video, { opacity: 1, duration: 1.2, ease: 'expo.out' })
     }
 
     if (video.readyState >= 2) {
@@ -283,7 +281,6 @@ export default function HeroSection({
                   <source src={getVideoUrl(selectedVideo)} type="video/mp4" />
                 </video>
               </div>
-              <div ref={tintRef} className="hero-video-overlay" style={{ opacity: 0 }} />
 
 
             </>
