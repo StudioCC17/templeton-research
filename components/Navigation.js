@@ -83,7 +83,7 @@ export default function Navigation({ globalSettings, aboutData }) {
     const pairs = [[g[2], g[5]], [g[1], g[4]], [g[0], g[3]]]
     gsap.set(g, { autoAlpha: 0 })
     pairs.forEach((pair, i) => {
-      gsap.to(pair, { autoAlpha: 1, duration: 0.6, ease: 'power2.out', delay: 0.2 + i * 0.12 })
+      gsap.to(pair, { autoAlpha: 1, duration: 1, ease: 'sine.inOut', delay: 0.2 + i * 0.12 }) // long, overlapping, gentle fades
     })
   }, [showSticky])
 
