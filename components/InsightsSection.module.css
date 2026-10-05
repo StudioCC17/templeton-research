@@ -55,7 +55,7 @@
 }
 
 .intro {
-  max-width: 42em; /* wider column, so it starts further left */
+  max-width: 37em; /* wider column, so it starts further left */
   /* nudge so the last line sits on the heading's baseline */
   padding-bottom: 0.35em;
   padding-right: 5rem; /* sits in from the right edge */
