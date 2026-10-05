@@ -90,9 +90,11 @@ export default function OfficesStrip({ offices = [] }) {
           list-style: none;
           margin: 0;
           padding: 0;
-          display: grid;
-          grid-template-columns: repeat(${cities.length}, 1fr);
-          gap: 1.5rem;
+          /* clocks grouped together in the middle, not spread edge to edge */
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 2.5rem 4.5rem;
         }
         .office {
           display: flex;
@@ -129,8 +131,7 @@ export default function OfficesStrip({ offices = [] }) {
         }
         @media (max-width: 1024px) {
           .offices-list {
-            grid-template-columns: repeat(3, 1fr);
-            row-gap: 2rem;
+            gap: 2rem 3rem;
           }
         }
         @media (max-width: 768px) {
@@ -138,7 +139,7 @@ export default function OfficesStrip({ offices = [] }) {
             padding: 3rem 1.25rem;
           }
           .offices-list {
-            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem 2rem;
           }
         }
       `}</style>
