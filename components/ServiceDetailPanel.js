@@ -479,7 +479,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           cursor: pointer;
           text-align: left;
           font-family: var(--font-body), var(--font-fallback);
-          font-size: var(--step-1);
+          font-size: var(--step-0); /* same size as the What we do items */
           color: var(--color-cream);
         }
         .sd-next-label {
