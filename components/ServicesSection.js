@@ -288,7 +288,8 @@ export default function ServicesSection({ servicesData }) {
         minHeight: '80vh',
         position: 'relative',
         opacity: mounted ? 1 : 0,
-        transition: 'opacity 0.4s ease, background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1)', // colour change runs with the scroll (and header)
+        // Opening: colour change runs with the scroll (and header). Closing: the original quick fade.
+        transition: isDetailOpen ? 'opacity 0.4s ease, background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1)' : 'opacity 0.4s ease, background-color 0.4s ease',
       }}
     >
       <div className={`services-container${isDetailOpen ? ' services-has-expanded' : ''}`} style={{ margin: '0 auto' }}>
@@ -487,12 +488,13 @@ export default function ServicesSection({ servicesData }) {
           width: 1px;
           background-color: var(--color-border);
           transform: translateX(-50%);
-          transition: background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+          transition: background-color 0.4s ease;
         }
 
         /* On the green panel, match the rule above the "Next" link */
         .services-has-expanded .services-split::after {
           background-color: rgba(245, 245, 240, 0.25);
+          transition: background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
         }
 
         .services-left-crossfade {

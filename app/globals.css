@@ -2219,10 +2219,10 @@ display: none
 .navigation--scrolled .nav-contact,
 .navigation--scrolled .nav-logo,
 .navigation--scrolled .locale-button {
-  transition: color 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
+  transition: color 0.4s ease, opacity 0.3s ease;
 }
 .navigation--scrolled .nav-hamburger-line {
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.4s ease;
 }
 nav.navigation.navigation--scrolled.navigation--inverse {
   /* beats the per-section "...-section-scroll { background: cream !important }" rules */
@@ -2230,10 +2230,21 @@ nav.navigation.navigation--scrolled.navigation--inverse {
   border-bottom-color: rgba(245, 245, 240, 0.25); /* same as the open panel's centre line */
 }
 .navigation--scrolled .nav-logo-secondary svg {
-  transition: color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: color 0.4s ease;
 }
 .navigation--inverse .nav-logo-secondary svg {
   color: var(--color-cream) !important;
+  transition: color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+/* Opening uses the slower eased change (in step with the scroll); closing keeps the quick fade above */
+.navigation--inverse .nav-link,
+.navigation--inverse .nav-contact,
+.navigation--inverse .nav-logo,
+.navigation--inverse .locale-button {
+  transition: color 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
+}
+.navigation--inverse .nav-hamburger-line {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .navigation--inverse .nav-link,
 .navigation--inverse .nav-contact,
