@@ -342,6 +342,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                     alignItems: 'center',
                     gap: '0.65rem',
                     cursor: 'pointer',
+                    fontSize: 'var(--step-0)',
                     padding: '0.25rem 0',
                     opacity: isDimmed ? 0.4 : 1,
                     transition: 'opacity 0.4s ease',
@@ -351,8 +352,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   <span
                     aria-hidden="true"
                     style={{
-                      width: '0.75rem',
-                      height: '0.75rem',
+                      width: '0.55em', // scales with the toggle text
+                      height: '0.55em',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -361,10 +362,11 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                       transition: 'color 0.3s ease',
                     }}
                   >
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round">
-                      <line x1="1" y1="6" x2="11" y2="6" />
+                    <svg width="100%" height="100%" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" style={{ overflow: 'visible' }}>
+                      <line x1="1" y1="6" x2="11" y2="6" vectorEffect="non-scaling-stroke" />
                       <line
                         x1="6" y1="1" x2="6" y2="11"
+                        vectorEffect="non-scaling-stroke"
                         style={{
                           transformOrigin: '6px 6px',
                           transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
@@ -379,7 +381,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                         color: isExpanded ? 'var(--color-red)' : 'var(--color-cream)',
                         fontWeight: 400,
                         fontFamily: 'var(--font-body), var(--font-fallback)',
-                        fontSize: 'var(--step-1)', // matches the service titles ("01. ...", "Next")
+                        fontSize: 'var(--step-0)', // a step below the service title for clearer contrast
                         lineHeight: 1.55,
                         margin: '0px',
                         borderBottom: isExpanded ? '0px solid' : '0.5px solid transparent',
