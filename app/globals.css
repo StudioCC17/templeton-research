@@ -509,6 +509,9 @@ p {
 .services-split-footnote {
   position: relative;
   text-decoration: none;
+  /* Fixed line-height so the underline always sits the same distance under
+     the letters, whatever the element or its surroundings */
+  line-height: 1.2;
 }
 .u-link::after,
 .navigation .nav-link::after,
