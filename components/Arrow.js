@@ -1,7 +1,8 @@
 // components/Arrow.js
 // The one arrow used across the site (links, buttons, "next", etc.).
-// Sized in em so it always matches the text it sits beside: it's as tall as a
-// capital letter and sits on the text baseline, so it lines up perfectly inline.
+// Sized in em so it always matches the text it sits beside. It's a small arrow
+// whose top lines up with the top of the capital letters (like a superscript),
+// so it reads as a light marker rather than a full-size glyph.
 // Directions: 'up-right' (default - opens / goes somewhere), 'right', 'left'.
 
 const PATHS = {
@@ -18,19 +19,20 @@ export default function Arrow({ direction = 'up-right', className = '', style = 
       viewBox="4 4 16 16"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.4" // ~0.06em at this size: matches the stroke of regular-weight Acumin
+      strokeWidth="2.1" // ~0.06em at this size: matches the stroke of regular-weight Acumin
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
       style={{
         display: 'inline-block',
-        width: '0.68em', // roughly cap height
-        height: '0.68em',
-        verticalAlign: 'baseline', // sits on the baseline like a letter
+        width: '0.45em',
+        height: '0.45em',
+        // Lift it so its top meets cap height (~0.68em): 0.68 - 0.45 = 0.23em
+        verticalAlign: '0.23em',
         flexShrink: 0,
         overflow: 'visible',
-        [isLeft ? 'marginRight' : 'marginLeft']: '0.3em',
+        [isLeft ? 'marginRight' : 'marginLeft']: '0.2em',
         ...style,
       }}
     >
