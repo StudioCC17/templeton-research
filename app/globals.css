@@ -854,7 +854,7 @@ p.section-paragraph.approach-paragraph {
 
 .nav-left {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   justify-content: flex-start;
   margin-bottom: 2px;
 }
