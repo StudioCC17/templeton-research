@@ -111,11 +111,11 @@ export default function OfficesStrip({ offices = [] }) {
           color: var(--color-red);
         }
         .office-city {
-          /* regular sans in cream */
+          /* regular sans in cream - same size as the footer's Explore / Contact links */
           font-family: var(--font-body), var(--font-fallback);
-          font-size: var(--step-0);
+          font-size: var(--step--1);
           font-weight: 400;
-          line-height: 1.3;
+          line-height: 1.425;
           color: var(--color-cream);
         }
         .office-time {
