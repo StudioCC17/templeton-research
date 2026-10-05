@@ -16,7 +16,7 @@ const PATHS = {
 //  - 'right' / 'left': full text size and vertically centred on the line,
 //    like an en dash, for "next / previous / read more".
 const LOOK = {
-  small: { size: '0.45em', align: '0.23em', stroke: 2.1, gap: '0.2em' }, // top meets cap height
+  small: { size: '0.45em', align: 'calc(0.23em + 2px)', stroke: 2.1, gap: '0.2em' }, // top at cap height, lifted 2px
   full: { size: '0.7em', align: '-0.05em', stroke: 1.4, gap: '0.3em' }, // centre sits ~0.3em above baseline
 }
 
