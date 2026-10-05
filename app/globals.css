@@ -2267,3 +2267,24 @@ nav.navigation.navigation--scrolled.navigation--inverse {
 .team-grid.has-hover .team-member:not(.is-hovered) .team-member-info {
   opacity: 0.6;
 }
+
+/* Team: quiet "N people across N cities" line under the headline */
+.team-reach {
+  margin: 1.25rem 0 0;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--step--1);
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+/* Careers: small red label above the heading (same style as the service numbers) */
+.careers-label {
+  display: block;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--text-preheader-size);
+  font-weight: var(--text-preheader-weight);
+  letter-spacing: 0.03em;
+  color: var(--color-red);
+  margin-bottom: 0.5rem;
+}
+

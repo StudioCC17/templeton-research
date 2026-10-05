@@ -162,6 +162,7 @@ async function getHomepageData() {
           name,
           jobTitle,
           location,
+          linkedin,
           bio
         }
       },
