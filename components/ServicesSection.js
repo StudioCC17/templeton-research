@@ -133,50 +133,42 @@ export default function ServicesSection({ servicesData }) {
   }, [isDetailOpen])
   useEffect(() => () => window.dispatchEvent(new CustomEvent('services-detail', { detail: { open: false } })), [])
 
-  // ── Hover: the row under the cursor opens up a little (GSAP), the arrow slides
-  // in and the other rows fade back. The active row only changes when the
-  // cursor enters another row, so rows shifting as they grow never cause flicker.
+  // ── Hover: the row under the cursor opens up a little, the arrow slides in
+  // and the other rows fade back. Done purely with GPU transforms (no layout
+  // changes), so it stays perfectly smooth: the hovered row's text eases down a
+  // touch and every row below it eases down twice that, opening space above and
+  // below. The active row only changes when the cursor enters another row.
   const listRef = useRef(null)
   const hoverIndexRef = useRef(null)
-  const HOVER_EXTRA_REM = 0.6 // added above and below the hovered row
+  const HOVER_SPACE_REM = 0.6 // extra space above and below the hovered row
 
-  const setRowOpen = (index, open) => {
-    const item = listRef.current?.children[index]
-    const header = item?.querySelector('.service-header')
-    if (!header) return
-    item.classList.toggle('is-hovered', open)
-    if (!header.dataset.basePad) {
-      header.dataset.basePad = parseFloat(getComputedStyle(header).paddingTop) || 24
-    }
-    const base = parseFloat(header.dataset.basePad)
+  const layoutRows = (hovered) => {
+    const items = Array.from(listRef.current?.children || [])
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
-    const pad = open ? base + HOVER_EXTRA_REM * rem : base
-    gsap.to(header, {
-      paddingTop: pad,
-      paddingBottom: pad,
-      duration: open ? 0.7 : 0.6,
-      ease: 'power3.out',
-      overwrite: 'auto',
-      onComplete: open ? undefined : () => {
-        gsap.set(header, { clearProps: 'paddingTop,paddingBottom' })
-        delete header.dataset.basePad
-      },
+    const e = HOVER_SPACE_REM * rem
+    const tween = { duration: 0.9, ease: 'expo.out', overwrite: 'auto', force3D: true }
+    items.forEach((item, j) => {
+      const content = item.querySelector('.service-header > div')
+      const isHovered = hovered === j
+      item.classList.toggle('is-hovered', isHovered)
+      gsap.to(item, { ...tween, y: hovered !== null && j > hovered ? 2 * e : 0 })
+      if (content) gsap.to(content, { ...tween, y: isHovered ? e : 0 })
     })
   }
 
   const hoverRow = (index) => {
     if (!window.matchMedia('(hover: hover)').matches) return
     if (hoverIndexRef.current === index) return
-    if (hoverIndexRef.current !== null) setRowOpen(hoverIndexRef.current, false)
     hoverIndexRef.current = index
     listRef.current?.classList.add('has-hover')
-    setRowOpen(index, true)
+    layoutRows(index)
   }
 
   const leaveList = () => {
-    if (hoverIndexRef.current !== null) setRowOpen(hoverIndexRef.current, false)
+    if (hoverIndexRef.current === null) return
     hoverIndexRef.current = null
     listRef.current?.classList.remove('has-hover')
+    layoutRows(null)
   }
 
   const openDetail = (service, index) => {
@@ -602,6 +594,14 @@ export default function ServicesSection({ servicesData }) {
 
         .service-header {
           padding: 1.5rem 0;
+        }
+
+        /* Hover movement is transform-only (see layoutRows) - keep it on the GPU */
+        @media (hover: hover) {
+          .service-item,
+          .service-header > div {
+            will-change: transform;
+          }
         }
 
         /* Hovered row (set by hoverRow): arrow slides in after the title, other rows fade back */
