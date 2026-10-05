@@ -321,6 +321,11 @@ export default function TeamSection({ teamData, careersData }) {
               alignItems: 'flex-start',
               minHeight: '75vh',
               marginTop: '50px',
+              // Bleed edge to edge: cancel the team section's 1.5% side padding
+              // so the background reaches both sides of the screen (no gap on the right)
+              marginLeft: '-1.5vw',
+              marginRight: '-1.5vw',
+              paddingRight: '1.5vw',
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
               paddingBottom: '1.5rem',
@@ -337,8 +342,8 @@ export default function TeamSection({ teamData, careersData }) {
                 position: 'absolute',
                 top: 0,
                 bottom: 0,
-                left: '-1.5vw',
-                width: 'calc(60% + 1.5vw)',
+                left: 0,
+                width: 'calc(60% - 0.3vw)', // same right edge as before the section went full-bleed
                 overflow: 'hidden',
                 backgroundColor: '#e8e8e3'
               }}
@@ -627,6 +632,10 @@ export default function TeamSection({ teamData, careersData }) {
           .careers-section {
             display: block !important;
             min-height: 0 !important;
+            /* stacked layout: back inside the page padding */
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            padding-right: 0 !important;
           }
 
           .careers-image {
