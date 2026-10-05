@@ -239,11 +239,13 @@ export default function ServicesSection({ servicesData }) {
   // content out, swap, then each side animates back in (left via the SplitText
   // letter fade, right via the panel's own fade-up on item change).
   const switchingRef = useRef(false)
-  const openNext = async () => {
-    if (!nextService || switchingRef.current) return
+  // Move to another service (Next link, or the 01 / 02 / 03 tabs) with the same soft hand-off
+  const switchTo = async (index) => {
+    const target = services[index]
+    if (!target || index === activeIndex || switchingRef.current) return
     switchingRef.current = true
     const done = () => {
-      openDetail(nextService, nextIndex)
+      openDetail(target, index)
       switchingRef.current = false
     }
     try {
@@ -255,6 +257,7 @@ export default function ServicesSection({ servicesData }) {
       done()
     }
   }
+  const openNext = () => { if (nextIndex !== null) switchTo(nextIndex) }
 
   useEffect(() => {
     setMounted(true)
@@ -446,11 +449,15 @@ export default function ServicesSection({ servicesData }) {
 
               </div>{/* end services-left-crossfade */}
 
+              {/* Bottom-left slot: "Get in touch" while browsing; with a service open it
+                  swaps to "All services" + 01 / 02 / 03 tabs (opposite the panel's Next link) */}
+              <div className="services-left-foot">
               <p
                 className="services-split-footnote"
                 onClick={() => window.dispatchEvent(new Event('open-contact-modal'))}
                 style={{
                   opacity: isDetailOpen ? 0 : 1,
+                  pointerEvents: isDetailOpen ? 'none' : 'auto',
                   transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                   cursor: 'pointer',
                   width: 'fit-content',
@@ -458,6 +465,35 @@ export default function ServicesSection({ servicesData }) {
               >
                 <span className="footnote-question">Have a question?</span>{' '}
                 Get in touch<Arrow /></p>
+
+              <nav
+                className="services-detail-nav"
+                aria-label="Services"
+                style={{
+                  opacity: isDetailOpen ? 1 : 0,
+                  pointerEvents: isDetailOpen ? 'auto' : 'none',
+                  transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              >
+                <button type="button" className="sdn-back" onClick={closeDetail}>
+                  <Arrow direction="left" />All services
+                </button>
+                <span className="sdn-tabs">
+                  {services.map((svc, i) => (
+                    <button
+                      key={svc._key || i}
+                      type="button"
+                      className={`sdn-tab${i === activeIndex ? ' is-current' : ''}`}
+                      aria-current={i === activeIndex ? 'true' : undefined}
+                      aria-label={svc.title}
+                      onClick={() => switchTo(i)}
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </button>
+                  ))}
+                </span>
+              </nav>
+              </div>
 
             </div>
           </div>
@@ -605,6 +641,63 @@ export default function ServicesSection({ servicesData }) {
           min-height: calc(80vh - 3rem);
         }
 
+        /* Bottom-left slot - footnote and the open-service nav share the same spot */
+        .services-left-foot {
+          margin-top: auto;
+          display: grid;
+        }
+        .services-left-foot > * {
+          grid-area: 1 / 1;
+          align-self: end;
+        }
+        .services-detail-nav {
+          display: flex;
+          align-items: baseline;
+          gap: 2.5rem;
+          font-family: var(--font-body), var(--font-fallback);
+        }
+        .sdn-back {
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          font-family: var(--font-body), var(--font-fallback);
+          font-size: var(--step-0);
+          color: var(--color-cream);
+        }
+        .sdn-back :global(.arrow) {
+          transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .sdn-back:hover :global(.arrow) {
+          transform: translateX(-3px);
+        }
+        .sdn-tabs {
+          display: flex;
+          gap: 1rem;
+        }
+        .sdn-tab {
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          font-family: var(--font-body), var(--font-fallback);
+          font-size: var(--text-preheader-size);
+          font-weight: var(--text-preheader-weight);
+          letter-spacing: var(--tracking-bold);
+          font-variant-numeric: tabular-nums;
+          color: var(--color-cream);
+          opacity: 0.4;
+          transition: opacity 0.3s ease, color 0.3s ease;
+        }
+        .sdn-tab:hover {
+          opacity: 1;
+        }
+        .sdn-tab.is-current {
+          color: var(--color-red);
+          opacity: 1;
+          cursor: default;
+        }
+
         .services-split-footnote {
           font-family: var(--font-body), var(--font-fallback);
           font-size: var(--step--1); /* small - a quiet secondary prompt */
@@ -612,7 +705,7 @@ export default function ServicesSection({ servicesData }) {
           letter-spacing: var(--tracking-bold);
           color: var(--color-red);
           margin-bottom: 0;
-          margin-top: auto;
+          margin-top: 0;
           line-height: 1.4;
           max-width: 50%;
         }
@@ -750,8 +843,9 @@ export default function ServicesSection({ servicesData }) {
             min-height: 0;
           }
 
-          .services-split-footnote {
-            display: none;
+          .services-split-footnote,
+          .services-detail-nav {
+            display: none; /* phones: the panel's own Next link handles moving on */
           }
 
           .services-split-right {
