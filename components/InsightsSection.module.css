@@ -106,7 +106,8 @@ position: relative;
 
 .tile:hover {
     background-color: var(--color-cream); /* same as the page - the shadow does the lifting */
-    box-shadow: 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
+    /* first layer: a soft glow around the top edge so the tile still reads against the page */
+    box-shadow: 0 -2px 10px -2px rgba(36, 81, 72, 0.1), 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
 }
 
 
