@@ -48,6 +48,9 @@
   --step-5: clamp(2rem, 1.5775rem + 1.8028vw, 3.2rem);
   --step-6: clamp(2.25rem, 1.7218rem + 2.2535vw, 3.75rem);
 
+  /* Service titles sit between step 1 and step 2 (about 18-21px) */
+  --text-service-title-size: clamp(1.1rem, 1.0296rem + 0.3005vw, 1.3rem);
+
   /* Line heights - tighter as text gets bigger */
   --leading-tight: 1.1;   /* display, hero */
   --leading-snug: 1.25;   /* headings */
@@ -286,7 +289,7 @@ font-size: var(--step-4) !important;
 }
 
 .service-item h3 {
-     font-size: var(--step-1)!important;
+     font-size: var(--text-service-title-size)!important;
 }
 
 .random-image-grid-section {
