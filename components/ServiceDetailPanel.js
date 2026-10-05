@@ -301,6 +301,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--text-service-title-size)', // same size as in the services list
+                  fontWeight: 600, // bold once the service is open
                   color: 'var(--color-cream)',
                 }}
               >
