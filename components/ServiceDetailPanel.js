@@ -444,7 +444,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             <button type="button" className="sd-next" onClick={onNext}>
               <span className="sd-next-label">
                 Next
-                {nextNumber && <span style={{ marginLeft: '0.75em' }}>{nextNumber}</span>}
+                {nextNumber && <span style={{ marginLeft: '0.75em' }}>{nextNumber}{total ? `/${total}` : ''}</span>}
               </span>
               <span className="u-link">
                 {nextTitle}
