@@ -453,7 +453,7 @@ export default function ServicesSection({ servicesData }) {
                             style={{
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: 'var(--text-service-title-size)',
-                              fontWeight: 400,
+                              fontWeight: 600, // bold, matching the open service panel
                               lineHeight: 1.4,
                               color: 'var(--color-red)',
                               margin: 0,
