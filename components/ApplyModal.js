@@ -170,8 +170,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
     fontWeight: 600,
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
-    color: '#245148',
-    opacity: 0.55,
+    color: 'var(--color-red)', // red labels, like the preheaders elsewhere
 
   }
 

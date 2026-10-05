@@ -125,8 +125,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
     fontWeight: 600,
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
-    color: '#245148',
-    opacity: 0.55,
+    color: 'var(--color-red)', // red labels, like the preheaders elsewhere
 
   }
 
