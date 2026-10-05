@@ -22,12 +22,14 @@ const bodyComponents = {
     normal: ({ children }) => (
       <p
         style={{
-          color: 'var(--color-cream)',
-          fontFamily: 'var(--font-heading), var(--font-fallback)',
-          fontSize: 'var(--text-service-title-size)', // between step 1 and 2 (about 18-21px)
+          // Answers in the body font (was Minion) - to switch back, use
+          // fontFamily 'var(--font-heading)' and fontSize 'var(--text-service-title-size)'
+          color: 'rgba(245, 245, 240, 0.85)', // softened cream
+          fontFamily: 'var(--font-body), var(--font-fallback)',
+          fontSize: 'var(--step-0)',
           fontWeight: 400,
-          lineHeight: 1.472,
-          marginBottom: '1.1rem',
+          lineHeight: 1.425,
+          marginBottom: '1rem',
         }}
       >
         {children}
@@ -60,9 +62,9 @@ const bodyComponents = {
     bullet: ({ children }) => (
       <li
         style={{
-          color: 'var(--color-cream)',
+          color: 'rgba(245, 245, 240, 0.85)',
           fontFamily: 'var(--font-body), var(--font-fallback)',
-          fontSize: 'var(--step-1)',
+          fontSize: 'var(--step-0)', // matches the answer paragraphs
           lineHeight: 1.472,
           marginBottom: '0.4rem',
         }}
