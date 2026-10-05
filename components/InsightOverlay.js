@@ -5,7 +5,8 @@
 
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
+import gsap from 'gsap'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { client } from '@/lib/sanity'
 import InsightArticle from './InsightArticle'
@@ -91,6 +92,8 @@ export default function InsightOverlay() {
   const [isMounted, setIsMounted] = useState(false)
 
   const overlayRef = useRef(null)
+  const backdropRef = useRef(null)
+  const closingRef = useRef(false)
   const scrollContainerRef = useRef(null)
   const closeButtonRef = useRef(null)
   const previousFocusRef = useRef(null)
@@ -107,18 +110,36 @@ export default function InsightOverlay() {
     }
   }, [isOpen])
 
-  // Mount/unmount visibility states. Forcing a synchronous reflow (reading
-  // offsetHeight) flushes the initial hidden state to the browser, so when we
-  // immediately flip to the visible class the transition still fires — but
-  // without waiting the ~2 frames a double-rAF costs, so the open feels instant.
-  useEffect(() => {
+  // ---------- GSAP open animation ----------
+  // Backdrop fades in while the panel glides up. Runs before paint
+  // (useLayoutEffect) so there's no flash of the panel in its final position.
+  const reduceMotion = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  useLayoutEffect(() => {
     if (!isOpen) {
       setIsMounted(false)
       return
     }
-    // Read layout to commit the hidden starting state, then reveal.
-    if (overlayRef.current) void overlayRef.current.offsetHeight
+    if (isMounted) return // already open (e.g. moving between articles)
+    const overlay = overlayRef.current
+    const backdrop = backdropRef.current
+    if (!overlay || !backdrop) return
+    closingRef.current = false
     setIsMounted(true)
+
+    const fast = reduceMotion()
+    const tl = gsap.timeline({ defaults: { overwrite: true } })
+    tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: fast ? 0.15 : 0.6, ease: 'power2.out' }, 0)
+    tl.fromTo(
+      overlay,
+      { autoAlpha: 0, yPercent: fast ? 0 : 4 },
+      { autoAlpha: 1, yPercent: 0, duration: fast ? 0.15 : 0.9, ease: 'expo.out', force3D: true },
+      fast ? 0 : 0.05
+    )
+    return () => tl.kill()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
   // ---------- Body scroll lock ----------
@@ -182,15 +203,34 @@ export default function InsightOverlay() {
     }
   }, [activeSlug])
 
+  // ---------- GSAP content reveal ----------
+  // Once an article has loaded, its header lines (title, excerpt, meta) rise in
+  // one after another, then the body follows. Also runs when moving between articles.
+  useLayoutEffect(() => {
+    if (status !== 'ready' || !scrollContainerRef.current) return
+    const root = scrollContainerRef.current
+    const headerBits = root.querySelectorAll('article > header > *')
+    const rest = root.querySelectorAll(':scope > article > :not(header), :scope > nav')
+    if (reduceMotion()) return
+    const tl = gsap.timeline({ delay: 0.1 })
+    if (headerBits.length) {
+      tl.fromTo(headerBits, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.07 })
+    }
+    if (rest.length) {
+      tl.fromTo(rest, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05 }, '-=0.6')
+    }
+    return () => tl.kill()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, article])
+
   // ---------- Close handler ----------
 
   const handleClose = useCallback(() => {
-    // Trigger the fade-out (drops the *Visible classes), then remove the
-    // ?article param only once the opacity transition has finished, so the
-    // overlay animates out instead of disappearing instantly.
-    setIsMounted(false)
+    if (closingRef.current) return
+    closingRef.current = true
 
     const finish = () => {
+      setIsMounted(false)
       const params = new URLSearchParams(searchParams.toString())
       params.delete('article')
       const queryString = params.toString()
@@ -205,27 +245,21 @@ export default function InsightOverlay() {
       previousFocusRef.current = null
     }
 
-    const node = overlayRef.current
-    if (!node) {
+    const overlay = overlayRef.current
+    const backdrop = backdropRef.current
+    if (!overlay || !backdrop) {
       finish()
       return
     }
 
-    let done = false
-    const complete = () => {
-      if (done) return
-      done = true
-      node.removeEventListener('transitionend', onEnd)
-      finish()
-    }
-    const onEnd = (e) => {
-      if (e.target === node && e.propertyName === 'opacity') complete()
-    }
-    node.addEventListener('transitionend', onEnd)
-    // Fallback in case transitionend never fires (e.g. reduced motion).
-    // Must exceed the CSS close duration (640ms) so it never chops the
-    // animation short — transitionend is the real trigger; this is just a guard.
-    setTimeout(complete, 820)
+    // Panel sinks and fades slightly faster than the backdrop clears, then the
+    // ?article param is removed once everything has finished animating.
+    const fast = reduceMotion()
+    gsap
+      .timeline({ onComplete: finish, defaults: { overwrite: true } })
+      .to(overlay, { autoAlpha: 0, yPercent: fast ? 0 : 3, duration: fast ? 0.15 : 0.45, ease: 'power3.in' }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: fast ? 0.15 : 0.5, ease: 'power2.inOut' }, fast ? 0 : 0.1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router, searchParams])
 
   // ---------- Navigate to another article ----------
@@ -292,14 +326,15 @@ export default function InsightOverlay() {
   return (
     <>
       <div
-        className={`${styles.backdrop} ${isMounted ? styles.backdropVisible : ''}`}
+        ref={backdropRef}
+        className={styles.backdrop}
         onClick={handleClose}
         aria-hidden="true"
       />
 
       <div
         ref={overlayRef}
-        className={`${styles.overlay} ${isMounted ? styles.overlayVisible : ''}`}
+        className={styles.overlay}
         role="dialog"
         aria-modal="true"
         aria-label={article?.title || 'Article'}

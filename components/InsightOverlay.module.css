@@ -16,12 +16,9 @@
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 1000;
+  /* Starts hidden - GSAP (InsightOverlay.js) animates it in and out */
   opacity: 0;
-  transition: opacity 0.3s ease-out;
-}
-
-.backdropVisible {
-  opacity: 1;
+  visibility: hidden;
 }
 
 /* ============================================================
@@ -33,21 +30,14 @@
   inset: 0;
   z-index: 1001;
 
-  /* Slide-and-fade in */
+  /* Starts hidden - GSAP (InsightOverlay.js) animates it in and out */
   opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.4s ease-out,
-    transform 0.4s ease-out;
+  visibility: hidden;
+  will-change: transform, opacity;
 
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.overlayVisible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* ============================================================
@@ -308,39 +298,5 @@ border-top: 1px solid var(--color-border);
   .loadingDot {
     animation: none;
     opacity: 0.6;
-  }
-}
-
-/* ── Backdrop ── */
-.backdrop {
-  /* keep your position / background / z-index, then: */
-  opacity: 0;
-  will-change: opacity;
-  transition: opacity 640ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.backdropVisible {
-  opacity: 1;
-}
-
-/* ── Overlay panel ── */
-.overlay {
-  /* keep your position: fixed / inset / background / z-index, then: */
-  opacity: 0;
-  transform: translateY(24px);
-  will-change: transform, opacity;
-  transition:
-    opacity 640ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.overlayVisible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .overlay,
-  .backdrop {
-    transition: opacity 200ms linear;
-    transform: none;
   }
 }
