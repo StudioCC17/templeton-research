@@ -647,10 +647,15 @@ export default function TeamSection({ teamData, careersData }) {
           margin-top: 3.5rem;
         }
         @media (min-width: 1025px) {
+          /* Heading sits the same distance from the top as the text is from the image */
+          .careers-section {
+            padding-top: 0 !important;
+          }
           .careers-content {
             display: flex;
             flex-direction: column;
             align-self: stretch;
+            padding-top: 3.5vw !important;
           }
           .careers-buttons {
             margin-top: auto;
