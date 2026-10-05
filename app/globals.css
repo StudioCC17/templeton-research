@@ -2256,3 +2256,12 @@ nav.navigation.navigation--scrolled.navigation--inverse {
   background-color: var(--color-cream);
 }
 
+/* Team grid hover: other people fade back so the one you're on stands out
+   (classes set in TeamSection - same feel as the services list) */
+.team-member-info {
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.team-grid.has-hover .team-member:not(.is-hovered) .team-member-info {
+  opacity: 0.6;
+}
+

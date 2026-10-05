@@ -22,6 +22,24 @@ export default function TeamSection({ teamData, careersData }) {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const headlineRef = useRef(null)
 
+  // Hover: the other team members fade back (like the services list). The
+  // hovered person only changes when the cursor enters another name, so
+  // crossing the gaps between them doesn't flicker.
+  const gridRef = useRef(null)
+  const hoverMember = (index) => {
+    if (!window.matchMedia('(hover: hover)').matches) return
+    const grid = gridRef.current
+    if (!grid) return
+    grid.classList.add('has-hover')
+    Array.from(grid.children).forEach((el, i) => el.classList.toggle('is-hovered', i === index))
+  }
+  const leaveGrid = () => {
+    const grid = gridRef.current
+    if (!grid) return
+    grid.classList.remove('has-hover')
+    Array.from(grid.children).forEach((el) => el.classList.remove('is-hovered'))
+  }
+
   const openModal = (member) => {
     setSelectedMember(member)
     requestAnimationFrame(() => {
@@ -190,6 +208,8 @@ export default function TeamSection({ teamData, careersData }) {
 
         {/* Team Members Grid - 4 columns */}
         <div 
+          ref={gridRef}
+          onMouseLeave={leaveGrid}
           className="team-grid"
           style={{
             display: 'grid',
@@ -204,6 +224,7 @@ export default function TeamSection({ teamData, careersData }) {
               key={getUniqueKey(member, index)} 
               className="team-member"
               onClick={() => openModal(member)}
+              onMouseEnter={() => hoverMember(index)}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
