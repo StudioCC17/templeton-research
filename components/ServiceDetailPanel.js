@@ -439,7 +439,6 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             <button type="button" className="sd-next" onClick={onNext}>
               <span className="sd-next-label">
                 Next
-                {nextNumber && <span style={{ marginLeft: '0.75em' }}>{nextNumber}</span>}
               </span>
               <span className="u-link">
                 {/* Last word + arrow kept together so the arrow never drops onto a line on its own */}
