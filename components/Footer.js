@@ -181,6 +181,30 @@ function FooterInner({ footerData }) {
                 Follow us on LinkedIn
 <Arrow />
               </a>
+              {/* Careers lives in the footer (not the header menu) - scrolls to the careers block */}
+              <a 
+                href="#careers"
+                onClick={(e) => {
+                  const el = document.getElementById('careers')
+                  if (!el) return
+                  e.preventDefault()
+                  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' })
+                }}
+                style={{
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: 'var(--step--1)',
+                  fontWeight: 600,
+                  color: 'var(--color-cream)',
+                  lineHeight: 1.425,
+                  textDecoration: 'none',
+                  position: 'relative',
+                  display: 'inline-block',
+                  cursor: 'pointer'
+                }}
+              >
+                Careers
+<Arrow />
+              </a>
               
             </div>
 

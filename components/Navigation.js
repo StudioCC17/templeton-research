@@ -72,7 +72,6 @@ export default function Navigation({ globalSettings, aboutData }) {
     { label: 'About', href: '#approach', section: 'approach' },
     { label: 'Services', href: '#services', section: 'services' },
     { label: 'Team', href: '#team', section: 'team' },
-    { label: 'Careers', href: '#careers', section: 'careers' },
     { label: 'Insights', href: '#insights', section: 'insights' }
   ]
 
