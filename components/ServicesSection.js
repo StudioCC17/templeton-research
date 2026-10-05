@@ -5,14 +5,15 @@
 
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { PortableText } from '@portabletext/react'
 import ServiceDetailPanel from '@/components/ServiceDetailPanel'
 import Arrow from '@/components/Arrow'
 import gsap from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollToPlugin)
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger)
 
 // Placeholder supporting line — swap for a real Sanity field (e.g. `summary`) later.
 const SERVICE_FILL =
@@ -170,6 +171,54 @@ export default function ServicesSection({ servicesData }) {
     listRef.current?.classList.remove('has-hover')
     layoutRows(null)
   }
+
+  // ── Scroll-in: the service list builds in row by row as it comes into view.
+  // In each row the number fades up, the title rises out of a mask, then the
+  // summary follows - one long, soft expo ease. Runs once.
+  // (Layout effect so the hidden start state is set before the first paint - no flash.)
+  useLayoutEffect(() => {
+    const list = listRef.current
+    if (!list) return
+    const rows = Array.from(list.children)
+    const parts = (row) => [
+      row.querySelector('.service-count'),
+      row.querySelector('.service-title'),
+      row.querySelector('.service-summary'),
+    ]
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      rows.forEach((row) => {
+        const [num, title, summary] = parts(row)
+        gsap.set([num, summary], { autoAlpha: 0, y: 16 })
+        gsap.set(title, { autoAlpha: 0, y: 28, clipPath: 'inset(0% 0% 100% 0%)' })
+      })
+
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: 'expo.out' },
+      })
+      rows.forEach((row, i) => {
+        const [num, title, summary] = parts(row)
+        const at = i * 0.16 // each row a beat after the last
+        tl.to(num, { autoAlpha: 1, y: 0, duration: 1.1 }, at)
+          .to(title, { autoAlpha: 1, y: 0, clipPath: 'inset(0% 0% -10% 0%)', duration: 1.5 }, at + 0.08)
+          .to(summary, { autoAlpha: 1, y: 0, duration: 1.3 }, at + 0.2)
+      })
+      tl.eventCallback('onComplete', () => {
+        gsap.set(rows.flatMap(parts), { clearProps: 'transform,clipPath,visibility,opacity' })
+      })
+
+      ScrollTrigger.create({
+        trigger: list,
+        start: 'top 82%',
+        once: true,
+        onEnter: () => tl.play(),
+      })
+    }, list)
+
+    return () => ctx.revert()
+  }, [])
 
   const openDetail = (service, index) => {
     if (!isDetailOpen) scrollSectionToTop()
