@@ -2264,9 +2264,3 @@ nav.navigation.navigation--scrolled.navigation--inverse {
 .team-grid.has-hover .team-member:not(.is-hovered) .team-member-info {
   opacity: 0.6;
 }
-
-/* Header nav items (About us / Services / Team): medium weight for a touch more presence */
-.navigation .nav-link {
-  font-weight: 500;
-}
-
