@@ -450,7 +450,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
         /* Hovering the list: the other items fade back (like the services list);
            the one you're on - and its open text - stays at full strength */
         .sd-toggle-list:hover .sd-card:not(:hover) .sd-toggle-header {
-          opacity: 0.6 !important;
+          opacity: 0.45 !important;
         }
         .sd-toggle-list .sd-card:hover .sd-toggle-header {
           opacity: 1 !important;
