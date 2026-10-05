@@ -7,7 +7,7 @@
 
 'use client'
 
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -62,6 +62,37 @@ export default function Navigation({ globalSettings, aboutData }) {
   }, [servicesOpen])
   const headerInverse = servicesOpen && overServices
   const showSticky = showSecondaryNav || headerInverse
+
+  // Each time the sticky header slides in, its logo lines draw themselves in from
+  // the centre outwards: the inner pair first, then the middle, then the outer pair.
+  // Resets when the header goes away, so it replays next time.
+  const stickyLogoRef = useRef(null)
+  useEffect(() => {
+    const svg = stickyLogoRef.current
+    if (!svg) return
+    const paths = svg.querySelectorAll('path')
+    gsap.killTweensOf(paths)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(paths, { strokeDasharray: 1, strokeDashoffset: 0 })
+      return
+    }
+    if (!showSticky) {
+      gsap.set(paths, { strokeDasharray: 1, strokeDashoffset: 1 }) // hidden, ready to draw
+      return
+    }
+    gsap.fromTo(
+      paths,
+      { strokeDasharray: 1, strokeDashoffset: 1 },
+      {
+        strokeDashoffset: 0,
+        duration: 0.75,
+        ease: 'power3.inOut',
+        delay: 0.2,
+        // pairs: (0,1) centre, (2,3) middle, (4,5) outer
+        stagger: (i) => Math.floor(i / 2) * 0.1,
+      }
+    )
+  }, [showSticky])
 
 
   // Let other components (e.g. the footer) open the contact modal.
@@ -575,38 +606,30 @@ export default function Navigation({ globalSettings, aboutData }) {
                 alignItems: 'center'
               }}
             >
+              {/* Sticky-header logo drawn as strokes (same shape as the filled logo) so the
+                  lines can draw themselves in - see the effect near the top */}
               <svg 
+                ref={stickyLogoRef}
                 viewBox="0 0 283.05 227.86" 
                 className="nav-logo-svg"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="4.68"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 style={{
                   width: '60px',
-                  height: '40px'
+                  height: '40px',
+                  overflow: 'visible'
                 }}
               >
-                <g>
-                  <path d="M128.1,227.61c-1.17,0-2.34-1.17-2.34-2.34V5.52H3.17C1.42,5.52.25,4.35.25,2.59.25,1.42,1.42.25,2.59.25h124.93c1.17,0,2.34,1.17,2.34,2.34v222.09c.58,1.76-.58,2.93-1.75,2.93" fill="currentColor"></path>
-                  <path d="M128.11,227.86v-.5c.514,0,1.007-.257,1.319-.688.365-.505.434-1.185.194-1.914l-.013-.078V2.59c0-1.035-1.055-2.09-2.09-2.09H2.59C1.555.5.5,1.555.5,2.59c0,1.628,1.048,2.68,2.67,2.68h122.84v220c0,1.035,1.055,2.09,2.09,2.09v.5c-1.307,0-2.59-1.283-2.59-2.59V5.77H3.17c-1.896,0-3.17-1.278-3.17-3.18C0,1.283,1.283,0,2.59,0h124.93c1.307,0,2.59,1.283,2.59,2.59v222.051c.276.871.179,1.695-.276,2.324-.405.561-1.049.895-1.724.895Z" fill="currentColor"></path>
-                </g>
-                <g>
-                  <path d="M100.08,227.61c-1.17,0-2.34-1.17-2.34-2.34V33.07H2.59c-1.17,0-2.34-1.17-2.34-2.34s1.17-2.34,2.34-2.34h96.91c1.17,0,2.34,1.17,2.34,2.34v193.96c.58,1.76-.58,2.93-1.75,2.93" fill="currentColor"></path>
-                  <path d="M100.09,227.87v-.5c.514,0,1.007-.257,1.318-.688.366-.505.435-1.186.194-1.915l-.013-.078V30.73c0-1.035-1.055-2.09-2.09-2.09H2.59c-1.035,0-2.09,1.055-2.09,2.09s1.055,2.09,2.09,2.09h95.4v192.45c0,1.035,1.055,2.09,2.09,2.09v.5c-1.307,0-2.59-1.283-2.59-2.59V33.32H2.59c-1.307,0-2.59-1.283-2.59-2.59s1.283-2.59,2.59-2.59h96.91c1.307,0,2.59,1.283,2.59,2.59v193.92c.276.871.179,1.695-.276,2.325-.405.561-1.049.895-1.724.895Z" fill="currentColor"></path>
-                </g>
-                <g>
-                  <path d="M72.06,227.61c-1.17,0-2.34-1.17-2.34-2.34V61.19H2.59c-1.17,0-2.34-1.17-2.34-2.34s1.17-2.34,2.34-2.34h69.47c1.17,0,2.34,1.17,2.34,2.34v166.42c0,1.17-1.17,2.34-2.34,2.34" fill="currentColor"></path>
-                  <path d="M72.06,227.86c-1.307,0-2.59-1.283-2.59-2.59V61.44H2.59c-1.307,0-2.59-1.283-2.59-2.59s1.283-2.59,2.59-2.59h69.47c1.307,0,2.59,1.283,2.59,2.59v166.42c0,1.307-1.283,2.59-2.59,2.59ZM2.59,56.76c-1.035,0-2.09,1.055-2.09,2.09s1.055,2.09,2.09,2.09h67.38v164.33c0,1.035,1.055,2.09,2.09,2.09s2.09-1.055,2.09-2.09V58.85c0-1.035-1.055-2.09-2.09-2.09H2.59Z" fill="currentColor"></path>
-                </g>
-                <g>
-                  <path d="M155.54,227.61c-1.17,0-2.34-1.17-2.34-2.34V2.59c0-1.17,1.17-2.34,2.34-2.34h124.93c1.17,0,2.34,1.17,2.34,2.34s-1.17,2.34-2.34,2.34h-122.6v219.74c0,1.76-1.17,2.93-2.34,2.93" fill="currentColor"></path>
-                  <path d="M155.54,227.86c-1.307,0-2.59-1.283-2.59-2.59V2.59C152.95,1.283,154.233,0,155.54,0h124.93c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-122.35v219.49c0,1.959-1.337,3.173-2.58,3.18v.01ZM155.54.5c-1.035,0-2.09,1.055-2.09,2.09v222.68c0,1.032,1.048,2.083,2.08,2.09v-.01c1.005,0,2.09-1.024,2.09-2.68V4.68h122.85c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-124.93Z" fill="currentColor"></path>
-                </g>
-                <g>
-                  <path d="M183.56,227.61c-1.17,0-2.34-1.17-2.34-2.34V30.72c0-1.17,1.17-2.34,2.34-2.34h96.91c1.17,0,2.34,1.17,2.34,2.34s-1.17,2.34-2.34,2.34h-94.57v191.62c0,1.76-1.17,2.93-2.34,2.93" fill="currentColor"></path>
-                  <path d="M183.56,227.86c-1.307,0-2.59-1.283-2.59-2.59V30.72c0-1.307,1.283-2.59,2.59-2.59h96.91c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-94.319v191.37c0,1.964-1.345,3.18-2.591,3.18ZM183.56,28.63c-1.035,0-2.09,1.055-2.09,2.09v194.55c0,1.035,1.055,2.09,2.09,2.09,1.006,0,2.091-1.024,2.091-2.68V32.81h94.819c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-96.91Z" fill="currentColor"></path>
-                </g>
-                <g>
-                  <path d="M211,227.61c-1.17,0-2.34-1.17-2.34-2.34V58.85c0-1.17,1.17-2.34,2.34-2.34h69.47c1.17,0,2.34,1.17,2.34,2.34s-1.17,2.34-2.34,2.34h-66.55v163.49c0,1.76-1.17,2.93-2.92,2.93" fill="currentColor"></path>
-                  <path d="M211,227.86c-1.307,0-2.59-1.283-2.59-2.59V58.85c0-1.307,1.283-2.59,2.59-2.59h69.47c1.307,0,2.59,1.283,2.59,2.59s-1.283,2.59-2.59,2.59h-66.3v163.24c0,1.902-1.273,3.18-3.17,3.18ZM211,56.76c-1.035,0-2.09,1.055-2.09,2.09v166.42c0,1.035,1.055,2.09,2.09,2.09,1.622,0,2.67-1.052,2.67-2.68V60.94h66.8c1.035,0,2.09-1.055,2.09-2.09s-1.055-2.09-2.09-2.09h-69.47Z" fill="currentColor"></path>
-                </g>
+                {/* inner pair first in the DOM: drawn centre-out, each from its foot up then outwards */}
+                <path pathLength="1" d="M127.8 225.27V2.59H2.59" />
+                <path pathLength="1" d="M155.54 225.27V2.59H280.47" />
+                <path pathLength="1" d="M99.79 225.27V30.73H2.59" />
+                <path pathLength="1" d="M183.56 225.27V30.73H280.47" />
+                <path pathLength="1" d="M72.06 225.27V58.85H2.59" />
+                <path pathLength="1" d="M211 225.27V58.85H280.47" />
               </svg>
             </button>
           </div>
