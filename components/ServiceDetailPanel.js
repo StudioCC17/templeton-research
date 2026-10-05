@@ -382,7 +382,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   {card.title && (
                     <h3
                       style={{
-                        color: isExpanded ? 'var(--color-red)' : 'var(--color-cream)',
+                        color: 'var(--color-cream)', // open title stays cream for contrast; the red minus marks it open
                         fontWeight: 400,
                         fontFamily: 'var(--font-body), var(--font-fallback)',
                         fontSize: 'var(--step-0)', // a step below the service title for clearer contrast
@@ -409,8 +409,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                     overflow: 'hidden',
                   }}
                 >
-                  {/* maxWidth keeps the answer to a comfortable ~65 characters a line */}
-                  <div style={{ padding: '0.5rem 0 0.75rem 1.125rem', maxWidth: '34em' }}>
+                  {/* maxWidth keeps the answer to a comfortable ~65-70 characters a line */}
+                  <div style={{ padding: '0.5rem 0 0.75rem 1.125rem', maxWidth: '30em' }}>
                     {card.body && <PortableText value={card.body} components={bodyComponents} />}
                   </div>
                 </div>
