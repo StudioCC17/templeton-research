@@ -148,9 +148,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
 
   const fieldStyle = {
     width: '100%',
-    background: 'transparent',
+    backgroundColor: 'transparent', // the underline is drawn by .form-field (globals.css)
     border: 'none',
-    borderBottom: '1px solid rgba(36, 81, 72, 0.3)',
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -160,7 +159,6 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
     color: '#245148',
     outline: 'none',
     appearance: 'none',
-    transition: 'border-color 0.25s ease',
   }
 
   const labelStyle = {
@@ -280,9 +278,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                   required
                   value={form.name}
                   onChange={handleChange}
+                  className="form-field"
                   style={fieldStyle}
-                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
-                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
                 />
               </div>
 
@@ -295,9 +292,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                   required
                   value={form.email}
                   onChange={handleChange}
+                  className="form-field"
                   style={fieldStyle}
-                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
-                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
                 />
               </div>
 
@@ -362,9 +358,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                   rows={4}
                   value={form.message}
                   onChange={handleChange}
+                  className="form-field"
                   style={{ ...fieldStyle, resize: 'vertical', minHeight: '90px' }}
-                  onFocus={(e) => (e.target.style.borderBottomColor = '#245148')}
-                  onBlur={(e) => (e.target.style.borderBottomColor = 'rgba(36, 81, 72, 0.3)')}
                 />
               </div>
 

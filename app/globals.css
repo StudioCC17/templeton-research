@@ -598,6 +598,21 @@ p {
   content: none;
 }
 
+/* Form fields: faint green underline at rest; on focus a red line draws in
+   from the left over it (same ease as the link underlines) */
+.form-field {
+  background-image:
+    linear-gradient(var(--color-red), var(--color-red)),
+    linear-gradient(rgba(36, 81, 72, 0.3), rgba(36, 81, 72, 0.3));
+  background-repeat: no-repeat;
+  background-position: left bottom, left bottom;
+  background-size: 0% 1px, 100% 1px;
+  transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.form-field:focus {
+  background-size: 100% 1px, 100% 1px;
+}
+
 /* Navigation loaded state - fades in */
 .navigation--loaded {
   opacity: 1;
