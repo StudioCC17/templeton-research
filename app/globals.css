@@ -2288,6 +2288,7 @@ nav.navigation.navigation--scrolled.navigation--inverse {
 }
 .splash-logo {
   width: clamp(48px, 5vw, 64px); /* small and quiet */
+  margin-bottom: 8vh; /* sits a little above centre (optical centre) */
   height: auto;
   overflow: visible;
 }
