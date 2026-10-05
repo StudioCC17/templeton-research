@@ -19,8 +19,8 @@ const CV_TYPES = {
 }
 
 const TYPES = {
-  cv: { to: 'careers@templetonresearch.com', label: 'CV submission' },
-  internship: { to: 'internships@templetonresearch.com', label: 'Internship application' },
+  cv: { to: 'careers@templetonresearch.com, marko@templetonresearch.com', label: 'CV submission' },
+  internship: { to: 'internships@templetonresearch.com, marko@templetonresearch.com', label: 'Internship application' },
 }
 
 // APPLY_TO_EMAIL (Vercel env) overrides the recipient for both types -
