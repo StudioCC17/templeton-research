@@ -92,7 +92,8 @@ position: relative;
     /* Starts hidden - GSAP (InsightsSection.js) brings the tiles in on scroll.
        Only the hover colour is a CSS transition, with no delay. */
     opacity: 0;
-    transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     background-color: #2451480d;
     border: 1px solid rgb(224, 224, 224); /* same hairline as the Careers section */
     border-radius: 14px;
@@ -104,6 +105,7 @@ position: relative;
 
 .tile:hover {
     background-color: #ffffffa3;
+    border-color: #ffffff;
 }
 
 
