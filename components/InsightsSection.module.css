@@ -110,8 +110,8 @@ position: relative;
 }
 
 .tile:hover {
-    /* Hover: a touch darker (soft brand-green tint over the section colour) */
-    background-color: #24514812;
+    /* Hover: lighter still - a near-white warm cream */
+    background-color: #fbfbf8;
 }
 
 
