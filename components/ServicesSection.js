@@ -379,7 +379,7 @@ export default function ServicesSection({ servicesData }) {
                             }}
                           >
                             {service.title}
-                            <Arrow className="service-arrow" />
+                            <Arrow className="service-arrow" style={{ verticalAlign: 'calc(0.23em + 2px)' }} />
                           </h3>
                           <p
                             className="service-summary"
