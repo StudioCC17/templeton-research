@@ -648,6 +648,9 @@ export default function ServicesSection({ servicesData }) {
           align-self: end;
         }
         .services-detail-nav {
+          /* sits above the panel's click-to-close overlay (z-index 50), so the numbers are clickable */
+          position: relative;
+          z-index: 60;
           display: flex;
           align-items: baseline;
           gap: 2.5rem;
