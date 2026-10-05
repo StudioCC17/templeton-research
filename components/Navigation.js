@@ -436,24 +436,17 @@ export default function Navigation({ globalSettings, aboutData }) {
 
           <div className="nav-right" data-nav-intro="nav-right">
        
+            {/* Contact: outlined red button with arrow - styled in globals.css (.nav-contact) */}
             <button 
+              type="button"
               onClick={() => setIsContactModalOpen(true)}
-              className="nav-link"
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                opacity: 1,
-                transition: 'all 0.3s ease',
-                marginLeft: '1.5rem',
-                fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: 'var(--step-1)',
-                fontWeight: '400',
-                color: '#245148',
-                textDecoration: 'none'
-              }}
+              className="nav-contact"
             >
               Contact
+              <svg className="nav-contact-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M7 17L17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
             </button>
           </div>
         </div>
@@ -573,24 +566,17 @@ export default function Navigation({ globalSettings, aboutData }) {
 
           <div className="nav-right">
     
+            {/* Contact: outlined red button with arrow - styled in globals.css (.nav-contact) */}
             <button 
+              type="button"
               onClick={() => setIsContactModalOpen(true)}
-              className="nav-link"
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                opacity: 1,
-                transition: 'all 0.3s ease',
-                marginLeft: '1.5rem',
-                fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: 'var(--step-1)',
-                fontWeight: '400',
-                color: '#245148',
-                textDecoration: 'none'
-              }}
+              className="nav-contact"
             >
               Contact
+              <svg className="nav-contact-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M7 17L17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
             </button>
             
           </div>
