@@ -121,8 +121,10 @@ export default function ServicesSection({ servicesData }) {
     const section = sectionRef.current
     if (!section) return
     const header = document.querySelector('nav.navigation--scrolled')
-    const headerH = header ? header.offsetHeight : 0
-    const target = Math.round(section.getBoundingClientRect().top + window.scrollY - headerH)
+    const headerH = header ? header.getBoundingClientRect().height : 0
+    // Tuck the section 2px under the header so sub-pixel rounding can never leave
+    // a hairline gap (where the video above would show through)
+    const target = Math.ceil(section.getBoundingClientRect().top + window.scrollY - headerH) + 2
     if (Math.abs(window.scrollY - target) < 2) return
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     // Same 0.7s / power3.inOut as the section + header colour change, so they move together
