@@ -34,7 +34,34 @@ export default function Navigation({ globalSettings, aboutData }) {
     window.addEventListener('services-detail', onServices)
     return () => window.removeEventListener('services-detail', onServices)
   }, [])
-  const showSticky = showSecondaryNav || servicesOpen
+  // Only go green while the header is actually over the Services section -
+  // scroll away (with a service still open) and it fades back to cream
+  const [overServices, setOverServices] = useState(false)
+  useEffect(() => {
+    if (!servicesOpen) { setOverServices(false); return }
+    const check = () => {
+      const el = document.getElementById('services')
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      const line = 60 // roughly the sticky header's height
+      setOverServices(r.top <= line && r.bottom > line)
+    }
+    // On open the page is gliding up to the section, so go green straight away
+    // (in step with the scroll) and only start checking once it has arrived
+    setOverServices(true)
+    const start = setTimeout(() => {
+      check()
+      window.addEventListener('scroll', check, { passive: true })
+      window.addEventListener('resize', check)
+    }, 900)
+    return () => {
+      clearTimeout(start)
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [servicesOpen])
+  const headerInverse = servicesOpen && overServices
+  const showSticky = showSecondaryNav || headerInverse
 
   // Let other components (e.g. the footer) open the contact modal.
   // ---------- Page-load intro (GSAP) ----------
@@ -473,16 +500,16 @@ export default function Navigation({ globalSettings, aboutData }) {
 
       {/* Secondary Navigation - Fixed, slides down using top position for iOS compatibility */}
       <nav 
-        className={`navigation navigation--scrolled navigation--${currentSection} ${currentSection}-section-scroll${servicesOpen ? ' navigation--inverse' : ''}`}
+        className={`navigation navigation--scrolled navigation--${currentSection} ${currentSection}-section-scroll${headerInverse ? ' navigation--inverse' : ''}`}
         style={{
-          backgroundColor: servicesOpen ? 'var(--color-green)' : 'var(--color-cream)',
+          backgroundColor: headerInverse ? 'var(--color-green)' : 'var(--color-cream)',
           position: 'fixed',
           top: showSticky ? 0 : -60,
           left: 0,
           right: 0,
-          zIndex: 50,
+          zIndex: 100, // above section content (e.g. the open service panel); below full-screen overlays
           opacity: showSticky ? 1 : 0,
-          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), ' + (servicesOpen ? 'background-color 0.5s cubic-bezier(0.65, 0, 0.35, 1), border-color 0.5s cubic-bezier(0.65, 0, 0.35, 1)' : 'background-color 0.4s ease, border-color 0.4s ease'), // opening in step with the services scroll; closing quick
+          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), ' + (headerInverse ? 'background-color 0.5s cubic-bezier(0.65, 0, 0.35, 1), border-color 0.5s cubic-bezier(0.65, 0, 0.35, 1)' : 'background-color 0.4s ease, border-color 0.4s ease'), // opening in step with the services scroll; closing quick
         }}
       >
         {/* Hamburger for Secondary Nav */}
