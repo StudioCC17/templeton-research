@@ -343,7 +343,7 @@ export default function TeamSection({ teamData, careersData }) {
               position: 'relative',
               display: 'flex',
               alignItems: 'flex-start',
-              minHeight: '75vh',
+              minHeight: '60vh', // shorter panel (was 75vh); grows if the text needs more room
               marginTop: '50px',
               // Bleed edge to edge: cancel the team section's 1.5% side padding
               // so the background reaches both sides of the screen (no gap on the right)
