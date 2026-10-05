@@ -66,7 +66,7 @@
 
   /* Service titles sit between step 1 and step 2 (about 18-21px) */
   --text-service-title-size: clamp(1.1rem, 1.0296rem + 0.3005vw, 1.3rem);
-  --text-service-heading-size: clamp(1.2rem, 1.1296rem + 0.3005vw, 1.4rem); /* bold service titles (list + open panel) */
+  --text-service-heading-size: clamp(1.15rem, 1.0796rem + 0.3005vw, 1.35rem); /* bold service titles (list + open panel) */
 
   /* Line heights - tighter as text gets bigger */
   --leading-tight: 1.1;   /* display, hero */
