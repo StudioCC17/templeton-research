@@ -102,10 +102,10 @@ position: relative;
     text-decoration: none;
     color: inherit;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    /* Starts hidden - GSAP (InsightsSection.js) brings the tiles in on scroll.
+       Only the hover colour is a CSS transition, with no delay. */
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease-out, transform 0.7s ease-out, background-color 0.3s ease;
+    transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     background-color: #2451480d;
     border-radius: 14px;
     overflow: hidden;
@@ -123,10 +123,6 @@ position: relative;
     background-color: #ffffffa3;
 }
 
-.isVisible .tile {
-  opacity: 1;
-  transform: translateY(0);
-}
 
 /* ----- Tile image ----- */
 
@@ -190,6 +186,7 @@ position: relative;
 /* ----- Tile headline ----- */
 
 .tileTitle {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   font-family: var(--font-heading), var(--font-fallback);
   font-weight: 300;
   line-height: 1.15;
@@ -243,12 +240,34 @@ position: relative;
 display: inline-block;
     opacity: 1;
     transform: translateX(-4px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tile:hover .tileReadMoreArrow {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* Hover: the title lifts a touch and a hairline draws in under "Read article" */
+.tile:hover .tileTitle {
+  transform: translateY(-3px);
+}
+
+.tileReadMore::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tile:hover .tileReadMore::after {
+  transform: scaleX(1);
 }
 
 /* ============================================================

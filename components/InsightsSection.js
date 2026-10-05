@@ -5,6 +5,7 @@
 'use client'
 
 import { useRef, useEffect, useState } from 'react'
+import gsap from 'gsap'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
@@ -57,6 +58,25 @@ export default function InsightsSection({ insightsData, articles = [] }) {
     observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
+
+  // Tiles rise in one after another once the section is on screen (GSAP).
+  // Doing this in GSAP rather than CSS means no transition-delay is left on
+  // the tiles afterwards, so hover responds instantly.
+  useEffect(() => {
+    if (!isVisible || !sectionRef.current) return
+    const tiles = sectionRef.current.querySelectorAll('[data-insight-tile]')
+    if (!tiles.length) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(tiles, { autoAlpha: 1 })
+      return
+    }
+    const tween = gsap.fromTo(
+      tiles,
+      { autoAlpha: 0, y: 24 },
+      { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: 0.08, delay: 0.1, clearProps: 'transform' }
+    )
+    return () => tween.kill()
+  }, [isVisible])
 
   if (!insightsData || insightsData.enabled === false) return null
   if (!articles.length) return null
@@ -129,7 +149,6 @@ function InsightTile({ article, index }) {
   const hasImage = !!article.featuredImage?.asset
   const categoryLabel = CATEGORY_LABELS[article.category] || article.category || ''
   const dateLabel = formatDate(article.publishDate)
-  const staggerDelay = `${0.15 + index * 0.08}s`
 
   // Tiles update the URL with history.pushState rather than router.push.
   // Next.js keeps useSearchParams in sync with pushState, but skips the server
@@ -152,7 +171,7 @@ function InsightTile({ article, index }) {
       href={href}
       onClick={handleClick}
       className={styles.tile}
-      style={{ transitionDelay: staggerDelay }}
+      data-insight-tile
       aria-label={`Read article: ${article.title}`}
     >
       {hasImage ? (
