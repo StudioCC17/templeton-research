@@ -21,7 +21,7 @@
      ---------------------------------------- */
   /* Text */
   --color-green: #245148;                       /* primary: headings + body */
-  --color-text-secondary: #24514882;            /* supporting text, summaries, dates, meta */
+  --color-text-secondary: #24514899;            /* supporting text, summaries, dates, meta */
   /* Accent */
   --color-red: #BB7860;                         /* labels, preheaders, links, buttons, errors */
   --color-red-muted: rgba(187, 120, 96, 0.6);   /* hints in brackets, "Choose file" */
