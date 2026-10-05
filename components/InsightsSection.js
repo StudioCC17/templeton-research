@@ -123,7 +123,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
 
         {cta?.text && cta?.link && (
           <div className={styles.ctaRow}>
-            <Link href={cta.link} className={styles.ctaLink}>
+            <Link href={cta.link} className={`${styles.ctaLink} u-link`}>
               {cta.text}
               <span aria-hidden="true" className={styles.ctaArrow}>
                 <Arrow direction="right" style={{ marginLeft: 0 }} />

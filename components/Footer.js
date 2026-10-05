@@ -146,6 +146,7 @@ function FooterInner({ footerData }) {
               }}
             >
               <a 
+                className="u-link"
                 href="#"
                 onClick={openContactModal}
                 style={{
@@ -159,13 +160,12 @@ function FooterInner({ footerData }) {
                   display: 'inline-block',
                   cursor: 'pointer'
                 }}
-                onMouseOver={(e) => e.target.style.opacity = '0.6'}
-                onMouseOut={(e) => e.target.style.opacity = '1'}
               >
                 Email us
 <Arrow />
               </a>
               <a 
+                className="u-link"
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -179,8 +179,6 @@ function FooterInner({ footerData }) {
                   position: 'relative',
                   display: 'inline-block'
                 }}
-                onMouseOver={(e) => e.target.style.opacity = '0.6'}
-                onMouseOut={(e) => e.target.style.opacity = '1'}
               >
                 Follow us on LinkedIn
 <Arrow />
@@ -297,6 +295,7 @@ function FooterInner({ footerData }) {
               ].map(({ label, slug }) => (
                 <a
                   key={label}
+                  className="u-link"
                   href={`?legal=${slug}`}
                   onClick={openLegal(slug)}
                   style={{

@@ -478,6 +478,7 @@ export default function TeamSection({ teamData, careersData }) {
               <div style={{ marginTop: '50px', marginBottom: '20px' }}>
                
                 <a
+                  className="u-link"
                   href="tel:+442071234567"
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -492,6 +493,7 @@ export default function TeamSection({ teamData, careersData }) {
                 
                 </a>
                 <a
+                  className="u-link"
                   href="mailto:info@templetonresearch.com"
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -559,6 +561,7 @@ export default function TeamSection({ teamData, careersData }) {
               )}
 
               <a
+                className="u-link"
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"

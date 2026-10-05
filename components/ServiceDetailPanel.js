@@ -443,7 +443,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
           <div ref={nextRef} className="sd-next-wrap" style={{ padding: '0 2rem 2rem' }}>
             <button type="button" className="sd-next" onClick={onNext}>
               <span className="sd-next-label">Next</span>
-              <span>
+              <span className="u-link">
                 {nextNumber}. {nextTitle}
                 <span aria-hidden="true" className="sd-next-arrow"><Arrow direction="right" /></span>
               </span>
