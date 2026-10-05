@@ -82,7 +82,7 @@ export default function OfficesStrip({ offices = [] }) {
 
       <style jsx>{`
         .offices-strip {
-          background-color: var(--color-cream);
+          background-color: var(--color-sage); /* same pale green-stone as Insights */
           padding: 4.5rem 1.5% 4.5rem;
         }
         .offices-label {
@@ -111,8 +111,8 @@ export default function OfficesStrip({ offices = [] }) {
         }
         .office-clock-wrap {
           display: block;
-          width: 3.5rem;
-          height: 3.5rem;
+          width: 4.2rem;
+          height: 4.2rem;
           margin-bottom: 0.75rem;
           color: var(--color-red);
         }
