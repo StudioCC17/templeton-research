@@ -12,7 +12,7 @@
 
 .section {
   background-color: var(--color-cream);
-  padding: 5rem 1.25rem 2rem; /* more room above the Insights heading */
+  padding: 2.5rem 1.25rem 2rem; /* room above the Insights heading */
   position: relative;
   z-index: 2;
 }
@@ -56,13 +56,13 @@
   max-width: 34em;
 }
 
-/* Supporting text - same as the Services intro */
+/* Supporting text - paler green (secondary text colour) */
 .intro p {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
   font-weight: 400;
   line-height: 1.6;
-  color: var(--color-green);
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
