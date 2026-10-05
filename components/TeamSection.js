@@ -340,7 +340,6 @@ export default function TeamSection({ teamData, careersData }) {
                to the viewport's left edge, without affecting the text flow. */}
             <div
               className="careers-image"
-              data-reveal="image"
               style={{
                 position: 'absolute',
                 top: 0,
