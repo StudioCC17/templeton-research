@@ -1,5 +1,5 @@
 // components/OfficesStrip.js
-// A quiet break between Careers and Insights: the firm's offices in a row,
+// The firm's offices in a row under the footer,
 // each with its live local time. Cities come from Footer Settings > Offices in
 // Sanity, so the list stays in step with the footer.
 
@@ -82,8 +82,8 @@ export default function OfficesStrip({ offices = [] }) {
       <style jsx>{`
         .offices-strip {
           background-color: var(--color-green);
-          /* sits right above the green footer, so a faint line separates them */
-          border-bottom: 1px solid rgba(245, 245, 240, 0.25);
+          /* sits right under the green footer, so a faint line separates them */
+          border-top: 1px solid rgba(245, 245, 240, 0.25);
           padding: 4.5rem 1.5% 4.5rem;
         }
         .offices-list {

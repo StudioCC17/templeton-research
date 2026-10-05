@@ -380,10 +380,10 @@ export default async function Home() {
         />
       )}
 
-      {/* Offices with live local times, just above the footer */}
-      <OfficesStrip offices={footerSettings?.offices || []} />
-
       <Footer footerData={footerSettings} />
+
+      {/* Offices with live local times, under the footer */}
+      <OfficesStrip offices={footerSettings?.offices || []} />
 
       {/* Scroll-in animations for anything marked data-reveal */}
       <ScrollReveal />
