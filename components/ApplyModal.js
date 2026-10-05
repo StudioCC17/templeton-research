@@ -245,7 +245,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: 'var(--step--1)',
                 lineHeight: 1.5,
-                color: 'var(--color-text-secondary)', // supporting text
+                color: 'var(--color-green)', // supporting text - darker green, as before
+                opacity: 0.75,
                 margin: '0.75rem 0 0',
                 paddingRight: '15%',
               }}
