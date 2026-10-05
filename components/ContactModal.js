@@ -291,26 +291,11 @@ export default function ContactModal({ isOpen, onClose, service }) {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
+                className="btn-primary" /* same as Enquire / View all insights (globals.css) */
                 style={{
-                  display: 'block', // plain block so the arrow's vertical alignment applies
-                  backgroundColor: '#BB7860',
-                  color: '#f5f5f0',
-                  border: 'none',
-                  padding: '0.75rem 1.6rem',
-                  borderRadius: '2px',
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: 'var(--step-0)',
-                  fontWeight: 600,
                   cursor: status === 'submitting' ? 'default' : 'pointer',
                   opacity: status === 'submitting' ? 0.6 : 1,
-                  transition: 'background-color 0.3s ease, opacity 0.3s ease',
-                  width: '100%',
-                  textAlign: 'center',
-                  justifyContent: 'center',
-                  textTransform: 'uppercase',
                 }}
-                onMouseEnter={(e) => { if (status !== 'submitting') e.currentTarget.style.backgroundColor = '#A66850' }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#BB7860' }}
               >
                 {status === 'submitting' ? 'Sending...' : 'Send message'}
                 {status !== 'submitting' && <Arrow />}
