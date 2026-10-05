@@ -296,7 +296,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   marginBottom: '0.25rem',
                 }}
               >
-                Service{number && total ? ` - ${number}/${total}` : ''}
+                {number && total ? `${number}/${total}` : 'Service'}
               </span>
               <span
                 style={{
