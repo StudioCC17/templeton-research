@@ -450,7 +450,7 @@ export default function ServicesSection({ servicesData }) {
               </div>{/* end services-left-crossfade */}
 
               {/* Bottom-left slot: "Get in touch" while browsing; with a service open it
-                  swaps to "All services" + 01 / 02 / 03 tabs (opposite the panel's Next link) */}
+                  swaps to the 01 / 02 / 03 tabs (opposite the panel's Next link) */}
               <div className="services-left-foot">
               <p
                 className="services-split-footnote"
@@ -475,9 +475,6 @@ export default function ServicesSection({ servicesData }) {
                   transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
-                <button type="button" className="sdn-back" onClick={closeDetail}>
-                  <Arrow direction="left" />All services
-                </button>
                 <span className="sdn-tabs">
                   {services.map((svc, i) => (
                     <button
@@ -655,21 +652,6 @@ export default function ServicesSection({ servicesData }) {
           align-items: baseline;
           gap: 2.5rem;
           font-family: var(--font-body), var(--font-fallback);
-        }
-        .sdn-back {
-          background: none;
-          border: none;
-          padding: 0;
-          cursor: pointer;
-          font-family: var(--font-body), var(--font-fallback);
-          font-size: var(--step-0);
-          color: var(--color-cream);
-        }
-        .sdn-back :global(.arrow) {
-          transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .sdn-back:hover :global(.arrow) {
-          transform: translateX(-3px);
         }
         .sdn-tabs {
           display: flex;
