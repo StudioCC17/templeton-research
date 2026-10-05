@@ -300,11 +300,22 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
           }
         }
         @media (max-width: 768px) {
+          /* Full screen from the top, like the contact form */
           .about-modal {
             width: 100% !important;
+            margin-top: 0 !important;
+            min-height: 100vh;
           }
           .about-modal-content {
-            padding: 1.5rem !important;
+            padding: 1.25rem !important; /* same side margins as the page */
+          }
+          /* Headline lines up with the text below (was centred/indented) and
+             stays clear of the close button */
+          .about-modal-content h2 {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            width: auto !important;
+            padding-right: 2.5rem !important;
           }
         }
       `}</style>

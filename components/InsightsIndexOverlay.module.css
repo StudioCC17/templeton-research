@@ -122,6 +122,14 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* same 1.25rem side margins as the rest of the site on phones */
+  .inner {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
 @media (max-width: 640px) {
   .header {
     padding: 2.75rem 0 1.25rem; /* clears the close button on phones */

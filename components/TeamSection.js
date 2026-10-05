@@ -713,6 +713,20 @@ export default function TeamSection({ teamData, careersData }) {
           .team-section {
             padding: 1.5rem 1.25rem !important;
           }
+
+          /* Less of a gap between the headline and the names (was ~120px) */
+          .team-header {
+            padding-bottom: 1.5rem !important;
+            margin-bottom: 1rem !important;
+          }
+
+          /* Careers panel runs edge to edge like on desktop, with the text on
+             the same 1.25rem margin as everything else */
+          .careers-section {
+            margin-left: -1.25rem !important;
+            margin-right: -1.25rem !important;
+            padding: 1.5rem 1.25rem 0.5rem !important;
+          }
           
           .team-header {
             max-width: 100% !important;
@@ -730,12 +744,15 @@ export default function TeamSection({ teamData, careersData }) {
           
           .team-modal-content {
             grid-template-columns: 1fr !important;
-            padding: 1.5rem !important;
+            padding: 1.25rem !important; /* same side margins as the page */
             gap: 1.5rem !important;
           }
           
+          /* Full screen from the top, like the other modals */
           .team-modal {
             width: 100% !important;
+            margin-top: 0 !important;
+            min-height: 100vh;
           }
         }
       `}</style>

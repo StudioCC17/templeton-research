@@ -262,7 +262,7 @@
   }
   
   .hero-text-section {
-    padding: 175px 1.5% 1rem 1rem !important;
+    padding: 175px 1.25rem 1rem 1.25rem !important; /* same side margins as the other sections */
   }
 }
 

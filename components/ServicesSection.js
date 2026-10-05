@@ -614,8 +614,11 @@ export default function ServicesSection({ servicesData }) {
           opacity: 0.6;
         }
 
-        @media (hover: none) {
-          .service-header :global(.service-arrow) { display: none; }
+        /* Touch screens and phones: no hover arrow. !important beats the arrow's own
+           inline display, otherwise the invisible arrow wraps onto its own line
+           under long titles and leaves a gap */
+        @media (hover: none), (max-width: 768px) {
+          .service-header :global(.service-arrow) { display: none !important; }
           .has-hover .service-item:not(.is-hovered) .service-header > div { opacity: 1; }
         }
 
@@ -649,8 +652,18 @@ export default function ServicesSection({ servicesData }) {
         /* ── Mobile ── */
         @media (max-width: 768px) {
           .services-section {
-            padding: 1.5rem 5% !important;
+            padding: 1.5rem 1.25rem !important; /* same side margins as every other section */
             min-height: 0 !important;
+          }
+
+          /* Summaries use the full width on phones */
+          .service-header .service-summary {
+            padding-right: 0 !important;
+          }
+
+          /* With a service open, the list makes way for the service text + panel */
+          .services-has-expanded .services-split-right {
+            display: none;
           }
 
           .services-split {

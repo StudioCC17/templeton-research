@@ -116,6 +116,11 @@
   flex-shrink: 0;
 }
 
+/* No focus ring when the overlay focuses it on open - keyboard users still get it */
+.closeButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
 .closeButton:hover {
   background-color: rgba(196, 210, 207, 0.3);
   transform: rotate(90deg);

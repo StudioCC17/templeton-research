@@ -351,7 +351,7 @@ export default function Navigation({ globalSettings, aboutData }) {
             cursor: 'pointer'
           }}
         >
-          Contact
+          Contact Us
         </button>
         <button 
           className="locale-button"

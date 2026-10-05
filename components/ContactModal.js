@@ -330,7 +330,12 @@ export default function ContactModal({ isOpen, onClose, service }) {
           }
 
           .tr-contact-content {
-            padding: 1.5rem 1.5rem 2rem !important;
+            padding: 1.25rem 1.25rem 2rem !important; /* same side margins as the page */
+          }
+
+          /* keep the heading clear of the close button */
+          .tr-contact-content h2 {
+            padding-right: 2.5rem;
           }
         }
       `}</style>

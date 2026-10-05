@@ -437,8 +437,20 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                 {nextNumber && <span style={{ marginLeft: '0.75em' }}>{nextNumber}</span>}
               </span>
               <span className="u-link">
-                {nextTitle}
-                <span aria-hidden="true" className="sd-next-arrow"><Arrow direction="right" /></span>
+                {/* Last word + arrow kept together so the arrow never drops onto a line on its own */}
+                {(() => {
+                  const words = String(nextTitle).split(' ')
+                  const last = words.pop()
+                  return (
+                    <>
+                      {words.length ? words.join(' ') + ' ' : ''}
+                      <span style={{ whiteSpace: 'nowrap' }}>
+                        {last}
+                        <span aria-hidden="true" className="sd-next-arrow"><Arrow direction="right" /></span>
+                      </span>
+                    </>
+                  )
+                })()}
               </span>
             </button>
           </div>
@@ -493,10 +505,25 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             background-color: var(--color-green) !important;
           }
         }
+        /* Phones: the panel sits in the page flow under the service's own text
+           (instead of covering it), and lines up with the section's margins */
         @media (max-width: 768px) {
+          .service-detail-overlay {
+            position: relative !important;
+            inset: auto !important;
+            padding: 0 !important;
+            background-color: transparent !important;
+          }
           .service-detail-panel {
             width: 100% !important;
-            height: 100% !important;
+            height: auto !important;
+          }
+          .service-detail-content {
+            overflow: visible !important;
+            padding: 1.5rem 0 1.5rem !important;
+          }
+          .sd-next-wrap {
+            padding: 0 0 1.5rem !important;
           }
         }
       `}</style>
