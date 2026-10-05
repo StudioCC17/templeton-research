@@ -71,7 +71,9 @@ export default function Navigation({ globalSettings, aboutData }) {
   const navItems = [
     { label: 'About us', href: '#approach', section: 'approach' },
     { label: 'Services', href: '#services', section: 'services' },
-    { label: 'Team', href: '#team', section: 'team' }
+    { label: 'Team', href: '#team', section: 'team' },
+    { label: 'Insights', href: '#insights', section: 'insights' },
+    { label: 'Careers', href: '#careers', section: 'careers' }
   ]
 
   // Close mobile menu when clicking a nav item
@@ -111,6 +113,8 @@ export default function Navigation({ globalSettings, aboutData }) {
     } else if (section === 'team') {
       targetElement = document.querySelector('.team-section')
       console.log('Looking for team section:', targetElement)
+    } else if (section === 'insights' || section === 'careers') {
+      targetElement = document.getElementById(section)
     }
     
     if (!targetElement) {
@@ -129,7 +133,8 @@ export default function Navigation({ globalSettings, aboutData }) {
     
     // Calculate position with 38px offset
     const offset = 38
-    const targetPosition = targetElement.offsetTop - offset
+    // Page position (works for sections nested inside others, e.g. Careers inside Team)
+    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset
     
     console.log('Scrolling to position with 38px offset:', targetPosition)
     
@@ -251,7 +256,9 @@ export default function Navigation({ globalSettings, aboutData }) {
         { name: 'approach', element: approachSection },
         { name: 'image-grid', element: imageGridSection },
         { name: 'services', element: servicesSection },
-        { name: 'team', element: teamSection }
+        { name: 'team', element: teamSection },
+        { name: 'careers', element: document.getElementById('careers') },
+        { name: 'insights', element: document.getElementById('insights') }
       ]
 
       for (let i = sections.length - 1; i >= 0; i--) {
