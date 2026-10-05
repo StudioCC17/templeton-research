@@ -455,7 +455,8 @@ export default function ServicesSection({ servicesData }) {
                   width: 'fit-content',
                 }}
               >
-                Have a question?  Get in touch<Arrow /></p>
+                <span className="footnote-question">Have a question?</span>{' '}
+                Get in touch<Arrow /></p>
 
             </div>
           </div>
@@ -605,13 +606,19 @@ export default function ServicesSection({ servicesData }) {
 
         .services-split-footnote {
           font-family: var(--font-body), var(--font-fallback);
-
+          font-size: var(--step--1); /* small - a quiet secondary prompt */
           font-weight: 600;
           color: var(--color-red);
           margin-bottom: 0;
           margin-top: auto;
           line-height: 1.4;
           max-width: 50%;
+        }
+
+        /* "Have a question?" in the softer green; "Get in touch" stays red as the link */
+        .footnote-question {
+          color: var(--color-text-secondary);
+          font-weight: 400;
         }
 
         .services-split-right {
