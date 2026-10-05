@@ -352,7 +352,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 value={form.hp_check}
                 onChange={handleChange}
                 aria-hidden="true"
-                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                // display:none (not just off-screen) - browsers never autofill hidden fields, bots still do
+                style={{ display: 'none' }}
               />
 
               <div style={{ marginBottom: '2.25rem' }}>

@@ -88,8 +88,9 @@ export async function POST(request) {
   }
 
   // Honeypot: real people never see this field
-  if ((form.get('hp_check') || '').toString().trim()) {
-    console.warn('Apply: honeypot filled - treated as spam, nothing sent')
+  const hp = (form.get('hp_check') || '').toString().trim()
+  if (hp) {
+    console.warn(`Apply: honeypot filled ("${hp.slice(0, 30)}") - treated as spam, nothing sent`)
     return NextResponse.json({ ok: true })
   }
 
