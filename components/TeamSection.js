@@ -338,8 +338,7 @@ export default function TeamSection({ teamData, careersData }) {
         {careers.content && (
           <div 
             id="careers"
-            className="careers-section line-top line-bottom"
-            data-reveal="line"
+            className="careers-section"
             style={{
               position: 'relative',
               display: 'flex',
@@ -353,7 +352,6 @@ export default function TeamSection({ teamData, careersData }) {
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
               paddingBottom: '1.5rem'
-              // top/bottom borders are drawn by .line-top/.line-bottom so they can draw in
             }}
           >
             {/* Full-bleed image (left). Absolutely positioned so it fills the
