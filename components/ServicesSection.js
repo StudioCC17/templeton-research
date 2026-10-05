@@ -629,7 +629,7 @@ export default function ServicesSection({ servicesData }) {
 
         /* ── Wide ── */
         @media (min-width: 1800px) {
-          .service-item h3.service-title { font-size: var(--step-2) !important; }
+          .service-item h3.service-title { font-size: var(--step-1) !important; }
         }
       `}</style>
     </section>
