@@ -540,6 +540,26 @@ p {
   transform: scaleX(1);
 }
 
+/* Primary button - matches the Enquire / View all insights buttons */
+.btn-primary {
+  display: inline-block;
+  background-color: var(--color-red);
+  color: var(--color-cream);
+  border: none;
+  border-radius: 2px;
+  padding: 0.35rem 1rem 0.4em;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--step-0);
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.btn-primary:hover {
+  background-color: #A66850;
+}
+
 /* Navigation loaded state - fades in */
 .navigation--loaded {
   opacity: 1;

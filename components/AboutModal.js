@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
+import Arrow from '@/components/Arrow'
 
 // Body rendering for PortableText content (matches the TeamSection careers styles).
 const bodyComponents = {
@@ -250,6 +251,20 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
               )}
             </div>
           )}
+
+          {/* Enquire - closes About and opens the contact form (listened for in Navigation) */}
+          <button
+            type="button"
+            className="btn-primary"
+            style={{ marginTop: '2rem' }}
+            onClick={() => {
+              handleClose()
+              window.dispatchEvent(new Event('open-contact-modal'))
+            }}
+          >
+            Enquire
+            <Arrow />
+          </button>
 
           {/* Optional call to action */}
           {cta?.text && cta?.link && (
