@@ -27,11 +27,11 @@
  * ============================================================ */
 
 .header {
-  /* Heading on the left, supporting line on the right, bottom-aligned */
+  /* Supporting line sits right next to the heading (with a gap), bottom-aligned */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-end;
-  gap: 2rem;
+  gap: 4rem;
   padding-bottom: 2rem;
 
 
@@ -58,7 +58,6 @@
   max-width: 37em; /* wider column, so it starts further left */
   /* nudge so the last line sits on the heading's baseline */
   padding-bottom: 0.35em;
-  padding-right: 5rem; /* sits in from the right edge */
 }
 
 /* Supporting text - paler green (secondary text colour) */
