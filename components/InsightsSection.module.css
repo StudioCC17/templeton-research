@@ -27,8 +27,11 @@
  * ============================================================ */
 
 .header {
-  /* Heading with its supporting line underneath */
-  display: block;
+  /* Heading on the left, supporting line on the right, bottom-aligned */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
   padding-bottom: 2rem;
 
 
@@ -52,8 +55,9 @@
 }
 
 .intro {
-  margin-top: 0.75rem;
-  max-width: 34em;
+  max-width: 30em;
+  /* nudge so the last line sits on the heading's baseline */
+  padding-bottom: 0.35em;
 }
 
 /* Supporting text - paler green (secondary text colour) */
@@ -267,14 +271,14 @@ display: inline-block;
  * ============================================================ */
 
 @media (max-width: 1024px) {
+  /* Tablet and phone: supporting line drops under the heading */
   .header {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    align-items: start;
+    display: block;
   }
 
   .intro {
-    padding-left: 0;
+    margin-top: 0.75rem;
+    padding-bottom: 0;
   }
 
   .grid {
