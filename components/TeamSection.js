@@ -355,7 +355,7 @@ export default function TeamSection({ teamData, careersData }) {
               marginRight: '-1.5vw',
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
-              paddingBottom: '1.5rem'
+              paddingBottom: 0 // the text column handles the bottom gap (see .careers-content)
             }}
           >
             {/* Full-bleed image (left). Absolutely positioned so it fills the
@@ -389,7 +389,7 @@ export default function TeamSection({ teamData, careersData }) {
                 // ~3.5vw from the image, ~4vw from the screen edge, and room top/bottom
                 width: '40%',
                 marginLeft: 'auto',
-                padding: '2rem 4vw 2.5rem 3.5vw'
+                padding: '2rem 4vw 3.5vw 3.5vw' // bottom gap = gap from the image
               }}
             >
               <span className="preheader-label">
@@ -407,7 +407,7 @@ export default function TeamSection({ teamData, careersData }) {
               </div>
 
               {/* Careers buttons - each opens ApplyModal in its own version */}
-              <div style={{ marginTop: '3.5rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
+              <div className="careers-buttons" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
                 <button type="button" className="btn-primary" onClick={() => { setApplyType('cv'); setIsApplyOpen(true) }}>
                   Submit your CV
                   <Arrow />
@@ -641,6 +641,23 @@ export default function TeamSection({ teamData, careersData }) {
 
       {/* Responsive Styles */}
       <style jsx>{`
+        /* Careers buttons: on desktop they sit at the bottom of the panel, the same
+           distance from the bottom as the text is from the image (3.5vw) */
+        .careers-buttons {
+          margin-top: 3.5rem;
+        }
+        @media (min-width: 1025px) {
+          .careers-content {
+            display: flex;
+            flex-direction: column;
+            align-self: stretch;
+          }
+          .careers-buttons {
+            margin-top: auto;
+            padding-top: 3.5rem; /* never closer than this to the copy */
+          }
+        }
+
         #careers .preheader-label {
           text-transform: none;
           font-family: var(--font-heading);
