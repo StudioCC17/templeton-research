@@ -65,7 +65,6 @@ export default function OfficesStrip({ offices = [] }) {
 
   return (
     <section className="offices-strip" aria-label="Our offices">
-      <span className="offices-label">Our offices</span>
       <ul className="offices-list">
         {cities.map((city) => {
           const zone = TIME_ZONES[city.toLowerCase()]
@@ -85,15 +84,6 @@ export default function OfficesStrip({ offices = [] }) {
           background-color: var(--color-sage); /* same pale green-stone as Insights */
           padding: 4.5rem 1.5% 4.5rem;
         }
-        .offices-label {
-          display: block;
-          font-family: var(--font-body), var(--font-fallback);
-          font-size: var(--text-preheader-size);
-          font-weight: var(--text-preheader-weight);
-          letter-spacing: var(--tracking-bold);
-          color: var(--color-red);
-          margin-bottom: 1.25rem;
-        }
         .offices-list {
           list-style: none;
           margin: 0;
@@ -111,8 +101,8 @@ export default function OfficesStrip({ offices = [] }) {
         }
         .office-clock-wrap {
           display: block;
-          width: 4.2rem;
-          height: 4.2rem;
+          width: 5rem;
+          height: 5rem;
           margin-bottom: 0.75rem;
           color: var(--color-red);
         }
