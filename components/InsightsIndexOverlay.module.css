@@ -46,7 +46,7 @@
 }
 
 .header {
-  padding: 4rem 0 2rem;
+  padding: 0.5rem 0 1.5rem; /* preheader lines up with the close button */
 }
 
 .preheader {
@@ -69,7 +69,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .chip {
@@ -124,7 +124,7 @@
 
 @media (max-width: 640px) {
   .header {
-    padding: 3.5rem 0 1.5rem;
+    padding: 2.75rem 0 1.25rem; /* clears the close button on phones */
   }
   .grid {
     grid-template-columns: 1fr;
