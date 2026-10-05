@@ -265,7 +265,7 @@ display: inline-block;
 
   padding-top: 1.2rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 
   opacity: 0;
   transition: opacity 1s ease-out 0.4s;
@@ -276,8 +276,11 @@ display: inline-block;
 }
 
 .ctaLink {
+  /* Same style as "Have a question? Get in touch" in Services */
   font-family: var(--font-body), var(--font-fallback);
-  font-size: var(--step-0);
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: 1.4;
   color: var(--color-red);
   text-decoration: none;
   display: inline-flex;
@@ -291,7 +294,7 @@ display: inline-block;
 }
 
 .ctaLink:hover .ctaArrow {
-  transform: translateX(4px);
+  transform: translate(2px, -2px);
 }
 
 /* ============================================================

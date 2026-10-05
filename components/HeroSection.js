@@ -217,8 +217,8 @@ export default function HeroSection({
           ref={sectionRef}
           style={{
             position: 'relative',
-            height: '72vh', // was 85vh - 15% shorter
-            minHeight: '425px', // was 500px
+            height: '65vh', // was 72vh - a further 10% shorter
+            minHeight: '380px', // was 425px
             overflow: 'hidden',
             backgroundColor: 'var(--color-cream)' // matches the page while the media loads
           }}
