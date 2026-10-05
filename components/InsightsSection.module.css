@@ -11,7 +11,7 @@
  * ============================================================ */
 
 .section {
-  background-color: var(--color-cream);
+  background-color: var(--color-sage); /* green-tinted beige so the cream tiles sit forward */
   padding: 4rem 1.25rem 2rem; /* room above the Insights heading */
   position: relative;
   z-index: 2;
