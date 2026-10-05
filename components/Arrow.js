@@ -18,7 +18,7 @@ export default function Arrow({ direction = 'up-right', className = '', style = 
       viewBox="4 4 16 16"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.4" // ~0.06em at this size: matches the stroke of regular-weight Acumin
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
