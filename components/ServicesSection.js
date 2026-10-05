@@ -529,6 +529,11 @@ export default function ServicesSection({ servicesData }) {
           color: var(--color-green) !important;
         }
 
+        /* Open service: the large description on the left set in Minion italic */
+        .services-left-crossfade > div:last-child .hero-text {
+          font-style: italic;
+        }
+
         /* Desktop: calm the expanded prose down to the same size as the section headline. */
         @media (min-width: 1025px) {
           .services-left-crossfade > div:last-child .hero-text {
