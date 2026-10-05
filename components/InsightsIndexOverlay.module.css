@@ -104,6 +104,17 @@
   gap: 15px;
 }
 
+/* Large screens: 5 portrait tiles per row, matching the homepage */
+@media (min-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .grid > * {
+    aspect-ratio: 3 / 4;
+    min-height: 0 !important;
+  }
+}
+
 /* Tiles in this grid size to their content rather than the homepage's fixed row */
 .grid > * {
   min-height: 320px;
