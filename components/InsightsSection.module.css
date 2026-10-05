@@ -231,7 +231,7 @@ position: relative;
       bottom: 30px;
     position: absolute;
   align-items: baseline; /* arrow sits on the text baseline */
-  gap: 0.3em;
+  gap: 0.5em;
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 600;
