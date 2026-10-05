@@ -348,7 +348,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                     cursor: 'pointer',
                     fontSize: 'var(--step-0)',
                     padding: '0.25rem 0',
-                    opacity: isDimmed ? 0.55 : 1, // closed items stay readable on the green
+                    opacity: isDimmed ? 0.4 : 1, // closed items fade back while one is open
                     transition: 'opacity 0.4s ease',
                   }}
                 >
