@@ -469,7 +469,7 @@ export default function Navigation({ globalSettings, aboutData }) {
           right: 0,
           zIndex: 50,
           opacity: showSticky ? 1 : 0,
-          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.4s ease, border-color 0.4s ease',
+          transition: 'top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1), border-color 0.7s cubic-bezier(0.65, 0, 0.35, 1)', // in step with the services scroll
         }}
       >
         {/* Hamburger for Secondary Nav */}

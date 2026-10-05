@@ -9,6 +9,10 @@ import { useState, useRef, useEffect } from 'react'
 import { PortableText } from '@portabletext/react'
 import ServiceDetailPanel from '@/components/ServiceDetailPanel'
 import Arrow from '@/components/Arrow'
+import gsap from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+
+gsap.registerPlugin(ScrollToPlugin)
 
 // Placeholder supporting line — swap for a real Sanity field (e.g. `summary`) later.
 const SERVICE_FILL =
@@ -111,7 +115,7 @@ export default function ServicesSection({ servicesData }) {
 
   // Opening a service: glide the section up so its top sits right under the
   // sticky header (the header turns green to match while a service is open).
-  const scrollSectionToTop = async () => {
+  const scrollSectionToTop = () => {
     const section = sectionRef.current
     if (!section) return
     const header = document.querySelector('nav.navigation--scrolled')
@@ -119,14 +123,8 @@ export default function ServicesSection({ servicesData }) {
     const target = Math.round(section.getBoundingClientRect().top + window.scrollY - headerH)
     if (Math.abs(window.scrollY - target) < 2) return
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    try {
-      const gsap = (await import('gsap')).default
-      const { ScrollToPlugin } = await import('gsap/ScrollToPlugin')
-      gsap.registerPlugin(ScrollToPlugin)
-      gsap.to(window, { scrollTo: { y: target, autoKill: true }, duration: reduce ? 0 : 0.9, ease: 'power3.inOut' })
-    } catch (e) {
-      window.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
-    }
+    // Same 0.7s / power3.inOut as the section + header colour change, so they move together
+    gsap.to(window, { scrollTo: { y: target, autoKill: true }, duration: reduce ? 0 : 0.7, ease: 'power3.inOut' })
   }
 
   // Let the header know a service is open (it switches to green with cream text)
@@ -290,7 +288,7 @@ export default function ServicesSection({ servicesData }) {
         minHeight: '80vh',
         position: 'relative',
         opacity: mounted ? 1 : 0,
-        transition: 'opacity 0.4s ease, background-color 0.4s ease',
+        transition: 'opacity 0.4s ease, background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1)', // colour change runs with the scroll (and header)
       }}
     >
       <div className={`services-container${isDetailOpen ? ' services-has-expanded' : ''}`} style={{ margin: '0 auto' }}>
@@ -489,7 +487,7 @@ export default function ServicesSection({ servicesData }) {
           width: 1px;
           background-color: var(--color-border);
           transform: translateX(-50%);
-          transition: background-color 0.4s ease;
+          transition: background-color 0.7s cubic-bezier(0.65, 0, 0.35, 1);
         }
 
         /* On the green panel, match the rule above the "Next" link */
