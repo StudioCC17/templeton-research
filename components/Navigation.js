@@ -7,7 +7,7 @@
 
 'use client'
 
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -62,6 +62,21 @@ export default function Navigation({ globalSettings, aboutData }) {
   }, [servicesOpen])
   const headerInverse = servicesOpen && overServices
   const showSticky = showSecondaryNav || headerInverse
+
+  // The first time the sticky header slides in, its micro logo builds in mark by
+  // mark - the same animation as the footer logo. Plays once per visit.
+  const stickyLogoRef = useRef(null)
+  const stickyLogoPlayed = useRef(false)
+  useEffect(() => {
+    if (!showSticky || stickyLogoPlayed.current || !stickyLogoRef.current) return
+    stickyLogoPlayed.current = true
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    gsap.fromTo(
+      stickyLogoRef.current.querySelectorAll('g'),
+      { autoAlpha: 0, x: -24, y: 24 },
+      { autoAlpha: 1, x: 0, y: 0, duration: 1, ease: 'expo.out', stagger: 0.07, delay: 0.2, clearProps: 'transform,visibility' }
+    )
+  }, [showSticky])
 
   // Let other components (e.g. the footer) open the contact modal.
   // ---------- Page-load intro (GSAP) ----------
@@ -575,6 +590,7 @@ export default function Navigation({ globalSettings, aboutData }) {
               }}
             >
               <svg 
+                ref={stickyLogoRef}
                 viewBox="0 0 283.05 227.86" 
                 className="nav-logo-svg"
                 style={{
