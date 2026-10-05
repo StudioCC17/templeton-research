@@ -63,19 +63,22 @@ export default function Navigation({ globalSettings, aboutData }) {
   const headerInverse = servicesOpen && overServices
   const showSticky = showSecondaryNav || headerInverse
 
-  // The first time the sticky header slides in, its micro logo builds in mark by
-  // mark - the same animation as the footer logo. Plays once per visit.
+  // The first time the sticky header slides in, its micro logo fades in pair by
+  // pair from the outside edges inwards, meeting in the centre. Plays once per visit.
   const stickyLogoRef = useRef(null)
   const stickyLogoPlayed = useRef(false)
   useEffect(() => {
     if (!showSticky || stickyLogoPlayed.current || !stickyLogoRef.current) return
     stickyLogoPlayed.current = true
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    gsap.fromTo(
-      stickyLogoRef.current.querySelectorAll('g'),
-      { autoAlpha: 0, x: -24, y: 24 },
-      { autoAlpha: 1, x: 0, y: 0, duration: 1, ease: 'expo.out', stagger: 0.07, delay: 0.2, clearProps: 'transform,visibility' }
-    )
+    const g = stickyLogoRef.current.querySelectorAll('g')
+    if (g.length < 6) return
+    // Marks, outermost first: left 3 + right 6, then 2 + 5, then the centre pair 1 + 4
+    const pairs = [[g[2], g[5]], [g[1], g[4]], [g[0], g[3]]]
+    gsap.set(g, { autoAlpha: 0 })
+    pairs.forEach((pair, i) => {
+      gsap.to(pair, { autoAlpha: 1, duration: 0.8, ease: 'power2.out', delay: 0.25 + i * 0.18, clearProps: 'visibility' })
+    })
   }, [showSticky])
 
   // Let other components (e.g. the footer) open the contact modal.
