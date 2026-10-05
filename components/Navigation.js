@@ -7,7 +7,7 @@
 
 'use client'
 
-import { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -63,29 +63,6 @@ export default function Navigation({ globalSettings, aboutData }) {
   const headerInverse = servicesOpen && overServices
   const showSticky = showSecondaryNav || headerInverse
 
-  // Each time the sticky header slides in (first scroll, and again after going
-  // back to the top), its micro logo fades in pair by pair from the centre
-  // outwards in both directions.
-  const stickyLogoRef = useRef(null)
-  useEffect(() => {
-    const svg = stickyLogoRef.current
-    if (!svg) return
-    const g = svg.querySelectorAll('g')
-    if (g.length < 6) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    gsap.killTweensOf(g)
-    if (!showSticky) {
-      // header has gone away - reset so the sequence plays again next time
-      gsap.set(g, { autoAlpha: 0 })
-      return
-    }
-    // Marks, centre pair first (1 + 4), then 2 + 5, then the outermost 3 + 6
-    const pairs = [[g[0], g[3]], [g[1], g[4]], [g[2], g[5]]]
-    gsap.set(g, { autoAlpha: 0 })
-    pairs.forEach((pair, i) => {
-      gsap.to(pair, { autoAlpha: 1, duration: 1, ease: 'sine.inOut', delay: 0.2 + i * 0.12 }) // long, overlapping, gentle fades
-    })
-  }, [showSticky])
 
   // Let other components (e.g. the footer) open the contact modal.
   // ---------- Page-load intro (GSAP) ----------
@@ -599,7 +576,6 @@ export default function Navigation({ globalSettings, aboutData }) {
               }}
             >
               <svg 
-                ref={stickyLogoRef}
                 viewBox="0 0 283.05 227.86" 
                 className="nav-logo-svg"
                 style={{
