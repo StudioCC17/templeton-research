@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
+import ApplyModal from '@/components/ApplyModal'
 
 // Careers section feature image (full-bleed, left). Sanity CDN domain is already
 // configured for next/image via the profile images.
@@ -16,6 +17,7 @@ const CAREERS_IMAGE =
 
 export default function TeamSection({ teamData, careersData }) {
   const [selectedMember, setSelectedMember] = useState(null)
+  const [isApplyOpen, setIsApplyOpen] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const headlineRef = useRef(null)
 
@@ -379,10 +381,34 @@ export default function TeamSection({ teamData, careersData }) {
                   components={careersComponents}
                 />
               </div>
+
+              {/* Apply - opens the internship application form (ApplyModal) */}
+              <div style={{ marginTop: '2rem' }}>
+                <button type="button" className="btn-primary" onClick={() => setIsApplyOpen(true)}>
+                  Apply for an internship
+                  <Arrow />
+                </button>
+                <p
+                  style={{
+                    margin: '0.75rem 0 0',
+                    fontFamily: 'var(--font-body), var(--font-fallback)',
+                    fontSize: 'var(--step--1)',
+                    color: 'var(--color-green)',
+                    opacity: 0.75,
+                  }}
+                >
+                  or email{' '}
+                  <a href="mailto:internships@templetonresearch.com" className="u-link" style={{ color: 'inherit' }}>
+                    internships@templetonresearch.com
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         )}
       </div>
+
+      <ApplyModal isOpen={isApplyOpen} onClose={() => setIsApplyOpen(false)} />
 
       {/* Team Member Modal */}
       {selectedMember && (
