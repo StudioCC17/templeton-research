@@ -1,5 +1,6 @@
 // app/api/apply/route.js
-// Internship applications from ApplyModal. Validates the form, then (in
+// Careers applications from ApplyModal - general CVs ('cv') go to careers@,
+// internship applications ('internship') go to internships@. Validates the form, then (in
 // parallel) emails it to the internships inbox with the CV attached, and saves
 // it in Sanity as a jobApplication with the CV stored as a file. Succeeds if
 // either works, so an application is never lost.
@@ -17,19 +18,26 @@ const CV_TYPES = {
   docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 }
 
-// Override in Vercel env vars if needed (e.g. your own address on Preview)
-const APPLY_TO = (process.env.APPLY_TO_EMAIL || 'internships@templetonresearch.com')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean)
+const TYPES = {
+  cv: { to: 'careers@templetonresearch.com', label: 'CV submission' },
+  internship: { to: 'internships@templetonresearch.com', label: 'Internship application' },
+}
+
+// APPLY_TO_EMAIL (Vercel env) overrides the recipient for both types -
+// handy on Preview so test applications come to you.
+const recipients = (type) =>
+  (process.env.APPLY_TO_EMAIL || TYPES[type].to)
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
 const NOTIFY_FROM =
   process.env.CONTACT_FROM_EMAIL || 'Templeton Research Website <website@templetonresearch.com>'
 
-async function sendEmail({ name, email, message, filename, buffer }) {
+async function sendEmail({ type, name, email, message, filename, buffer }) {
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) throw new Error('RESEND_API_KEY is not set')
   const text = [
-    'New internship application from the website.',
+    `New ${TYPES[type].label.toLowerCase()} from the website.`,
     '',
     `Name: ${name}`,
     `Email: ${email}`,
@@ -48,9 +56,9 @@ async function sendEmail({ name, email, message, filename, buffer }) {
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: NOTIFY_FROM,
-      to: APPLY_TO,
+      to: recipients(type),
       reply_to: email,
-      subject: `Internship application from ${name}`,
+      subject: `${TYPES[type].label} from ${name}`,
       text,
       attachments: [{ filename, content: buffer.toString('base64') }],
     }),
@@ -58,10 +66,11 @@ async function sendEmail({ name, email, message, filename, buffer }) {
   if (!res.ok) throw new Error(`Resend responded ${res.status}: ${await res.text()}`)
 }
 
-async function saveToSanity({ name, email, message, filename, contentType, buffer }) {
+async function saveToSanity({ type, name, email, message, filename, contentType, buffer }) {
   const asset = await writeClient.assets.upload('file', buffer, { filename, contentType })
   await writeClient.create({
     _type: 'jobApplication',
+    applicationType: type,
     name,
     email,
     message: message || undefined,
@@ -87,6 +96,7 @@ export async function POST(request) {
   const email = (form.get('email') || '').toString().trim()
   const message = (form.get('message') || '').toString().trim()
   const cv = form.get('cv')
+  const type = TYPES[form.get('type')] ? form.get('type').toString() : 'internship'
 
   if (!name || !email) {
     return NextResponse.json({ error: 'Please add your name and email.' }, { status: 400 })
@@ -107,7 +117,7 @@ export async function POST(request) {
 
   const buffer = Buffer.from(await cv.arrayBuffer())
   const filename = (cv.name || `cv.${ext}`).replace(/[^\w.\- ]/g, '_')
-  const payload = { name, email, message, filename, contentType: CV_TYPES[ext], buffer }
+  const payload = { type, name, email, message, filename, contentType: CV_TYPES[ext], buffer }
 
   const [emailed, saved] = await Promise.allSettled([sendEmail(payload), saveToSanity(payload)])
   if (emailed.status === 'rejected') console.error('Apply: email failed:', emailed.reason)

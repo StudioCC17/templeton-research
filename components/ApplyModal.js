@@ -1,5 +1,6 @@
 // components/ApplyModal.js
-// Internship application form: name, email, CV upload and an optional note.
+// Careers form: name, email, CV upload and an optional note. Two versions,
+// chosen by the `type` prop: 'cv' (general CV) and 'internship'.
 // Same slide-up modal as the contact form (ContactModal.js). Posts to
 // /api/apply, which emails the application (CV attached) and saves it in Sanity.
 
@@ -19,7 +20,21 @@ const INITIAL_FORM = {
 const MAX_CV_BYTES = 4 * 1024 * 1024 // 4MB (Vercel caps uploads at ~4.5MB)
 const CV_TYPES = ['.pdf', '.doc', '.docx']
 
-export default function ApplyModal({ isOpen, onClose }) {
+const COPY = {
+  cv: {
+    heading: 'Submit your CV',
+    intro: "We're not hiring for specific roles right now, but we hire opportunistically. Send us your CV and a short note about what you'd bring.",
+    success: "Thanks - your CV is on its way. We'll keep it on file and be in touch if a suitable role comes up.",
+  },
+  internship: {
+    heading: 'Apply for an internship',
+    intro: 'Send us your CV and a short note. Internships typically run 3-6 months and we recruit on a rolling basis.',
+    success: "Thanks - your application is on its way. We review every application and will be in touch if there's a fit.",
+  },
+}
+
+export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
+  const copy = COPY[type] || COPY.internship
   const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [form, setForm] = useState(INITIAL_FORM)
@@ -116,6 +131,7 @@ export default function ApplyModal({ isOpen, onClose }) {
       const data = new FormData()
       Object.entries(form).forEach(([k, v]) => data.append(k, v))
       data.append('cv', cvFile)
+      data.append('type', type)
       const res = await fetch('/api/apply', { method: 'POST', body: data })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
@@ -224,7 +240,7 @@ export default function ApplyModal({ isOpen, onClose }) {
                 margin: 0,
               }}
             >
-              Apply for an internship
+              {copy.heading}
             </h2>
             <p
               style={{
@@ -236,7 +252,7 @@ export default function ApplyModal({ isOpen, onClose }) {
                 margin: '0.75rem 0 0',
               }}
             >
-              Send us your CV and a short note. Internships typically run 3-6 months and we recruit on a rolling basis.
+              {copy.intro}
             </p>
           </div>
 
@@ -251,7 +267,7 @@ export default function ApplyModal({ isOpen, onClose }) {
                   margin: 0,
                 }}
               >
-                Thanks - your application is on its way. We review every application and will be in touch if there's a fit.
+                {copy.success}
               </p>
             </div>
           ) : (

@@ -18,6 +18,7 @@ const CAREERS_IMAGE =
 export default function TeamSection({ teamData, careersData }) {
   const [selectedMember, setSelectedMember] = useState(null)
   const [isApplyOpen, setIsApplyOpen] = useState(false)
+  const [applyType, setApplyType] = useState('cv') // 'cv' | 'internship' - kept while the form animates closed
   const [isModalVisible, setIsModalVisible] = useState(false)
   const headlineRef = useRef(null)
 
@@ -382,9 +383,13 @@ export default function TeamSection({ teamData, careersData }) {
                 />
               </div>
 
-              {/* Apply - opens the internship application form (ApplyModal) */}
-              <div style={{ marginTop: '2rem' }}>
-                <button type="button" className="btn-primary" onClick={() => setIsApplyOpen(true)}>
+              {/* Careers buttons - each opens ApplyModal in its own version */}
+              <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.75rem' }}>
+                <button type="button" className="btn-primary" onClick={() => { setApplyType('cv'); setIsApplyOpen(true) }}>
+                  Submit your CV
+                  <Arrow />
+                </button>
+                <button type="button" className="btn-primary" onClick={() => { setApplyType('internship'); setIsApplyOpen(true) }}>
                   Apply for an internship
                   <Arrow />
                 </button>
@@ -394,7 +399,7 @@ export default function TeamSection({ teamData, careersData }) {
         )}
       </div>
 
-      <ApplyModal isOpen={isApplyOpen} onClose={() => setIsApplyOpen(false)} />
+      <ApplyModal isOpen={isApplyOpen} type={applyType} onClose={() => setIsApplyOpen(false)} />
 
       {/* Team Member Modal */}
       {selectedMember && (
