@@ -541,8 +541,8 @@ p {
 }
 
 /* Primary button - Enquire, View all insights, Send message, About > Enquire.
-   Hover: darker red sweeps in from the left, the arrow loops out and back in,
-   and the button lifts 1px. Same soft expo ease as the rest of the site. */
+   Hover: darker red sweeps in from the left and the arrow loops out and back
+   in. Same soft expo ease as the rest of the site. */
 .btn-primary {
   position: relative;
   isolation: isolate;
@@ -559,7 +559,6 @@ p {
   line-height: 1.4;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .btn-primary::before {
   content: '';
@@ -574,10 +573,6 @@ p {
 .btn-primary:hover::before,
 .btn-primary:focus-visible::before {
   transform: scaleX(1);
-}
-.btn-primary:hover,
-.btn-primary:focus-visible {
-  transform: translateY(-1px);
 }
 .btn-primary:hover .arrow,
 .btn-primary:focus-visible .arrow {
