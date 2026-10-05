@@ -195,7 +195,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 margin: 0,
               }}
             >
-              Get in touch
+              Have a question? Get in touch
             </h2>
           </div>
 
