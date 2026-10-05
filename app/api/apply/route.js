@@ -6,6 +6,7 @@
 // either works, so an application is never lost.
 
 import { NextResponse } from 'next/server'
+import { bccFor } from '@/lib/formCopy'
 import { writeClient } from '@/lib/sanityWriteClient'
 
 export const runtime = 'nodejs'
@@ -57,6 +58,7 @@ async function sendEmail({ type, name, email, message, filename, buffer }) {
     body: JSON.stringify({
       from: NOTIFY_FROM,
       to: recipients(type),
+      ...(bccFor(recipients(type)).length ? { bcc: bccFor(recipients(type)) } : {}), // TEMPORARY copy to Edd (lib/formCopy.js)
       reply_to: email,
       subject: `${TYPES[type].label} from ${name}`,
       text,

@@ -5,6 +5,7 @@
 
 import { NextResponse } from 'next/server'
 import { writeClient } from '@/lib/sanityWriteClient'
+import { bccFor } from '@/lib/formCopy'
 
 // Route handlers run on the Node runtime by default, which is what the
 // Sanity client needs. Stated explicitly here for clarity.
@@ -49,6 +50,7 @@ async function sendNotification({ name, email, company, message }) {
     body: JSON.stringify({
       from: NOTIFY_FROM,
       to: NOTIFY_TO,
+      ...(bccFor(NOTIFY_TO).length ? { bcc: bccFor(NOTIFY_TO) } : {}), // TEMPORARY copy to Edd (lib/formCopy.js)
       reply_to: email,
       subject: `Website enquiry from ${name}${company ? ` (${company})` : ''}`,
       text,
