@@ -23,7 +23,6 @@ import InsightOverlay from '@/components/InsightOverlay'
 import InsightsIndexOverlay from '@/components/InsightsIndexOverlay'
 import Footer from '@/components/Footer'
 import OfficesStrip from '@/components/OfficesStrip'
-import SplashScreen from '@/components/SplashScreen'
 import SmoothScroll from '@/components/SmoothScroll'
 import ScrollReveal from '@/components/ScrollReveal'
 
@@ -339,9 +338,6 @@ export default async function Home() {
 
   return (
     <main className="homepage">
-      {/* Opening splash - logo draws in on green, then fades to the homepage (once per visit) */}
-      <SplashScreen />
-
       <Navigation globalSettings={globalSettings} aboutData={globalSettings?.aboutSection} />
 
       <HeroSection

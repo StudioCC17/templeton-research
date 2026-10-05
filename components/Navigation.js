@@ -15,7 +15,6 @@ import { urlFor } from '@/lib/sanity'
 import ContactModal from '@/components/ContactModal'
 import AboutModal from '@/components/AboutModal'
 import Arrow from '@/components/Arrow'
-import { afterSplash } from '@/lib/splash'
 
 export default function Navigation({ globalSettings, aboutData }) {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -113,16 +112,12 @@ export default function Navigation({ globalSettings, aboutData }) {
       gsap.set(items, { autoAlpha: 1 })
       return
     }
-    // Waits for the opening splash (if any) so it plays as the splash fades
-    let tween
-    const stop = afterSplash(() => {
-      tween = gsap.fromTo(
-        items,
-        { autoAlpha: 0, y: -10 },
-        { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, delay: 0.15, force3D: true, clearProps: 'transform' }
-      )
-    })
-    return () => { stop(); if (tween) tween.kill() }
+    const tween = gsap.fromTo(
+      items,
+      { autoAlpha: 0, y: -10 },
+      { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, delay: 0.15, force3D: true, clearProps: 'transform' }
+    )
+    return () => tween.kill()
   }, [])
 
   useEffect(() => {
@@ -287,7 +282,7 @@ export default function Navigation({ globalSettings, aboutData }) {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY
           const viewportHeight = window.innerHeight
-          const threshold = viewportHeight * 0.75 // 75vh
+          const threshold = viewportHeight * 0.35 // sticky header slides in after 35vh of scrolling (was 75vh)
           
           // Determine scroll direction
           const scrollingDown = currentScrollY > lastScrollY

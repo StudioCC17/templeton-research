@@ -8,7 +8,6 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { applyVideoSpeed } from '@/lib/video'
-import { afterSplash } from '@/lib/splash'
 
 export default function HeroSection({ 
   heroData, 
@@ -78,11 +77,9 @@ export default function HeroSection({
       }
     }
 
-    // Waits for the opening splash (if any), so the headline reveal is seen
-    const stop = afterSplash(() => initAnimation())
+    initAnimation()
 
     return () => {
-      stop()
       if (splitInstance) {
         splitInstance.revert()
       }

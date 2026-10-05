@@ -2273,25 +2273,4 @@ nav.navigation.navigation--scrolled.navigation--inverse {
   opacity: 0.6;
 }
 
-/* Opening splash (components/SplashScreen.js) */
-.splash {
-  position: fixed;
-  inset: 0;
-  z-index: 100000; /* above everything, incl. the header */
-  background-color: var(--color-green);
-  color: var(--color-cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* safety net: if scripts never run, fade it out anyway */
-  animation: splashFallback 0.6s ease 4s forwards;
-}
-.splash-logo {
-  width: clamp(110px, 14vw, 180px);
-  height: auto;
-  overflow: visible;
-}
-@keyframes splashFallback {
-  to { opacity: 0; visibility: hidden; }
-}
 
