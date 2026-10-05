@@ -429,6 +429,7 @@ export default function ServicesSection({ servicesData }) {
         onClose={closeDetail}
         item={detailItem}
         number={activeIndex === null ? null : String(activeIndex + 1).padStart(2, '0')}
+        total={String(services.length).padStart(2, '0')}
         nextNumber={nextIndex === null ? null : String(nextIndex + 1).padStart(2, '0')}
         nextTitle={nextService?.title}
         onNext={openNext}

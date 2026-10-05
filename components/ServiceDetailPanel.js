@@ -90,7 +90,7 @@ const bodyComponents = {
   },
 }
 
-export default function ServiceDetailPanel({ isOpen, onClose, item, number, nextNumber, nextTitle, onNext }) {
+export default function ServiceDetailPanel({ isOpen, onClose, item, number, total, nextNumber, nextTitle, onNext }) {
   const [isRendered, setIsRendered] = useState(false)
   const contentRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -296,7 +296,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
                   marginBottom: '0.25rem',
                 }}
               >
-                Service
+                Service{number && total ? ` ${number}/${total}` : ''}
               </span>
               <span
                 style={{
@@ -306,7 +306,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
                   color: 'var(--color-cream)',
                 }}
               >
-                {number ? `${number}. ` : ''}{title}
+                {title}
               </span>
             </div>
           )}
