@@ -394,7 +394,7 @@ export default function ServicesSection({ servicesData }) {
                               width: 'fit-content',
                             }}
                           >
-                            {service.title}
+                            {service.title}<Arrow direction="right" className="service-arrow" />
                           </h3>
                           <p
                             className="service-summary"
@@ -512,14 +512,31 @@ export default function ServicesSection({ servicesData }) {
           padding: 1.5rem 0;
         }
 
-        /* Plain arrow (no circle) - just slides across on hover */
-        /* Diagonal arrow sitting right after each service title; nudges on hover */
-        .service-arrow {
-          transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        /* Hover: a right arrow slides in after the title, and the other services fade back */
+        .service-header :global(.service-arrow) {
+          opacity: 0;
+          transform: translateX(-0.4em);
+          transition:
+            opacity 0.35s ease,
+            transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .service-header:hover .service-arrow {
-          transform: translate(2px, -2px);
+        .service-header:hover :global(.service-arrow) {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        .service-header > div {
+          transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .services-list:hover .service-item:not(:hover) .service-header > div {
+          opacity: 0.35;
+        }
+
+        @media (hover: none) {
+          .service-header :global(.service-arrow) { display: none; }
+          .services-list:hover .service-item:not(:hover) .service-header > div { opacity: 1; }
         }
 
         .service-header .service-summary {
