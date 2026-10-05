@@ -388,20 +388,6 @@ export default function TeamSection({ teamData, careersData }) {
                   Apply for an internship
                   <Arrow />
                 </button>
-                <p
-                  style={{
-                    margin: '0.75rem 0 0',
-                    fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: 'var(--step--1)',
-                    color: 'var(--color-green)',
-                    opacity: 0.75,
-                  }}
-                >
-                  or email{' '}
-                  <a href="mailto:internships@templetonresearch.com" className="u-link" style={{ color: 'inherit' }}>
-                    internships@templetonresearch.com
-                  </a>
-                </p>
               </div>
             </div>
           </div>
