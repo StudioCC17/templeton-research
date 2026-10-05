@@ -296,7 +296,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   marginBottom: '0.25rem',
                 }}
               >
-                Service{number && total ? ` ${number}/${total}` : ''}
+                Service{number && total ? ` - ${number}/${total}` : ''}
               </span>
               <span
                 style={{
@@ -444,7 +444,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             <button type="button" className="sd-next" onClick={onNext}>
               <span className="sd-next-label">Next</span>
               <span className="u-link">
-                {nextNumber}. {nextTitle}
+                {nextTitle}
                 <span aria-hidden="true" className="sd-next-arrow"><Arrow direction="right" /></span>
               </span>
             </button>
