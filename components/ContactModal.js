@@ -292,9 +292,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 type="submit"
                 disabled={status === 'submitting'}
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'baseline', // arrow sits on the text baseline
-                  gap: 0,
+                  display: 'block', // plain block so the arrow's vertical alignment applies
                   backgroundColor: '#BB7860',
                   color: '#f5f5f0',
                   border: 'none',
