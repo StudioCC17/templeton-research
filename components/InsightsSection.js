@@ -38,6 +38,10 @@ function cx(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+
+const DEFAULT_INTRO =
+  'Analysis and commentary from our team on the political, regulatory and market developments shaping investment and risk.'
+
 export default function InsightsSection({ insightsData, articles = [] }) {
   const sectionRef = useRef(null)
   const headlineRef = useRef(null)
@@ -136,8 +140,9 @@ export default function InsightsSection({ insightsData, articles = [] }) {
             </h2>
           </div>
 
-          {intro && (
-            <div className={styles.intro}>
+          {/* Supporting line: from Sanity (Insights > Introduction) if set, otherwise a default */}
+          <div className={styles.intro}>
+            {Array.isArray(intro) && intro.length ? (
               <PortableText
                 value={intro}
                 components={{
@@ -146,8 +151,10 @@ export default function InsightsSection({ insightsData, articles = [] }) {
                   },
                 }}
               />
-            </div>
-          )}
+            ) : (
+              <p>{typeof intro === 'string' && intro.trim() ? intro : DEFAULT_INTRO}</p>
+            )}
+          </div>
         </div>
 
         <div className={styles.grid}>
