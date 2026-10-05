@@ -515,7 +515,7 @@ export default function ServicesSection({ servicesData }) {
                             {service.title}<Arrow
                               direction="right"
                               className="service-arrow"
-                              style={{ width: 'calc(0.65em * 19 / 16)', height: '0.65em', marginLeft: '0.5em', verticalAlign: '-0.02em', strokeWidth: 1.7 }} // smaller, kept centred on the line
+                              style={{ width: 'calc(0.6em * 19 / 16)', height: '0.6em', marginLeft: '0.5em', verticalAlign: '0em', strokeWidth: 1.75 }} // smaller, kept centred on the line
                             />
                           </h3>
                           <p
