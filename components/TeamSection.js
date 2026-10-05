@@ -204,17 +204,6 @@ export default function TeamSection({ teamData, careersData }) {
           >
             Our experienced team brings together diverse expertise to deliver clarity and actionable intelligence.
           </h2>
-          {/* Quiet line under the headline: how many people, across which cities (from Sanity) */}
-          {(() => {
-            const people = teamData.teamMembers || []
-            const cities = [...new Set(people.map((m) => (m.location || '').trim()).filter(Boolean))]
-            if (!people.length || !cities.length) return null
-            return (
-              <p className="team-reach">
-                {people.length} people across {cities.length} cities <span aria-hidden="true">·</span> {cities.join(' · ')}
-              </p>
-            )
-          })()}
         </div>
 
         {/* Team Members Grid - 4 columns */}
@@ -344,41 +333,6 @@ export default function TeamSection({ teamData, careersData }) {
             </div>
           ))}
 
-          {/* Last tile: links the team to careers, styled like a name */}
-          {careers.content && (
-            <a
-              href="#careers"
-              className="team-member team-join"
-              onMouseEnter={() => hoverMember(teamData.teamMembers.length)}
-              onClick={(e) => {
-                const el = document.getElementById('careers')
-                if (!el) return
-                e.preventDefault()
-                window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' })
-              }}
-              style={{ textDecoration: 'none', cursor: 'pointer' }}
-            >
-              <div className="team-member-info" style={{ display: 'flex', flexDirection: 'column', padding: '0.75rem 0' }}>
-                <h3
-                  className="text-body-lg team-member-name"
-                  style={{ lineHeight: 1.35, fontSize: 'var(--step-2)', fontFamily: 'var(--font-heading), serif', color: 'var(--color-green)' }}
-                >
-                  Could this be you?
-                </h3>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: 'var(--step--1)',
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    color: 'var(--color-red)',
-                  }}
-                >
-                  Careers<Arrow />
-                </span>
-              </div>
-            </a>
-          )}
         </div>
 
         {/* Careers Section */}

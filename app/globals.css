@@ -2268,15 +2268,6 @@ nav.navigation.navigation--scrolled.navigation--inverse {
   opacity: 0.6;
 }
 
-/* Team: quiet "N people across N cities" line under the headline */
-.team-reach {
-  margin: 1.25rem 0 0;
-  font-family: var(--font-body), var(--font-fallback);
-  font-size: var(--step--1);
-  line-height: 1.4;
-  color: var(--color-text-secondary);
-}
-
 /* Careers: small red label above the heading (same style as the service numbers) */
 .careers-label {
   display: block;
