@@ -1055,6 +1055,7 @@ p.section-paragraph.approach-paragraph {
   
   /* Hide only the direct child buttons/links, not the hamburger */
   .nav-right > button.nav-link,
+  .nav-right > button.nav-contact, /* Contact Us is in the mobile menu instead */
   .nav-right > button.locale-button {
     display: none;
   }
