@@ -150,7 +150,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
     width: '100%',
     backgroundColor: 'transparent',
     border: 'none',
-    borderBottom: '1px solid rgba(36, 81, 72, 0.3)', // red focus line drawn over it by .form-field (globals.css)
+    borderBottom: '1px solid rgba(187, 120, 96, 0.45)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -314,7 +314,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                     cursor: 'pointer',
                   }}
                 >
-                  {cvFile ? 'Change file' : 'Choose file'}
+                  {cvFile ? 'Change file' : 'Choose file'}<Arrow />
                 </label>
                 <input
                   id="apply-cv"
