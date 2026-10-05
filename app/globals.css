@@ -31,7 +31,7 @@
   --color-cream-dark: #ebebe3;                  /* panels, image placeholders */
   /* Lines */
   --color-border: #c4d2cf;                      /* dividers */
-  --color-line-field: rgba(187, 120, 96, 0.45); /* form field underlines at rest */
+  --color-line-field: var(--color-border);       /* form field underlines at rest (red draws in on focus) */
   /* Overlay */
   --color-overlay: #245148a3;                   /* dim behind modals */
   /* Legacy names, kept so nothing breaks - don't use */

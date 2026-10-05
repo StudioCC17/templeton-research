@@ -105,7 +105,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
     width: '100%',
     backgroundColor: 'transparent',
     border: 'none',
-    borderBottom: '1px solid var(--color-line-field)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
+    borderBottom: '1px solid var(--color-line-field)', // pale line at rest; red focus line drawn over it by .form-field (globals.css)
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',

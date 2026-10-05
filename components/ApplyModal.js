@@ -150,7 +150,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
     width: '100%',
     backgroundColor: 'transparent',
     border: 'none',
-    borderBottom: '1px solid var(--color-line-field)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
+    borderBottom: '1px solid var(--color-line-field)', // pale line at rest; red focus line drawn over it by .form-field (globals.css)
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -247,6 +247,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 lineHeight: 1.5,
                 color: 'var(--color-text-secondary)', // supporting text
                 margin: '0.75rem 0 0',
+                paddingRight: '15%',
               }}
             >
               {copy.intro}
