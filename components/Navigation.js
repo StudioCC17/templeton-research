@@ -443,7 +443,7 @@ export default function Navigation({ globalSettings, aboutData }) {
               onClick={() => setIsContactModalOpen(true)}
               className="nav-contact"
             >
-              Contact
+              Contact Us
 <Arrow className="nav-contact-arrow" />
             </button>
           </div>
@@ -570,7 +570,7 @@ export default function Navigation({ globalSettings, aboutData }) {
               onClick={() => setIsContactModalOpen(true)}
               className="nav-contact"
             >
-              Contact
+              Contact Us
 <Arrow className="nav-contact-arrow" />
             </button>
             

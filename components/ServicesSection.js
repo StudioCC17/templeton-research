@@ -339,7 +339,7 @@ export default function ServicesSection({ servicesData }) {
                   width: 'fit-content',
                 }}
               >
-                Have a question?  Get in touch<Arrow /></p>
+                Have a question?  Contact us<Arrow /></p>
 
             </div>
           </div>
