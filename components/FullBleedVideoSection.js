@@ -33,7 +33,7 @@ export default function FullBleedVideoSection({ heroData, videoIndex = 0, height
         position: 'relative',
         width: '100%',
         padding: '0',
-        backgroundColor: '#f5f5f0'
+        backgroundColor: 'var(--color-cream)'
       }}
     >
       <div
@@ -68,11 +68,11 @@ export default function FullBleedVideoSection({ heroData, videoIndex = 0, height
             style={{
               width: '100%',
               height: '100%',
-              backgroundColor: '#e5e5e0',
+              backgroundColor: 'var(--color-cream-dark)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#888'
+              color: 'var(--color-text-secondary)'
             }}
           >
             Video loading...

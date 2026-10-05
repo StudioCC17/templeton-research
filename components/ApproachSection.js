@@ -47,7 +47,7 @@ export default function ApproachSection({ approachData }) {
       ref={sectionRef}
       className="approach-section"
       style={{ 
-        backgroundColor: '#f5f5f0',
+        backgroundColor: 'var(--color-cream)',
         minHeight: 'auto',
         position: 'relative',
         zIndex: 2
@@ -72,7 +72,7 @@ export default function ApproachSection({ approachData }) {
             top: '0',
             bottom: '0',
             width: '1px',
-            backgroundColor: '#c4d2cf',
+            backgroundColor: 'var(--color-border)',
             transform: 'translateX(-50%)',
             zIndex: 1
           }} 
@@ -99,7 +99,7 @@ export default function ApproachSection({ approachData }) {
               fontWeight: 300,
               lineHeight: 1.05,
               letterSpacing: '-0.02em',
-              color: '#245148',
+              color: 'var(--color-green)',
               margin: 0,
               textAlign: 'left',
               paddingRight: '15%',
@@ -125,7 +125,7 @@ export default function ApproachSection({ approachData }) {
             <div 
               key={approach._key || index}
               style={{
-                borderBottom: isLastItem ? 'none' : '1px solid #c4d2cf'
+                borderBottom: isLastItem ? 'none' : '1px solid var(--color-border)'
               }}
             >
               {/* Toggle Header - Clickable */}
@@ -147,7 +147,7 @@ export default function ApproachSection({ approachData }) {
                     fontWeight: 300,
                     lineHeight: 1.2,
                     letterSpacing: '-0.01em',
-                    color: '#245148',
+                    color: 'var(--color-green)',
                     margin: 0,
                     flex: 1
                   }}
@@ -211,7 +211,7 @@ export default function ApproachSection({ approachData }) {
               >
                 <div 
                   style={{
-                    borderTop: '1px solid #c4d2cf',
+                    borderTop: '1px solid var(--color-border)',
                     padding: '1.25rem',
                     paddingRight: '15%'
                   }}
@@ -242,7 +242,7 @@ export default function ApproachSection({ approachData }) {
                                 fontFamily: 'var(--font-heading), serif',
                                 fontSize: '1.4rem',
                                 fontWeight: 300,
-                                color: '#245148',
+                                color: 'var(--color-green)',
                                 margin: '2rem 0 1rem 0'
                               }}
                             >
@@ -255,7 +255,7 @@ export default function ApproachSection({ approachData }) {
                                 fontFamily: 'var(--font-body), var(--font-fallback)',
                                 fontSize: '1.2rem',
                                 fontWeight: 600,
-                                color: '#245148',
+                                color: 'var(--color-green)',
                                 margin: '1.25rem 0 0.75rem 0'
                               }}
                             >
@@ -269,7 +269,7 @@ export default function ApproachSection({ approachData }) {
                               style={{ 
                                 marginLeft: '1.25rem', 
                                 marginBottom: '1.25rem',
-                                color: '#245148'
+                                color: 'var(--color-green)'
                               }}
                             >
                               {children}
@@ -280,7 +280,7 @@ export default function ApproachSection({ approachData }) {
                               style={{ 
                                 marginLeft: '1.25rem', 
                                 marginBottom: '1.25rem',
-                                color: '#245148'
+                                color: 'var(--color-green)'
                               }}
                             >
                               {children}
@@ -293,7 +293,7 @@ export default function ApproachSection({ approachData }) {
                               style={{
                                 fontFamily: 'var(--font-body), var(--font-fallback)',
                                 fontSize: '1rem',
-                                color: '#245148',
+                                color: 'var(--color-green)',
                                 marginBottom: '0.5rem',
                                 lineHeight: 1.6
                               }}
@@ -306,7 +306,7 @@ export default function ApproachSection({ approachData }) {
                               style={{
                                 fontFamily: 'var(--font-body), var(--font-fallback)',
                                 fontSize: '1rem',
-                                color: '#245148',
+                                color: 'var(--color-green)',
                                 marginBottom: '0.5rem',
                                 lineHeight: 1.6
                               }}

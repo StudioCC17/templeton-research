@@ -124,7 +124,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
     <section 
       className="case-studies-table-section"
       style={{
-        backgroundColor: '#BB7860',
+        backgroundColor: 'var(--color-red)',
         padding: '0rem 2rem'
       }}
     >
@@ -211,7 +211,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                   key={study._id}
                   className={`case-study-row ${isVisible ? 'case-study-row--visible' : ''}`}
                   style={{
-                    borderBottom: index < caseStudies.length - 1 ? '1px solid #f5f5f0' : 'none',
+                    borderBottom: index < caseStudies.length - 1 ? '1px solid var(--color-cream)' : 'none',
                     width: '100%',
                     transform: 'translateY(40px)',
                     opacity: 0,
@@ -245,7 +245,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                        
                         fontWeight: 300,
                         lineHeight: 1,
-                        color: '#f5f5f0',
+                        color: 'var(--color-cream)',
                         letterSpacing: '-0.02em',
                         textAlign: 'center'
                       }}
@@ -259,7 +259,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                       style={{
                         position: 'absolute',
                         right: '0',
-                        color: '#f5f5f0',
+                        color: 'var(--color-cream)',
                         fontSize: '1.5rem',
                         transition: 'transform 0.3s ease',
                         transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -326,7 +326,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                             fontFamily: 'var(--font-body), var(--font-fallback)',
                             fontSize: '1rem',
                             fontWeight: 400,
-                            color: '#f5f5f0',
+                            color: 'var(--color-cream)',
                             opacity: 0.9,
                             textTransform: 'capitalize',
                             backgroundColor: 'rgba(245, 245, 240, 0.1)',
@@ -345,7 +345,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: '1rem',
                               fontWeight: 400,
-                              color: '#f5f5f0',
+                              color: 'var(--color-cream)',
                               opacity: 0.9,
                               textTransform: 'capitalize',
                               backgroundColor: 'rgba(245, 245, 240, 0.1)',
@@ -365,7 +365,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: '1rem',
                               fontWeight: 400,
-                              color: '#f5f5f0',
+                              color: 'var(--color-cream)',
                               opacity: 0.9,
                               textTransform: 'capitalize',
                               backgroundColor: 'rgba(245, 245, 240, 0.1)',
@@ -402,7 +402,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                       fontSize: '1.1rem',
                                       fontWeight: 400,
                                       lineHeight: '1.6',
-                                      color: '#f5f5f0',
+                                      color: 'var(--color-cream)',
                                       marginBottom: '1.5rem'
                                     }}
                                   >
@@ -415,7 +415,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                       fontFamily: 'var(--font-heading), serif',
                                       fontSize: '1.8rem',
                                       fontWeight: 300,
-                                      color: '#f5f5f0',
+                                      color: 'var(--color-cream)',
                                       marginBottom: '1rem',
                                       marginTop: '2rem'
                                     }}
@@ -429,7 +429,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                       fontFamily: 'var(--font-heading), serif',
                                       fontSize: '1.4rem',
                                       fontWeight: 300,
-                                      color: '#f5f5f0',
+                                      color: 'var(--color-cream)',
                                       marginBottom: '0.75rem',
                                       marginTop: '1.5rem'
                                     }}
@@ -444,7 +444,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                     style={{ 
                                       marginLeft: '1.5rem', 
                                       marginBottom: '1.5rem',
-                                      color: '#f5f5f0'
+                                      color: 'var(--color-cream)'
                                     }}
                                   >
                                     {children}
@@ -455,7 +455,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                     style={{ 
                                       marginLeft: '1.5rem', 
                                       marginBottom: '1.5rem',
-                                      color: '#f5f5f0'
+                                      color: 'var(--color-cream)'
                                     }}
                                   >
                                     {children}
@@ -468,7 +468,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                     style={{
                                       fontFamily: 'var(--font-body), var(--font-fallback)',
                                       fontSize: '1.1rem',
-                                      color: '#f5f5f0',
+                                      color: 'var(--color-cream)',
                                       marginBottom: '0.5rem',
                                       lineHeight: '1.6'
                                     }}
@@ -481,7 +481,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                     style={{
                                       fontFamily: 'var(--font-body), var(--font-fallback)',
                                       fontSize: '1.1rem',
-                                      color: '#f5f5f0',
+                                      color: 'var(--color-cream)',
                                       marginBottom: '0.5rem',
                                       lineHeight: '1.6'
                                     }}
@@ -503,7 +503,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                                     target={value.blank ? '_blank' : '_self'}
                                     rel={value.blank ? 'noopener noreferrer' : undefined}
                                     style={{
-                                      color: '#f5f5f0',
+                                      color: 'var(--color-cream)',
                                       textDecoration: 'underline',
                                       textUnderlineOffset: '2px'
                                     }}
@@ -519,7 +519,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                             style={{
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: '1.1rem',
-                              color: '#f5f5f0',
+                              color: 'var(--color-cream)',
                               fontStyle: 'italic',
                               opacity: 0.8
                             }}
@@ -539,8 +539,8 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                               display: 'inline-flex',
                               alignItems: 'center',
                               gap: '0.5rem',
-                              backgroundColor: '#f5f5f0',
-                              color: '#BB7860',
+                              backgroundColor: 'var(--color-cream)',
+                              color: 'var(--color-red)',
                               padding: '0.675rem 1.35rem',
                               borderRadius: '4px',
                               textDecoration: 'none',
@@ -554,7 +554,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                               e.target.style.transform = 'translateY(-2px)';
                             }}
                             onMouseOut={(e) => {
-                              e.target.style.backgroundColor = '#f5f5f0';
+                              e.target.style.backgroundColor = 'var(--color-cream)';
                               e.target.style.transform = 'translateY(0)';
                             }}
                           >

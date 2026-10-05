@@ -174,7 +174,7 @@ export default function LegalOverlay() {
             padding: 0,
             margin: 0,
             cursor: 'pointer',
-            color: '#245148',
+            color: 'var(--color-green)',
             lineHeight: 0,
           }}
         >

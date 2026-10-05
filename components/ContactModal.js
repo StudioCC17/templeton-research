@@ -105,14 +105,14 @@ export default function ContactModal({ isOpen, onClose, service }) {
     width: '100%',
     backgroundColor: 'transparent',
     border: 'none',
-    borderBottom: '1px solid rgba(187, 120, 96, 0.45)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
+    borderBottom: '1px solid var(--color-line-field)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
     fontSize: 'var(--step-0)',
     fontWeight: 400,
     lineHeight: 1.5,
-    color: '#245148',
+    color: 'var(--color-green)',
     outline: 'none',
     appearance: 'none',
   }
@@ -136,7 +136,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        backgroundColor: isVisible ? '#245148a3' : '#24514800',
+        backgroundColor: isVisible ? 'var(--color-overlay)' : '#24514800',
         transition: 'background-color 0.4s ease',
         overflowY: 'scroll',
         scrollbarWidth: 'none',
@@ -147,7 +147,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
         className="tr-contact-box"
         onClick={(e) => e.stopPropagation()}
         style={{
-          backgroundColor: '#f5f5f0',
+          backgroundColor: 'var(--color-cream)',
           width: '40%',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -171,7 +171,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
             cursor: 'pointer',
             zIndex: 10,
             padding: 0,
-            color: '#245148',
+            color: 'var(--color-green)',
           }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -189,7 +189,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 fontSize: 'var(--step-3)',
                 fontWeight: 300,
                 lineHeight: 1.1,
-                color: '#245148',
+                color: 'var(--color-green)',
                 margin: 0,
               }}
             >
@@ -204,7 +204,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step-1)',
                   lineHeight: 1.55,
-                  color: '#245148',
+                  color: 'var(--color-green)',
                   margin: 0,
                 }}
               >
@@ -242,7 +242,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
               </div>
 
               <div style={{ marginBottom: '1.75rem' }}>
-                <label htmlFor="contact-company" style={labelStyle}>Company <span style={{ opacity: 0.6, fontWeight: 400 }}>(optional)</span></label>
+                <label htmlFor="contact-company" style={labelStyle}>Company <span style={{ color: 'var(--color-red-muted)', fontWeight: 400 }}>(optional)</span></label>
                 <input
                   id="contact-company"
                   name="company"
@@ -273,7 +273,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step--1)',
-                    color: '#BB7860',
+                    color: 'var(--color-red)',
                     marginTop: 0,
                     marginBottom: '1.25rem',
                   }}

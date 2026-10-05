@@ -406,7 +406,7 @@ export default function ServicesSection({ servicesData }) {
                               fontSize: 'var(--step--1)',
                               fontWeight: 400,
                               lineHeight: 1.4,
-                              color: '#24514882',
+                              color: 'var(--color-text-secondary)',
                             }}
                           >
                             {service.summary || SERVICE_SUMMARIES[service.title] || SERVICE_FILL}
@@ -453,7 +453,7 @@ export default function ServicesSection({ servicesData }) {
           top: 0;
           bottom: 0;
           width: 1px;
-          background-color: rgb(224, 224, 224);
+          background-color: var(--color-border);
           transform: translateX(-50%);
           transition: background-color 0.4s ease;
         }

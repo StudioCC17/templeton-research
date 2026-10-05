@@ -165,7 +165,7 @@ position: relative;
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--2);
   font-weight: 400;
-  color: #24514882;
+  color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
 
@@ -194,7 +194,7 @@ position: relative;
   font-size: var(--step--1);
   font-weight: 400;
   line-height: 1.55;
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   margin: 0 0 1.5rem 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;

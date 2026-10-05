@@ -129,7 +129,7 @@ function FooterInner({ footerData }) {
                   fontFamily: 'var(--font-heading), serif',
                   fontWeight: 300,
                   lineHeight: 1.2,
-                  color: '#f5f5f0',
+                  color: 'var(--color-cream)',
                   paddingRight: '45%'
                 }}
               >
@@ -152,7 +152,7 @@ function FooterInner({ footerData }) {
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step--1)',
                   fontWeight: 600,
-                  color: '#f5f5f0',
+                  color: 'var(--color-cream)',
                   lineHeight: 1.5,
                   textDecoration: 'none',
                   position: 'relative',
@@ -171,7 +171,7 @@ function FooterInner({ footerData }) {
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step--1)',
                   fontWeight: 600,
-                  color: '#f5f5f0',
+                  color: 'var(--color-cream)',
                   lineHeight: 1.5,
                   textDecoration: 'none',
                   position: 'relative',
@@ -198,8 +198,8 @@ function FooterInner({ footerData }) {
                 style={{
                   width: '60px',
                   height: '40px',
-                  color: '#f5f5f0',
-                  fill: '#f5f5f0'
+                  color: 'var(--color-cream)',
+                  fill: 'var(--color-cream)'
                 }}
               >
                 <g>
@@ -254,7 +254,7 @@ function FooterInner({ footerData }) {
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       fontSize: 'var(--step--1)',
                       fontWeight: 600,
-                      color: '#f5f5f0',
+                      color: 'var(--color-cream)',
                       marginBottom: '.25rem',
                       textTransform: 'uppercase',
                       lineHeight: 1.3
@@ -268,7 +268,7 @@ function FooterInner({ footerData }) {
                       fontSize: 'var(--step--1)',
                       fontWeight: 400,
                       lineHeight: 1.6,
-                      color: '#f5f5f0'
+                      color: 'var(--color-cream)'
                     }}
                   >
                     <div>{office.address?.line1}</div>
@@ -300,7 +300,7 @@ function FooterInner({ footerData }) {
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step--1)',
                     fontWeight: 400,
-                    color: '#f5f5f0',
+                    color: 'var(--color-cream)',
                     textDecoration: 'none',
                     lineHeight: 1.5,
                   }}

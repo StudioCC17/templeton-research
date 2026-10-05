@@ -66,11 +66,11 @@ export default function RandomImageGrid({ imageGridData }) {
       style={{
         position: 'relative',
         padding: '0', // Remove all padding for full bleed
-        backgroundColor: '#f5f5f0',
+        backgroundColor: 'var(--color-cream)',
         overflow: 'hidden',
         minHeight: '600px',
-        borderTop: '1px solid #c4d2cf',
-        borderBottom: '1px solid #c4d2cf'
+        borderTop: '1px solid var(--color-border)',
+        borderBottom: '1px solid var(--color-border)'
       }}
     >
       <div 
@@ -91,7 +91,7 @@ export default function RandomImageGrid({ imageGridData }) {
             top: '0',
             bottom: '0',
             width: '1px',
-            backgroundColor: '#c4d2cf',
+            backgroundColor: 'var(--color-border)',
             transform: 'translateX(-50%)',
             zIndex: 10
           }} 
@@ -148,7 +148,7 @@ export default function RandomImageGrid({ imageGridData }) {
               fontWeight: 300,
               lineHeight: 1.2,
               letterSpacing: '-0.01em',
-              color: '#245148',
+              color: 'var(--color-green)',
               margin: 0,
               textAlign: 'left',
               paddingRight: '15%'
@@ -167,7 +167,7 @@ export default function RandomImageGrid({ imageGridData }) {
               fontSize: '0.9rem',
               fontWeight: 400,
               lineHeight: 1.4,
-              color: '#245148',
+              color: 'var(--color-green)',
               margin: 0,
               maxWidth: '250px'
             }}

@@ -10,7 +10,7 @@ import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
 
 // ── Backdrop toggle ──────────────────────────────────────────────
-// Set to '#245148a3' to activate the dim later. 'transparent' = no backdrop.
+// Set to 'var(--color-overlay)' to activate the dim later. 'transparent' = no backdrop.
 // (The backdrop layer is always rendered so click-outside + scroll-lock work;
 //  only its colour changes.)
 const BACKDROP_COLOR = 'transparent'

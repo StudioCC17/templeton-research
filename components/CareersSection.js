@@ -12,7 +12,7 @@ export default function CareersSection({ careersData }) {
     <section 
       className="careers-section text-section"
       style={{
-        backgroundColor: '#f5f5f0',
+        backgroundColor: 'var(--color-cream)',
         padding: '1rem 2rem 5rem 2rem'
       }}
     >
@@ -41,7 +41,7 @@ export default function CareersSection({ careersData }) {
                 fontWeight: '300',
                 lineHeight: '1.2',
                 letterSpacing: '-0.01em',
-                color: '#245148',
+                color: 'var(--color-green)',
                 marginBottom: '0'
               }}
             >
@@ -80,7 +80,7 @@ export default function CareersSection({ careersData }) {
                           fontSize: '1.1rem',
                           fontWeight: '400',
                           lineHeight: '1.5',
-                          color: '#245148',
+                          color: 'var(--color-green)',
                           margin: '0 0 1rem 0',
                           textAlign: 'left'
                         }}
@@ -94,7 +94,7 @@ export default function CareersSection({ careersData }) {
                           fontFamily: 'var(--font-heading), serif',
                           fontSize: '1.8rem',
                           fontWeight: '300',
-                          color: '#245148',
+                          color: 'var(--color-green)',
                           marginBottom: '1rem',
                           marginTop: '2rem',
                           textAlign: 'left'
@@ -109,7 +109,7 @@ export default function CareersSection({ careersData }) {
                           fontFamily: 'var(--font-heading), serif',
                           fontSize: '1.4rem',
                           fontWeight: '300',
-                          color: '#245148',
+                          color: 'var(--color-green)',
                           marginBottom: '0.75rem',
                           marginTop: '1.5rem',
                           textAlign: 'left'
@@ -132,7 +132,7 @@ export default function CareersSection({ careersData }) {
                         target={value.blank ? '_blank' : '_self'}
                         rel={value.blank ? 'noopener noreferrer' : undefined}
                         style={{
-                          color: '#BB7860',
+                          color: 'var(--color-red)',
                           textDecoration: 'underline'
                         }}
                       >

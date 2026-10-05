@@ -112,7 +112,7 @@
 .status {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   padding: 2rem 0;
 }
 

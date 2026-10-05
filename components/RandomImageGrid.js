@@ -34,10 +34,10 @@ export default function RandomImageGrid({ imageGridData, approachData }) {
       className="random-image-grid-section"
       style={{
         position: 'relative',
-        backgroundColor: '#f5f5f0',
+        backgroundColor: 'var(--color-cream)',
         overflow: 'hidden',
-        borderTop: '0px solid #c4d2cf',
-        borderBottom: '0px solid #c4d2cf',
+        borderTop: '0px solid var(--color-border)',
+        borderBottom: '0px solid var(--color-border)',
         padding: '10rem'
       }}
     >

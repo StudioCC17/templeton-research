@@ -12,9 +12,9 @@ export default function QuoteSection({
     <section 
       className="quote-section"
       style={{
-        backgroundColor: '#f5f5f0',
+        backgroundColor: 'var(--color-cream)',
         padding: '0',
-        borderTop: '1px solid #c4d2cf',
+        borderTop: '1px solid var(--color-border)',
         position: 'relative'
       }}
     >
@@ -35,7 +35,7 @@ export default function QuoteSection({
             top: '0',
             bottom: '0',
             width: '1px',
-            backgroundColor: '#c4d2cf'
+            backgroundColor: 'var(--color-border)'
           }} 
         />
 
@@ -64,7 +64,7 @@ export default function QuoteSection({
                 fontFamily: 'var(--font-heading), serif',
                 fontSize: 'clamp(2.2rem, 4vw, 3.5rem)',
                 fontWeight: 300,
-                color: '#245148',
+                color: 'var(--color-green)',
                 lineHeight: 0.5,
                 marginBottom: '0',
                 opacity: 0.3
@@ -81,7 +81,7 @@ export default function QuoteSection({
                 fontWeight: 300,
                 lineHeight: 1.15,
                 letterSpacing: '-0.02em',
-                color: '#245148',
+                color: 'var(--color-green)',
                 margin: '0',
                 textAlign: 'left'
               }}
@@ -104,7 +104,7 @@ export default function QuoteSection({
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: '1.1rem',
                 fontWeight: 400,
-                color: '#245148',
+                color: 'var(--color-green)',
                 margin: '0 0 0.25rem 0',
                 lineHeight: 1.3
               }}
@@ -118,7 +118,7 @@ export default function QuoteSection({
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: '0.9rem',
                 fontWeight: 600,
-                color: '#BB7860',
+                color: 'var(--color-red)',
                 margin: 0,
                 textTransform: 'uppercase',
                 lineHeight: 1.3

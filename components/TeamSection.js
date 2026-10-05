@@ -163,7 +163,7 @@ export default function TeamSection({ teamData, careersData }) {
 
   return (
     <section id="team" className="team-section" style={{
-      backgroundColor: '#f5f5f0',
+      backgroundColor: 'var(--color-cream)',
       padding: '1rem 1.5%',
       paddingBottom: '0rem'
     }}>
@@ -174,7 +174,7 @@ export default function TeamSection({ teamData, careersData }) {
           style={{
             maxWidth: '67%',
             paddingBottom: '5.5rem',
-            borderBottom: '0px solid rgb(196, 210, 207)',
+            borderBottom: '0px solid var(--color-border)',
             marginBottom: '2rem'
           }}
         >
@@ -182,7 +182,7 @@ export default function TeamSection({ teamData, careersData }) {
           <h2 
             ref={headlineRef}
             className="hero-text"
-            style={{ color: '#245148', opacity: 0 }}
+            style={{ color: 'var(--color-green)', opacity: 0 }}
           >
             Our experienced team brings together diverse expertise to deliver clarity and actionable intelligence.
           </h2>
@@ -222,7 +222,7 @@ export default function TeamSection({ teamData, careersData }) {
                   aspectRatio: '6 / 4.025',
                   marginBottom: '0',
                   overflow: 'hidden',
-                  backgroundColor: '#e8e8e3',
+                  backgroundColor: 'var(--color-cream-dark)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -331,8 +331,8 @@ export default function TeamSection({ teamData, careersData }) {
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
               paddingBottom: '1.5rem',
-              borderTop: '1px solid rgb(224, 224, 224)',
-              borderBottom: '1px solid rgb(224, 224, 224)'
+              borderTop: '1px solid var(--color-border)',
+              borderBottom: '1px solid var(--color-border)'
             }}
           >
             {/* Full-bleed image (left). Absolutely positioned so it fills the
@@ -347,7 +347,7 @@ export default function TeamSection({ teamData, careersData }) {
                 left: 0,
                 width: 'calc(60% - 0.3vw)', // same right edge as before the section went full-bleed
                 overflow: 'hidden',
-                backgroundColor: '#e8e8e3'
+                backgroundColor: 'var(--color-cream-dark)'
               }}
             >
               <Image
@@ -410,7 +410,7 @@ export default function TeamSection({ teamData, careersData }) {
             position: 'fixed',
             inset: 0,
             zIndex: 9999,
-            backgroundColor: isModalVisible ? '#245148a3' : '#24514800',
+            backgroundColor: isModalVisible ? 'var(--color-overlay)' : '#24514800',
             transition: 'background-color 0.4s ease',
             overflowY: 'scroll',
             scrollbarWidth: 'none',
@@ -422,7 +422,7 @@ export default function TeamSection({ teamData, careersData }) {
             className="team-modal"
             onClick={(e) => e.stopPropagation()}
             style={{
-              backgroundColor: '#f5f5f0',
+              backgroundColor: 'var(--color-cream)',
               width: '40%',
               marginLeft: 'auto',
               marginRight: 'auto',
@@ -445,7 +445,7 @@ export default function TeamSection({ teamData, careersData }) {
                 cursor: 'pointer',
                 zIndex: 10,
                 padding: '0rem',
-                color: '#245148'
+                color: 'var(--color-green)'
               }}
               aria-label="Close modal"
             >
@@ -473,7 +473,7 @@ export default function TeamSection({ teamData, careersData }) {
                       lineHeight: 1.1,
                       fontSize: 'var(--step-2)',
                       fontFamily: 'var(--font-heading), serif',
-                      color: '#245148',
+                      color: 'var(--color-green)',
                       margin: 0
                     }}
                   >
@@ -507,7 +507,7 @@ export default function TeamSection({ teamData, careersData }) {
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step-0)',
                     fontWeight: 400,
-                    color: '#245148',
+                    color: 'var(--color-green)',
                     textDecoration: 'none',
                     display: 'block',
                     lineHeight: 1.55
@@ -522,7 +522,7 @@ export default function TeamSection({ teamData, careersData }) {
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step-0)',
                     fontWeight: 400,
-                    color: '#245148',
+                    color: 'var(--color-green)',
                     textDecoration: 'none',
                     display: 'block',
                     lineHeight: 1.55
@@ -541,7 +541,7 @@ export default function TeamSection({ teamData, careersData }) {
                     width: '100%',
                     aspectRatio: '6 / 4.025',
                     overflow: 'hidden',
-                    backgroundColor: '#e8e8e3',
+                    backgroundColor: 'var(--color-cream-dark)',
                     marginBottom: '2rem'
                    
                   }}
@@ -568,7 +568,7 @@ export default function TeamSection({ teamData, careersData }) {
                     <p
                       key={i}
                       style={{
-                        color: '#245148',
+                        color: 'var(--color-green)',
                         fontFamily: 'var(--font-body), var(--font-fallback)',
                         fontSize: 'var(--step-0)',
                         fontWeight: 400,

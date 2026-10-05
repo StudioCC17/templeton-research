@@ -146,7 +146,7 @@ export default function HeroSection({
       <section 
         className="hero-text-section"
         style={{
-          backgroundColor: '#f5f5f0',
+          backgroundColor: 'var(--color-cream)',
           display: 'flex',
           alignItems: 'flex-end',
           padding: '200px 1.5% 2rem 1.5%'
@@ -162,7 +162,7 @@ export default function HeroSection({
             ref={heroTextRef}
             className="hero-text"
             style={{
-              color: '#245148',
+              color: 'var(--color-green)',
               margin: 0,
               maxWidth: '100%',
               paddingRight: '16%',

@@ -15,14 +15,28 @@
   --font-body: 'acumin-pro', sans-serif;
   --font-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   
-  /* Brand Colors */
-  --color-green: #245148;
-  --color-green-light: rgb(36, 81, 72);
-  --color-red: #BB7860;
-  --color-grey: rgb(108, 119, 117);
-  --color-cream: #f5f5f0;
-  --color-cream-dark: #ebebe3; /* slightly deeper cream for panels, e.g. Careers */
-  --color-border: #c4d2cf;
+  /* ----------------------------------------
+     COLOUR SYSTEM - the only colours the site uses.
+     Use these variables; don't type hex values into components.
+     ---------------------------------------- */
+  /* Text */
+  --color-green: #245148;                       /* primary: headings + body */
+  --color-text-secondary: #24514882;            /* supporting text, summaries, dates, meta */
+  /* Accent */
+  --color-red: #BB7860;                         /* labels, preheaders, links, buttons, errors */
+  --color-red-muted: rgba(187, 120, 96, 0.6);   /* hints in brackets, "Choose file" */
+  --color-red-hover: #A66850;                   /* button hover */
+  /* Surfaces */
+  --color-cream: #f5f5f0;                       /* page background + text on red/green */
+  --color-cream-dark: #ebebe3;                  /* panels, image placeholders */
+  /* Lines */
+  --color-border: #c4d2cf;                      /* dividers */
+  --color-line-field: rgba(187, 120, 96, 0.45); /* form field underlines at rest */
+  /* Overlay */
+  --color-overlay: #245148a3;                   /* dim behind modals */
+  /* Legacy names, kept so nothing breaks - don't use */
+  --color-green-light: var(--color-green);
+  --color-grey: var(--color-text-secondary);
   
   /* ----------------------------------------
      FLUID TYPE SCALE
@@ -177,7 +191,7 @@
   font-size: var(--text-small-size);
   font-weight: var(--text-small-weight);
   line-height: var(--text-small-line-height);
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   margin: 0;
 }
 
@@ -227,7 +241,7 @@
   
   .hero-text {
     max-width: 95vw!important;
-        color: rgb(36, 81, 72);
+        color: var(--color-green);
     margin: 0px auto;
     max-width: 85%;
     text-indent: 0px!important;
@@ -327,7 +341,7 @@ body {
   background-color: var(--color-cream); /* page colour everywhere, incl. while media loads */
   font-family: var(--font-body), var(--font-fallback);
   line-height: 1.6;
-  color: #333;
+  color: var(--color-text-secondary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
@@ -335,7 +349,7 @@ body {
     font-size: var(--step-1);
     font-weight: 400;
     line-height: 1.5;
-    color: rgb(36, 81, 72);
+    color: var(--color-green);
 
 }
 
@@ -370,7 +384,7 @@ font-family: var(--font-body), var(--font-fallback);
     font-weight: 300;
     line-height: 1.2;
   
-    color: #245148;
+    color: var(--color-green);
     margin: 0;
     text-align: left;
        font-family: var(--font-heading), var(--font-fallback);
@@ -417,35 +431,35 @@ p {
     font-size: var(--step-1);
     font-weight: 400;
     line-height: 1.5;
-    color: rgb(36, 81, 72);
+    color: var(--color-green);
     margin: 0px 0px 1rem;
     letter-spacing: .25px
 }
 
 .approach-section-scroll {
-  background: #f5f5f0!important
+  background: var(--color-cream)!important
 }
 
 .image-grid-section-scroll {
-  background: #f5f5f0!important
+  background: var(--color-cream)!important
 }
 
 .services-section-scroll {
-  background: #f5f5f0 !important
+  background: var(--color-cream) !important
 }
 
 
 .case-studies-section-scroll {
-  background: #f5f5f0!important
+  background: var(--color-cream)!important
 }
 
 .stats-section-scroll {
-  background: #f5f5f0;
-  color: #f5f5f0!important
+  background: var(--color-cream);
+  color: var(--color-cream)!important
 }
 
 .team-section-scroll {
-  background: #f5f5f0!important
+  background: var(--color-cream)!important
 }
 
 
@@ -462,7 +476,7 @@ p {
   transition: .2s !important;
   padding-left: 1.5% !important;
   padding-right: 1.5% !important;
-  color: #f5f5f0;
+  color: var(--color-cream);
 }
 
 /* Header page-load intro: hidden until GSAP fades it in (Navigation.js).
@@ -566,7 +580,7 @@ p {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: #A66850;
+  background-color: var(--color-red-hover);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
@@ -594,14 +608,14 @@ p {
 /* "Choose file" on the careers form: faded red, full red on hover,
    arrow nudges up and right like the other arrow links */
 .file-pick {
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  color: var(--color-red-muted);
+  transition: color 0.3s ease;
 }
 .file-pick .arrow {
   transition: transform 0.3s ease;
 }
 .file-pick:hover {
-  opacity: 1;
+  color: var(--color-red);
 }
 .file-pick:hover .arrow {
   transform: translate(2px, -2px);
@@ -641,7 +655,7 @@ nav.navigation.navigation--scrolled {
   transition: all 0.2s ease;
   padding: 0rem 0rem;
 
-  border-bottom: 1px solid rgb(224 224 224)
+  border-bottom: 1px solid var(--color-border)
 }
 
 
@@ -668,10 +682,10 @@ nav.navigation.navigation--scrolled {
 }
 
 .contact-modal-content {
-  background-color: rgb(245, 245, 240);
+  background-color: var(--color-cream);
     /* border-radius: 8px; */
     padding: 20px;
-    border: 1px solid rgb(36, 81, 72);
+    border: 1px solid var(--color-green);
     max-width: 600px;
     width: 100%;
     max-height: 90vh;
@@ -682,11 +696,11 @@ nav.navigation.navigation--scrolled {
 .contact-modal-content input {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid rgb(36, 81, 72);
+  border: 1px solid var(--color-green);
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
   background-color: white;
-  color: rgb(36, 81, 72);
+  color: var(--color-green);
 }
 
 .contact-modal-close-button {
@@ -697,13 +711,13 @@ background: none;
 border: none;
 font-size: var(--step-2);
 cursor: pointer;
-color: rgb(36, 81, 72);
+color: var(--color-green);
 padding: 0.5rem;
 line-height: 1;
 }
 
 .contact-modal-submit-button {
-  background-color: rgb(187, 120, 96);
+  background-color: var(--color-red);
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -722,7 +736,7 @@ line-height: 1;
     font-family: var(--font-body), var(--font-fallback);
     font-size: var(--step-1);
  padding-bottom: 5px;
-    color: rgb(36, 81, 72);
+    color: var(--color-green);
 }
 
 /* Contact Modal Simple Fade Animations */
@@ -789,7 +803,7 @@ line-height: 1;
 }
 
 .navigation--scrolled .nav-link {
-  color: rgb(36, 81, 72);
+  color: var(--color-green);
 }
 
 p.section-paragraph.approach-paragraph {
@@ -811,7 +825,7 @@ p.section-paragraph.approach-paragraph {
 
 
 .navigation--scrolled .locale-button {
-  color: rgb(36, 81, 72);
+  color: var(--color-green);
 }
 
 /* Ensure logos have consistent sizing */
@@ -880,7 +894,7 @@ p.section-paragraph.approach-paragraph {
   font-size: var(--step-2);
   font-weight: 300;
   letter-spacing: 0.23em;
-  color: #f5f5f0;
+  color: var(--color-cream);
   font-family: var(--font-heading), serif;
 }
 
@@ -888,13 +902,13 @@ p.section-paragraph.approach-paragraph {
   font-size: var(--step--2);
   font-weight: 300;
   letter-spacing: 0.23em;
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-top: 0.125rem;
   font-family: var(--font-heading), serif;
 }
 
 .nav-link {
-  color: #f5f5f0;
+  color: var(--color-cream);
   text-decoration: none;
   font-size: var(--step-1);
   font-weight: 400;
@@ -912,7 +926,7 @@ p.section-paragraph.approach-paragraph {
 .locale-button {
   background: none;
   border: none;
-  color: #f5f5f0;
+  color: var(--color-cream);
   font-size: var(--step-1);
   font-weight: 400;
   font-family: var(--font-body), var(--font-fallback);
@@ -922,7 +936,7 @@ p.section-paragraph.approach-paragraph {
       font-family: var(--font-body), var(--font-fallback);
     font-size: var(--step-1);
     font-weight: 400;
-    color: #245148;
+    color: var(--color-green);
 }
 
 /* ========================================
@@ -951,7 +965,7 @@ p.section-paragraph.approach-paragraph {
   position: absolute;
   width: 24px;
   height: 1px;
-  background-color: #245148;
+  background-color: var(--color-green);
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -994,7 +1008,7 @@ p.section-paragraph.approach-paragraph {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #f5f5f0;
+  background-color: var(--color-cream);
   z-index: 150;
   display: flex;
   flex-direction: column;
@@ -1016,7 +1030,7 @@ p.section-paragraph.approach-paragraph {
 
 .nav-mobile-menu .nav-link {
   font-size: var(--step-2);
-  color: #245148;
+  color: var(--color-green);
   text-decoration: none;
 
   font-weight: 300;
@@ -1183,7 +1197,7 @@ p.section-paragraph.approach-paragraph {
   position: relative;
   z-index: 10;
   text-align: left;
-  color: #f5f5f0;
+  color: var(--color-cream);
 
   padding: 0 2rem;
   padding-bottom: 45px;
@@ -1249,7 +1263,7 @@ p.section-paragraph.approach-paragraph {
   font-weight: 400;
   line-height: 1.445;
   text-align: left; /* Your change - keeps left alignment */
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-bottom: 0.5rem;
   opacity: 0.9;
 }
@@ -1257,7 +1271,7 @@ p.section-paragraph.approach-paragraph {
 .hero-headline,
 .hero2-headline {
   /* Inherits from h1 global styles */
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-bottom: 0;
 }
 
@@ -1339,7 +1353,7 @@ p.section-paragraph.approach-paragraph {
 section.text-section.approach-section {
 
   padding: 2rem 1.25rem 0rem 1.25rem;
-  background: #f5f5f0;
+  background: var(--color-cream);
 }
 
 .text-container {
@@ -1365,13 +1379,13 @@ section.text-section.approach-section {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
   font-weight: 700;
-  color: #BB7860;
+  color: var(--color-red);
 display: none
 }
 
 .section-headline {
   /* Inherits from h2 global styles */
-  color: #245148;
+  color: var(--color-green);
   margin-bottom: 0;
 }
 
@@ -1395,7 +1409,7 @@ display: none
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #BB7860;
+  background-color: var(--color-red);
   color: white;
   padding: 0.675rem 1.35rem;
   border-radius: 4px;
@@ -1407,7 +1421,7 @@ display: none
 }
 
 .cta-button:hover {
-  background-color: #A66850;
+  background-color: var(--color-red-hover);
 }
 
 .cta-arrow {
@@ -1421,7 +1435,7 @@ display: none
 
 /* Approach Section */
 .approach-section {
-  background-color: #245148;
+  background-color: var(--color-green);
   padding: 5rem 1.25rem;
 }
 
@@ -1434,7 +1448,7 @@ display: none
   font-family: var(--font-heading), serif;
   font-size: var(--step-4);
   font-weight: 300;
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-bottom: 3rem;
 }
 
@@ -1467,7 +1481,7 @@ display: none
 /* Services Section */
 .services-section {
   padding: 1.5rem 1.25rem;
-  background-color: #f5f5f0;
+  background-color: var(--color-cream);
 }
 
 .services-container {
@@ -1479,14 +1493,14 @@ display: none
   font-family: var(--font-heading), serif;
   font-size: var(--step-4);
   font-weight: 300;
-  color: #245148;
+  color: var(--color-green);
   margin-bottom: 2rem;
 }
 
 .services-introduction {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-1);
-  color: #245148;
+  color: var(--color-green);
   max-width: 800px;
   margin-bottom: 3rem;
 }
@@ -1494,14 +1508,14 @@ display: none
 /* Team Section */
 .team-section {
   padding: 5rem 1.25rem;
-  background-color: #f5f5f0;
+  background-color: var(--color-cream);
 }
 
 .team-headline {
   font-family: var(--font-heading), serif;
   font-size: var(--step-4);
   font-weight: 300;
-  color: #245148;
+  color: var(--color-green);
   margin-bottom: 2rem;
 }
 
@@ -1533,8 +1547,8 @@ display: none
 
 /* Footer Styles */
 .footer {
-  background-color: #245148;
-  color: #f5f5f0;
+  background-color: var(--color-green);
+  color: var(--color-cream);
   padding: 4rem 3.5%;
 }
 
@@ -1554,7 +1568,7 @@ display: none
 .footer-tagline {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  color: #f5f5f0;
+  color: var(--color-cream);
   opacity: 0.8;
   margin-bottom: 1rem;
 }
@@ -1562,7 +1576,7 @@ display: none
 .footer-copyright {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
-  color: #f5f5f0;
+  color: var(--color-cream);
   opacity: 0.6;
 }
 
@@ -1570,7 +1584,7 @@ display: none
   font-family: var(--font-heading), serif;
   font-size: var(--step-2);
   font-weight: 400;
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-bottom: 1rem;
 }
 
@@ -1578,7 +1592,7 @@ display: none
   display: block;
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  color: #f5f5f0;
+  color: var(--color-cream);
   opacity: 0.8;
   text-decoration: none;
   margin-bottom: 0.5rem;
@@ -1597,14 +1611,14 @@ display: none
   font-family: var(--font-heading), serif;
   font-size: var(--step-1);
   font-weight: 400;
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-bottom: 0.5rem;
 }
 
 .footer-office p {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
-  color: #f5f5f0;
+  color: var(--color-cream);
   opacity: 0.8;
   margin: 0;
   line-height: 1.5;
@@ -1630,7 +1644,7 @@ display: none
 /* Quote Section */
 .quote-section {
   padding: 5rem 3.5%;
-  background-color: #f5f5f0;
+  background-color: var(--color-cream);
 }
 
 .quote-container {
@@ -1644,7 +1658,7 @@ display: none
   font-size: var(--step-4);
   font-weight: 300;
   line-height: 1.3;
-  color: #245148;
+  color: var(--color-green);
   margin-bottom: 2rem;
 }
 
@@ -1652,21 +1666,21 @@ display: none
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-1);
   font-weight: 600;
-  color: #245148;
+  color: var(--color-green);
 }
 
 .quote-title {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  color: #245148;
+  color: var(--color-green);
   opacity: 0.8;
 }
 
 /* Careers Section */
 .careers-section {
   padding: 1rem 3.5%;
-  background-color: #BB7860;
-  color: #f5f5f0;
+  background-color: var(--color-red);
+  color: var(--color-cream);
 }
 
 .careers-container {
@@ -1678,14 +1692,14 @@ display: none
   font-family: var(--font-heading), serif;
   font-size: var(--step-4);
   font-weight: 300;
-  color: #f5f5f0;
+  color: var(--color-cream);
   margin-bottom: 1.5rem;
 }
 
 .careers-copy {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-1);
-  color: #f5f5f0;
+  color: var(--color-cream);
   max-width: 800px;
   margin-bottom: 2rem;
 }
@@ -1694,8 +1708,8 @@ display: none
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #f5f5f0;
-  color: #BB7860;
+  background-color: var(--color-cream);
+  color: var(--color-red);
   padding: 0.675rem 1.35rem;
   border-radius: 4px;
   text-decoration: none;
@@ -1726,7 +1740,7 @@ display: none
 }
 
 .section-content a {
-  color: #BB7860;
+  color: var(--color-red);
   text-decoration: underline;
 }
 
@@ -1741,11 +1755,11 @@ display: none
 }
 
 .section-content blockquote {
-  border-left: 3px solid #BB7860;
+  border-left: 3px solid var(--color-red);
   padding-left: 1rem;
   margin: 20px 0;
   font-style: italic;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 /* Case Study Map Styles */
@@ -1767,7 +1781,7 @@ display: none
 }
 
 .case-study-item--active {
-  border-color: #BB7860;
+  border-color: var(--color-red);
   transform: translateY(-10px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
@@ -1783,7 +1797,7 @@ display: none
 }
 
 .case-study-toggle:hover .case-study-item:not(.case-study-item--active) {
-  border-color: #BB7860;
+  border-color: var(--color-red);
 }
 
 .case-study-title {
@@ -1791,13 +1805,13 @@ display: none
 
   font-weight: 400;
   line-height: 1.145;
-  color: #245148;
+  color: var(--color-green);
   font-size: 4.5vw
 }
 
 .case-study-location {
   font-size: var(--step--1);
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .case-study-content {
@@ -1818,7 +1832,7 @@ display: none
 
 .case-study-type {
   display: none;
-  background-color: #BB7860;
+  background-color: var(--color-red);
   color: white;
   padding: 4px 12px;
   border-radius: 16px;
@@ -1836,7 +1850,7 @@ display: none
   font-family: var(--font-body), sans-serif;
   font-size: var(--step-0);
   line-height: 1.6;
-  color: #245148;
+  color: var(--color-green);
   margin: 0 0 1rem 0;
 }
 
@@ -1848,7 +1862,7 @@ display: none
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #BB7860;
+  background-color: var(--color-red);
   color: white;
   padding: 0.675rem 1.35rem;
   border-radius: 4px;
@@ -1860,7 +1874,7 @@ display: none
 }
 
 .case-study-cta:hover {
-  background-color: #A66850;
+  background-color: var(--color-red-hover);
 }
 
 .case-study-cta .cta-arrow {
@@ -1877,7 +1891,7 @@ display: none
   display: flex;
   align-items: center;
   min-height: 100%;
-  background-color: #f5f5f0;
+  background-color: var(--color-cream);
   padding: 2rem;
   border-radius: 8px;
   min-height: 400px;
@@ -1916,7 +1930,7 @@ display: none
 }
 
 .case-study-row {
-  border-bottom: 1px solid #f5f5f0;
+  border-bottom: 1px solid var(--color-cream);
   width: 100%;
   transform: translateY(40px);
   opacity: 0;
@@ -1949,7 +1963,7 @@ display: none
 
   font-weight: 300;
   line-height: 1;
-  color: #f5f5f0;
+  color: var(--color-cream);
   letter-spacing: -0.02em;
   text-align: center;
 }
@@ -1969,7 +1983,7 @@ display: none
 .case-study-toggle-icon {
   position: absolute;
   right: 0;
-  color: #f5f5f0;
+  color: var(--color-cream);
   font-size: var(--step-2);
   transition: transform 0.3s ease;
   min-width: 24px;
@@ -2001,7 +2015,7 @@ display: none
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-1);
   font-weight: 600;
-  color: #f5f5f0;
+  color: var(--color-cream);
   text-transform: uppercase;
 
 }
@@ -2010,7 +2024,7 @@ display: none
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
   font-weight: 400;
-  color: #f5f5f0;
+  color: var(--color-cream);
   opacity: 0.9;
   text-transform: capitalize;
   background-color: rgba(245, 245, 240, 0.1);
@@ -2021,7 +2035,7 @@ display: none
 .case-study-date-expanded {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step-0);
-  color: #f5f5f0;
+  color: var(--color-cream);
   opacity: 0.8;
 }
 
@@ -2034,8 +2048,8 @@ display: none
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #f5f5f0;
-  color: #BB7860;
+  background-color: var(--color-cream);
+  color: var(--color-red);
   padding: 0.675rem 1.35rem;
   border-radius: 4px;
   text-decoration: none;
@@ -2055,28 +2069,28 @@ display: none
 }
 
 .nav-logo-secondary svg {
-  color: #245148;
+  color: var(--color-green);
 }
 
 .case-studies-section-scroll .nav-logo-secondary svg {
-  color: #f5f5f0;
+  color: var(--color-cream);
 }
 
 /* Navigation scroll state for case studies section */
 .case-studies-section-scroll {
-  background: #BB7860 !important;
-  color: #f5f5f0 !important;
-  border-bottom: 1px solid #f5f5f0 !important;
+  background: var(--color-red) !important;
+  color: var(--color-cream) !important;
+  border-bottom: 1px solid var(--color-cream) !important;
 }
 
 .case-studies-section-scroll .nav-link,
 .case-studies-section-scroll .locale-button {
-  color: #f5f5f0!important;
+  color: var(--color-cream)!important;
 }
 
 .case-studies-section-scroll .logo-text,
 .case-studies-section-scroll .logo-subtext {
-  color: #f5f5f0;
+  color: var(--color-cream);
 }
 
 /* Responsive styles for case studies */

@@ -281,21 +281,21 @@ export default function Navigation({ globalSettings, aboutData }) {
 
   const getNavItemStyles = (navItem) => {
     if (currentSection === 'hero') {
-      return { opacity: 1, color: '#245148' }
+      return { opacity: 1, color: 'var(--color-green)' }
     }
     
     if (navItem.section === 'approach' && currentSection === 'image-grid') {
-      return { opacity: 1, color: '#245148' } // Brand color for active
+      return { opacity: 1, color: 'var(--color-green)' } // Brand color for active
     }
     
     if (!navItem.section) {
-      return { opacity: 0.25, color: '#245148' }
+      return { opacity: 0.25, color: 'var(--color-green)' }
     }
     
     const isActive = currentSection === navItem.section
     return { 
       opacity: isActive ? 1 : 0.25, 
-      color: isActive ? '#245148' : '#245148' // Brand color for active, normal color for inactive
+      color: isActive ? 'var(--color-green)' : 'var(--color-green)' // Brand color for active, normal color for inactive
     }
   }
 
@@ -429,8 +429,8 @@ export default function Navigation({ globalSettings, aboutData }) {
                   padding: 0
                 }}
               >
-                <span className="logo-text" style={{ color: '#245148' }}>TEMPLETON</span>
-                <span className="logo-subtext" style={{ color: '#245148' }}>RESEARCH</span>
+                <span className="logo-text" style={{ color: 'var(--color-green)' }}>TEMPLETON</span>
+                <span className="logo-subtext" style={{ color: 'var(--color-green)' }}>RESEARCH</span>
               </button>
             )}
           </div>
@@ -454,7 +454,7 @@ export default function Navigation({ globalSettings, aboutData }) {
       <nav 
         className={`navigation navigation--scrolled navigation--${currentSection} ${currentSection}-section-scroll`}
         style={{
-          backgroundColor: '#f5f5f0',
+          backgroundColor: 'var(--color-cream)',
           position: 'fixed',
           top: showSecondaryNav ? 0 : -60,
           left: 0,

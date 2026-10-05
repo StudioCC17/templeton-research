@@ -62,7 +62,7 @@
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 400;
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
 
@@ -127,7 +127,7 @@
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 400;
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
 }
 
 /* ============================================================
@@ -155,7 +155,7 @@
 .featuredImageCaption {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   margin-top: 0.75rem;
   font-style: italic;
   line-height: 1.5;
@@ -286,7 +286,7 @@
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 500;
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
 
@@ -340,7 +340,7 @@
 .inlineImageCaption {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   margin-top: 0.75rem;
   font-style: italic;
   line-height: 1.5;
@@ -380,7 +380,7 @@
 .videoEmbedCaption {
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   margin-top: 0.75rem;
   font-style: italic;
   line-height: 1.5;
@@ -400,7 +400,7 @@
   margin-bottom: 2rem;
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
 }
 
 .originalPubLink {
@@ -423,7 +423,7 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   background-color: rgba(196, 210, 207, 0.3);
   padding: 0.4rem 0.75rem;
   border-radius: 2px;

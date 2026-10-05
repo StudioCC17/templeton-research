@@ -45,7 +45,7 @@
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 400;
-  color: var(--color-grey);
+  color: var(--color-text-secondary);
   letter-spacing: 0.02em;
   margin: 0;
 }

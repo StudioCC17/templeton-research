@@ -25,8 +25,8 @@ export default function StaticImageSection({
         height: height,
         minHeight: minHeight,
         overflow: 'hidden',
-        backgroundColor: '#f5f5f0',
-        borderTop: '1px solid #c4d2cf'
+        backgroundColor: 'var(--color-cream)',
+        borderTop: '1px solid var(--color-border)'
       }}
     >
       <Image

@@ -57,9 +57,9 @@ export default function ImageGridTwoColumn() {
   return (
     <section 
       style={{
-        backgroundColor: '#f5f5f0',
+        backgroundColor: 'var(--color-cream)',
         position: 'relative',
-        borderBottom: '1px solid #c4d2cf',
+        borderBottom: '1px solid var(--color-border)',
         padding: '1.5rem'
       }}
     >
@@ -76,7 +76,7 @@ export default function ImageGridTwoColumn() {
           marginRight: '-1.5rem',
           paddingLeft: '1.5rem',
           paddingRight: '1.5rem',
-          borderBottom: '1px solid #c4d2cf',
+          borderBottom: '1px solid var(--color-border)',
           paddingBottom: '1.5rem',
           marginBottom: '1.5rem'
         }}
@@ -89,7 +89,7 @@ export default function ImageGridTwoColumn() {
             fontWeight: 300,
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
-            color: '#245148',
+            color: 'var(--color-green)',
             margin: 0,
             maxWidth: '800px'
           }}
@@ -104,7 +104,7 @@ export default function ImageGridTwoColumn() {
             fontSize: '1rem',
             fontWeight: 400,
             lineHeight: 1.6,
-            color: '#245148'
+            color: 'var(--color-green)'
           }}
         >
           <p style={{ margin: 0 }}>- Sylvain Lavoie</p>
@@ -137,7 +137,7 @@ export default function ImageGridTwoColumn() {
               top: '0',
               bottom: '0',
               width: '1px',
-              backgroundColor: '#c4d2cf',
+              backgroundColor: 'var(--color-border)',
               transform: 'translateX(-50%)',
               zIndex: 10
             }} 
@@ -194,7 +194,7 @@ export default function ImageGridTwoColumn() {
                 fontWeight: 300,
                 lineHeight: 1.2,
                 letterSpacing: '-0.01em',
-                color: '#245148',
+                color: 'var(--color-green)',
                 margin: 0,
                 textAlign: 'left',
                 paddingRight: '15%'
@@ -213,7 +213,7 @@ export default function ImageGridTwoColumn() {
                 fontSize: '.95rem',
                 fontWeight: 400,
                 lineHeight: 1.45,
-                color: 'rgb(91 92 92)',
+                color: 'var(--color-text-secondary)',
                 margin: 0,
                 paddingRight: '40%'
               }}

@@ -150,14 +150,14 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
     width: '100%',
     backgroundColor: 'transparent',
     border: 'none',
-    borderBottom: '1px solid rgba(187, 120, 96, 0.45)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
+    borderBottom: '1px solid var(--color-line-field)', // faded red at rest; full red focus line drawn over it by .form-field (globals.css)
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
     fontSize: 'var(--step-0)',
     fontWeight: 400,
     lineHeight: 1.5,
-    color: '#245148',
+    color: 'var(--color-green)',
     outline: 'none',
     appearance: 'none',
   }
@@ -181,7 +181,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        backgroundColor: isVisible ? '#245148a3' : '#24514800',
+        backgroundColor: isVisible ? 'var(--color-overlay)' : '#24514800',
         transition: 'background-color 0.4s ease',
         overflowY: 'scroll',
         scrollbarWidth: 'none',
@@ -192,7 +192,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
         className="tr-contact-box"
         onClick={(e) => e.stopPropagation()}
         style={{
-          backgroundColor: '#f5f5f0',
+          backgroundColor: 'var(--color-cream)',
           width: '40%',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -216,7 +216,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
             cursor: 'pointer',
             zIndex: 10,
             padding: 0,
-            color: '#245148',
+            color: 'var(--color-green)',
           }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -234,7 +234,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 fontSize: 'var(--step-3)',
                 fontWeight: 300,
                 lineHeight: 1.1,
-                color: '#245148',
+                color: 'var(--color-green)',
                 margin: 0,
               }}
             >
@@ -245,7 +245,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: 'var(--step--1)',
                 lineHeight: 1.5,
-                color: '#24514882', // supporting text
+                color: 'var(--color-text-secondary)', // supporting text
                 margin: '0.75rem 0 0',
               }}
             >
@@ -260,7 +260,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step-1)',
                   lineHeight: 1.55,
-                  color: '#245148',
+                  color: 'var(--color-green)',
                   margin: 0,
                 }}
               >
@@ -298,7 +298,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
               </div>
 
               <div style={{ marginBottom: '1.75rem' }}>
-                <span style={labelStyle}>CV <span style={{ opacity: 0.6, fontWeight: 400 }}>(PDF or Word, max 4MB)</span></span>
+                <span style={labelStyle}>CV <span style={{ color: 'var(--color-red-muted)', fontWeight: 400 }}>(PDF or Word, max 4MB)</span></span>
                 <label
                   htmlFor="apply-cv"
                   className="u-link file-pick"
@@ -308,7 +308,6 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step-0)',
                     fontWeight: 400,
-                    color: 'var(--color-red)',
                     cursor: 'pointer',
                   }}
                 >
@@ -329,7 +328,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                       marginTop: '0.35rem',
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       fontSize: 'var(--step--1)',
-                      color: '#245148',
+                      color: 'var(--color-green)',
                     }}
                   >
                     {cvFile.name}
@@ -350,7 +349,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
               />
 
               <div style={{ marginBottom: '2.25rem' }}>
-                <label htmlFor="apply-message" style={labelStyle}>A short note <span style={{ opacity: 0.6, fontWeight: 400 }}>(optional)</span></label>
+                <label htmlFor="apply-message" style={labelStyle}>A short note <span style={{ color: 'var(--color-red-muted)', fontWeight: 400 }}>(optional)</span></label>
                 <textarea
                   id="apply-message"
                   name="message"
@@ -367,7 +366,7 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step--1)',
-                    color: '#BB7860',
+                    color: 'var(--color-red)',
                     marginTop: 0,
                     marginBottom: '1.25rem',
                   }}

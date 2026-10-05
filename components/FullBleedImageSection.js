@@ -26,9 +26,9 @@ export default function FullBleedImageSection({ imageData, height = "60vh", minH
         position: 'relative',
         width: '100%',
         padding: '0',
-        backgroundColor: '#f5f5f0',
-        borderTop: '0px solid #c4d2cf',
-        borderBottom: '0px solid #c4d2cf'
+        backgroundColor: 'var(--color-cream)',
+        borderTop: '0px solid var(--color-border)',
+        borderBottom: '0px solid var(--color-border)'
       }}
     >
       <div
@@ -56,11 +56,11 @@ export default function FullBleedImageSection({ imageData, height = "60vh", minH
             style={{
               width: '100%',
               height: '100%',
-              backgroundColor: '#e5e5e0',
+              backgroundColor: 'var(--color-cream-dark)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#888'
+              color: 'var(--color-text-secondary)'
             }}
           >
             Image loading...

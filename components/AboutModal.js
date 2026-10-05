@@ -17,7 +17,7 @@ const bodyComponents = {
     normal: ({ children }) => (
       <p
         style={{
-          color: '#245148',
+          color: 'var(--color-green)',
           fontSize: 'var(--step-1)',
           fontWeight: 400,
           lineHeight: 1.55,
@@ -123,7 +123,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        backgroundColor: isVisible ? '#245148a3' : '#24514800',
+        backgroundColor: isVisible ? 'var(--color-overlay)' : '#24514800',
         transition: 'background-color 0.4s ease',
         overflowY: 'scroll',
         scrollbarWidth: 'none',
@@ -137,7 +137,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
         aria-modal="true"
         aria-label="About us"
         style={{
-          backgroundColor: '#f5f5f0',
+          backgroundColor: 'var(--color-cream)',
           width: '50%',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -159,7 +159,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
             cursor: 'pointer',
             zIndex: 10,
             padding: 0,
-            color: '#245148',
+            color: 'var(--color-green)',
           }}
           aria-label="Close modal"
         >
@@ -189,7 +189,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
               <h2
                 className="hero-text"
                 style={{
-                  color: '#245148',
+                  color: 'var(--color-green)',
                   fontFamily: 'var(--font-heading), var(--font-fallback)',
                   fontSize: 'var(--step-4)',
                   marginTop: '0.5rem',
@@ -210,7 +210,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                 width: '100%',
                 aspectRatio: '6 / 4.025',
                 overflow: 'hidden',
-                backgroundColor: '#e8e8e3',
+                backgroundColor: 'var(--color-cream-dark)',
                 marginBottom: '2rem',
               }}
             >
@@ -237,7 +237,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                     <p
                       key={i}
                       style={{
-                        color: '#245148',
+                        color: 'var(--color-green)',
                         fontSize: 'var(--step-1)',
                         fontWeight: 400,
                         lineHeight: 1.55,
