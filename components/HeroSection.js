@@ -195,8 +195,8 @@ export default function HeroSection({
           ref={sectionRef}
           style={{
             position: 'relative',
-            height: '85vh',
-            minHeight: '500px',
+            height: '72vh', // was 85vh - 15% shorter
+            minHeight: '425px', // was 500px
             overflow: 'hidden'
           }}
         >
