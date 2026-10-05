@@ -101,7 +101,7 @@ position: relative;
     /* At rest: same cream as the page, lifted by a soft green-tinted shadow
        (with a faint glow round the top edge so the tile reads clearly) */
     box-shadow: 0 -2px 10px -2px rgba(36, 81, 72, 0.1), 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
-    background-color: var(--color-cream);
+    background-color: var(--color-sage); /* same as the section; the shadow lifts it */
     border-radius: 14px;
     overflow: hidden;
         padding-right: 10%;
@@ -110,8 +110,8 @@ position: relative;
 }
 
 .tile:hover {
-    /* Hover: the tile darkens to the soft green tint */
-    background-color: #2451480d;
+    /* Hover: the tile darkens a touch (soft green tint over the section colour) */
+    background-color: #24514812;
 }
 
 
