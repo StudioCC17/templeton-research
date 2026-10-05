@@ -7,7 +7,8 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
+import gsap from 'gsap'
 import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
@@ -27,6 +28,27 @@ export default function Navigation({ globalSettings, aboutData }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Let other components (e.g. the footer) open the contact modal.
+  // ---------- Page-load intro (GSAP) ----------
+  // Header items start hidden in CSS ([data-nav-intro] in globals.css) so there's
+  // no flash before JS runs, then drift down and fade in: logo first, then the
+  // links either side. Animates the wrappers, not the links, so it never fights
+  // the links' own hover transitions.
+  useLayoutEffect(() => {
+    const q = (sel) => document.querySelector(`[data-nav-intro="${sel}"]`)
+    const items = [q('nav-center'), q('nav-left'), q('nav-right'), document.querySelector('.nav-hamburger[data-nav-intro]')].filter(Boolean)
+    if (!items.length) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(items, { autoAlpha: 1 })
+      return
+    }
+    const tween = gsap.fromTo(
+      items,
+      { autoAlpha: 0, y: -10 },
+      { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, delay: 0.15, force3D: true, clearProps: 'transform' }
+    )
+    return () => tween.kill()
+  }, [])
+
   useEffect(() => {
     const open = (e) => {
       setContactService(e?.detail?.service || null)
@@ -280,6 +302,7 @@ export default function Navigation({ globalSettings, aboutData }) {
     <>
       {/* Hamburger Button - Fixed position, always on top, animates to X */}
       <button 
+        data-nav-intro
         className={`nav-hamburger ${isMobileMenuOpen ? 'nav-hamburger--open' : ''}`}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle menu"
@@ -336,7 +359,7 @@ export default function Navigation({ globalSettings, aboutData }) {
         }}
       >
         <div className="nav-container">
-          <div className="nav-left">
+          <div className="nav-left" data-nav-intro="nav-left">
             {globalSettings?.navigation?.headerNav ? (
               globalSettings.navigation.headerNav.map((item, index) => (
                 <Link 
@@ -373,7 +396,7 @@ export default function Navigation({ globalSettings, aboutData }) {
             )}
           </div>
           
-          <div className="nav-center">
+          <div className="nav-center" data-nav-intro="nav-center">
             {globalSettings?.logoSettings?.primaryLogo?.asset?._ref ? (
               <button 
                 onClick={handleLogoClick}
@@ -411,7 +434,7 @@ export default function Navigation({ globalSettings, aboutData }) {
             )}
           </div>
 
-          <div className="nav-right">
+          <div className="nav-right" data-nav-intro="nav-right">
        
             <button 
               onClick={() => setIsContactModalOpen(true)}
