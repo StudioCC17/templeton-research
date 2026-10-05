@@ -137,80 +137,6 @@ function FooterInner({ footerData }) {
               </h2>
             </div>
 
-            {/* Bottom Section - LinkedIn and Subscribe Links */}
-            <div 
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                marginTop: '3rem'
-              }}
-            >
-              <a 
-                href="#"
-                onClick={openContactModal}
-                style={{
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: 'var(--step--1)',
-                  fontWeight: 600,
-                  letterSpacing: 'var(--tracking-bold)',
-                  color: 'var(--color-cream)',
-                  lineHeight: 1.425,
-                  textDecoration: 'none',
-                  position: 'relative',
-                  display: 'inline-block',
-                  cursor: 'pointer'
-                }}
-              >
-                Email us
-<Arrow />
-              </a>
-              <a 
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: 'var(--step--1)',
-                  fontWeight: 600,
-                  letterSpacing: 'var(--tracking-bold)',
-                  color: 'var(--color-cream)',
-                  lineHeight: 1.425,
-                  textDecoration: 'none',
-                  position: 'relative',
-                  display: 'inline-block'
-                }}
-              >
-                Follow us on LinkedIn
-<Arrow />
-              </a>
-              {/* Careers lives in the footer (not the header menu) - scrolls to the careers block */}
-              <a 
-                href="#careers"
-                onClick={(e) => {
-                  const el = document.getElementById('careers')
-                  if (!el) return
-                  e.preventDefault()
-                  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' })
-                }}
-                style={{
-                  fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: 'var(--step--1)',
-                  fontWeight: 600,
-                  letterSpacing: 'var(--tracking-bold)',
-                  color: 'var(--color-cream)',
-                  lineHeight: 1.425,
-                  textDecoration: 'none',
-                  position: 'relative',
-                  display: 'inline-block',
-                  cursor: 'pointer'
-                }}
-              >
-                Careers
-<Arrow />
-              </a>
-              
-            </div>
-
             {/* Logo positioned bottom right within left section */}
             <div 
               className="footer-micro-logo"
@@ -268,42 +194,50 @@ function FooterInner({ footerData }) {
               position: 'relative'
             }}
           >
-            {/* Office locations grid */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0rem',
-              alignContent: 'start',
-            }}>
-              {sortedOffices.map((office, index) => (
-                <div key={office.city || index}>
-                  <h4 
-                    style={{
-                      fontFamily: 'var(--font-body), var(--font-fallback)',
-                      fontSize: 'var(--step--1)',
-                      fontWeight: 600,
-                      color: 'var(--color-cream)',
-                      marginBottom: '.25rem',
-                      textTransform: 'uppercase',
-                      lineHeight: 1.3
-                    }}
-                  >
-                    {office.city}
-                  </h4>
-                  <div 
-                    style={{
-                      fontFamily: 'var(--font-body), var(--font-fallback)',
-                      fontSize: 'var(--step--1)',
-                      fontWeight: 400,
-                      lineHeight: 1.52,
-                      color: 'var(--color-cream)'
-                    }}
-                  >
-                    <div>{office.address?.line1}</div>
-                    <div>{office.address?.line2}</div>
-                  </div>
-                </div>
-              ))}
+            {/* Two short columns: site links + contact details
+               (office cities now live in the clocks strip under the footer) */}
+            <div className="footer-cols">
+              <div>
+                <span className="footer-col-label">Explore</span>
+                <ul className="footer-col-list">
+                  {[
+                    { label: 'About', action: () => window.dispatchEvent(new Event('open-about-modal')) },
+                    { label: 'Services', target: 'services' },
+                    { label: 'Team', target: 'team' },
+                    { label: 'Careers', target: 'careers' },
+                    { label: 'Insights', target: 'insights' },
+                  ].map((item) => (
+                    <li key={item.label}>
+                      <a
+                        href={item.target ? `#${item.target}` : '#'}
+                        className="u-link footer-col-link"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          if (item.action) return item.action()
+                          const el = document.getElementById(item.target)
+                          if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' })
+                        }}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <span className="footer-col-label">Contact</span>
+                <ul className="footer-col-list">
+                  <li>
+                    <a href="mailto:info@templetonresearch.com" className="u-link footer-col-link">info@templetonresearch.com</a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={openContactModal} className="footer-col-link">Send us a message<Arrow /></a>
+                  </li>
+                  <li>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-col-link">LinkedIn<Arrow /></a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             {/* Bottom - Legal links */}
@@ -342,6 +276,48 @@ function FooterInner({ footerData }) {
 
         {/* Responsive Styles */}
         <style jsx>{`
+          .footer-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-content: start;
+          }
+          .footer-col-label {
+            display: block;
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--text-preheader-size);
+            font-weight: var(--text-preheader-weight);
+            letter-spacing: var(--tracking-bold);
+            color: var(--color-red);
+            margin-bottom: 0.75rem;
+          }
+          .footer-col-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0; /* stacked like the other small link lists on the site */
+            /* the list itself at the small size, so each line is exactly one line of link text */
+            font-size: var(--step--1);
+            line-height: 1.425;
+          }
+          .footer-col-link {
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--step--1);
+            font-weight: 400;
+            line-height: 1.425; /* same as small paragraph text site-wide */
+            color: var(--color-cream);
+            text-decoration: none;
+          }
+          @media (max-width: 640px) {
+            .footer-cols {
+              grid-template-columns: 1fr;
+              gap: 2rem;
+            }
+          }
+
           @media (max-width: 1024px) {
             .footer-container {
               grid-template-columns: 1fr !important;

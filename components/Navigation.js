@@ -67,6 +67,13 @@ export default function Navigation({ globalSettings, aboutData }) {
     return () => window.removeEventListener('open-contact-modal', open)
   }, [])
 
+  // Footer "About" link opens the About modal
+  useEffect(() => {
+    const openAbout = () => setIsAboutModalOpen(true)
+    window.addEventListener('open-about-modal', openAbout)
+    return () => window.removeEventListener('open-about-modal', openAbout)
+  }, [])
+
   // Define nav items
   const navItems = [
     { label: 'About', href: '#approach', section: 'approach' },

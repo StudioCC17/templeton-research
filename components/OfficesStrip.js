@@ -94,7 +94,7 @@ export default function OfficesStrip({ offices = [] }) {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          gap: 2.5rem 4.5rem;
+          gap: 2.5rem 7rem;
         }
         .office {
           display: flex;
