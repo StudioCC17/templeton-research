@@ -325,7 +325,6 @@ export default function TeamSection({ teamData, careersData }) {
               // so the background reaches both sides of the screen (no gap on the right)
               marginLeft: '-1.5vw',
               marginRight: '-1.5vw',
-              paddingRight: '1.5vw',
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
               paddingBottom: '1.5rem',
@@ -360,9 +359,11 @@ export default function TeamSection({ teamData, careersData }) {
             <div 
               className="careers-content"
               style={{
-                maxWidth: '36.75%',  
+                // Text column = the 40% beside the image, with even gutters:
+                // ~3.5vw from the image, ~4vw from the screen edge, and room top/bottom
+                width: '40%',
                 marginLeft: 'auto',
-                paddingRight: '0%'
+                padding: '2rem 4vw 2.5rem 3.5vw'
               }}
             >
               <span className="preheader-label">
@@ -612,6 +613,11 @@ export default function TeamSection({ teamData, careersData }) {
           }
         }
 
+        /* Keep careers copy to a comfortable reading width (~65 characters) */
+        .careers-content > * {
+          max-width: 34em;
+        }
+
         @media (max-width: 1024px) {
           .team-grid {
             grid-template-columns: repeat(3, 1fr) !important;
@@ -627,6 +633,8 @@ export default function TeamSection({ teamData, careersData }) {
           
           .careers-content {
             max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 0 1.5rem !important;
           }
           
           .careers-section {
@@ -678,6 +686,8 @@ export default function TeamSection({ teamData, careersData }) {
           
           .careers-content {
             max-width: 100% !important;
+            width: 100% !important;
+            padding: 0 0 1.5rem !important;
           }
           
           .team-modal-content {
