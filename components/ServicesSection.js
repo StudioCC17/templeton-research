@@ -400,6 +400,7 @@ export default function ServicesSection({ servicesData }) {
                             className="service-summary"
                             style={{
                               marginTop: '0.25rem',
+                              marginBottom: 0, // global p adds 1rem here, which doubled the space under each service
                               paddingRight: '25%',
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: 'var(--step--1)',
