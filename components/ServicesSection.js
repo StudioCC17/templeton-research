@@ -452,7 +452,7 @@ export default function ServicesSection({ servicesData }) {
                             className="service-title"
                             style={{
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: 'var(--text-service-title-size)',
+                              fontSize: 'var(--text-service-heading-size)',
                               fontWeight: 600, // bold, matching the open service panel
                               letterSpacing: '-0.01em', // a touch tighter for the bold weight
                               lineHeight: 1.4,
@@ -742,7 +742,7 @@ export default function ServicesSection({ servicesData }) {
 
         /* ── Wide ── */
         @media (min-width: 1800px) {
-          .service-item h3.service-title { font-size: var(--text-service-title-size) !important; }
+          .service-item h3.service-title { font-size: var(--text-service-heading-size) !important; }
         }
       `}</style>
     </section>
