@@ -42,12 +42,6 @@ export default function HeroSection({
         
         gsap.registerPlugin(SplitText)
 
-        // Fade whole block from 0 to 0.5 first
-        gsap.fromTo(heroTextRef.current, 
-          { opacity: 0 },
-          { opacity: 1, duration: 0.6, ease: 'power2.out' }
-        )
-
         // Split the hero text into individual characters
         splitInstance = new SplitText(heroTextRef.current, {
           type: 'chars',
@@ -55,12 +49,11 @@ export default function HeroSection({
           tag: 'span'
         })
 
-        // Set initial state - all chars at 0.5 opacity
-        gsap.set(splitInstance.chars, {
-          opacity: 0.2
-        })
+        // Letters start fully hidden, then the block is shown so nothing flashes
+        gsap.set(splitInstance.chars, { opacity: 0 })
+        gsap.set(heroTextRef.current, { opacity: 1 })
 
-        // Animate each char from 0.5 to 1 opacity, staggered left to right (3x faster)
+        // Each letter fades in from nothing, left to right
         gsap.to(splitInstance.chars, {
           opacity: 1,
           duration: 1,
