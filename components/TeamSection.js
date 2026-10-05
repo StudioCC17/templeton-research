@@ -321,11 +321,9 @@ export default function TeamSection({ teamData, careersData }) {
               alignItems: 'flex-start',
               minHeight: '75vh',
               marginTop: '50px',
-              backgroundColor: '#f5f5f0',
+              backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
-              paddingBottom: '1.5rem',
-              borderTop: '1px solid rgb(224, 224, 224)',
-              borderBottom: '1px solid rgb(224, 224, 224)'
+              paddingBottom: '1.5rem'
             }}
           >
             {/* Full-bleed image (left). Absolutely positioned so it fills the

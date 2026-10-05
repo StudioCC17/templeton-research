@@ -21,6 +21,7 @@
   --color-red: #BB7860;
   --color-grey: rgb(108, 119, 117);
   --color-cream: #f5f5f0;
+  --color-cream-dark: #ebebe3; /* slightly deeper cream for panels, e.g. Careers */
   --color-border: #c4d2cf;
   
   /* ----------------------------------------
