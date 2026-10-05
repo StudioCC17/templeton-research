@@ -151,11 +151,13 @@ export default function TeamSection({ teamData, careersData }) {
     block: {
       normal: ({children}) => (
         <p style={{ 
+          // Supporting-text style, same as the Insights intro and service summaries
           fontFamily: 'var(--font-body), var(--font-fallback)',
-          fontSize: 'var(--step-0)',
+          fontSize: 'var(--step--1)',
           fontWeight: 400,
-          lineHeight: 1.472,
-          marginBottom: '1.5rem'
+          lineHeight: 1.4,
+          color: 'var(--color-text-secondary)',
+          marginBottom: '1rem'
         }}>
           {children}
         </p>
