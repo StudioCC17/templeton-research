@@ -282,21 +282,31 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           {/* Title now shown on the left, above the prose (see ServicesSection).
              Kept on the dialog's aria-label above for accessibility. */}
 
-          {/* Number + service title on one line, both in the small bold red style
-              (same gap as "Next  02" at the bottom) */}
+          {/* Mirrors the "Next" block at the bottom: red "Service  01" label,
+              cream title underneath, same sizes and spacing */}
           {title && (
-            <div
-              style={{
-                marginBottom: '1.75rem',
-                fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: 'var(--text-preheader-size)',
-                fontWeight: 'var(--text-preheader-weight)',
-                letterSpacing: '0.03em',
-                color: 'var(--color-red)',
-              }}
-            >
-              {number && <span style={{ marginRight: '0.75em' }}>{number}</span>}
-              <span>{title}</span>
+            <div style={{ marginBottom: '1.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: 'var(--text-preheader-size)',
+                  fontWeight: 'var(--text-preheader-weight)',
+                  letterSpacing: '0.03em',
+                  color: 'var(--color-red)',
+                }}
+              >
+                Service
+                {number && <span style={{ marginLeft: '0.75em' }}>{number}</span>}
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: 'var(--step-1)',
+                  color: 'var(--color-cream)',
+                }}
+              >
+                {title}
+              </span>
             </div>
           )}
 
