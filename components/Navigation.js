@@ -91,7 +91,7 @@ export default function Navigation({ globalSettings, aboutData }) {
       strokeDashoffset: 0,
       duration: 0.75,
       ease: 'power3.inOut',
-      delay: 0.25,
+      delay: 0.05, // starts almost as soon as the header arrives
       // pairs: (0,1) centre, (2,3) middle, (4,5) outer
       stagger: (i) => Math.floor(i / 2) * 0.1,
     })
