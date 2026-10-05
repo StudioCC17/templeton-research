@@ -18,7 +18,7 @@
   position: fixed;
   inset: 0;
   z-index: 991;
-  background-color: var(--color-cream);
+  background-color: var(--color-sage); /* matches the Insights section, so the shared tiles look the same here */
   overflow-y: auto;
   overscroll-behavior: contain;
   opacity: 0;
