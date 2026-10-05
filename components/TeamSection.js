@@ -603,21 +603,13 @@ export default function TeamSection({ teamData, careersData }) {
               )}
 
               <a
-                className="u-link"
+                  className="btn-primary" /* shared red button (globals.css) */
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: 'var(--step--1)',
-                    fontWeight: 600,
-                    color: 'var(--color-red)',
-                    textDecoration: 'none',
-                    display: 'block',
-                    lineHeight: 1.472
-                  }}
+                  style={{ marginTop: '1.5rem' }}
                 >
-                  <br /> LinkedIn<Arrow />
+                  LinkedIn<Arrow />
                 </a>
                 
             </div>
