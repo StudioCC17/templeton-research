@@ -94,6 +94,7 @@ export default function InsightOverlay() {
   const overlayRef = useRef(null)
   const backdropRef = useRef(null)
   const closingRef = useRef(false)
+  const openTlRef = useRef(null) // open timeline - played in reverse to close
   const scrollContainerRef = useRef(null)
   const closeButtonRef = useRef(null)
   const previousFocusRef = useRef(null)
@@ -131,6 +132,7 @@ export default function InsightOverlay() {
 
     const fast = reduceMotion()
     const tl = gsap.timeline({ defaults: { overwrite: true } })
+    openTlRef.current = tl
     tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: fast ? 0.15 : 0.35, ease: 'power2.out' }, 0)
     tl.fromTo(
       overlay,
@@ -138,7 +140,10 @@ export default function InsightOverlay() {
       { autoAlpha: 1, yPercent: 0, duration: fast ? 0.15 : 0.6, ease: 'expo.out', force3D: true },
       0
     )
-    return () => tl.kill()
+    return () => {
+      tl.kill()
+      openTlRef.current = null
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
@@ -251,13 +256,19 @@ export default function InsightOverlay() {
       return
     }
 
-    // Panel sinks and fades slightly faster than the backdrop clears, then the
-    // ?article param is removed once everything has finished animating.
-    const fast = reduceMotion()
+    // Close = the open animation played backwards. The ?article param is
+    // removed once it has fully reversed.
+    const tl = openTlRef.current
+    if (tl) {
+      tl.eventCallback('onReverseComplete', finish)
+      tl.reverse()
+      return
+    }
+    // Fallback if the open timeline isn't available for any reason
     gsap
-      .timeline({ onComplete: finish, defaults: { overwrite: true } })
-      .to(overlay, { autoAlpha: 0, yPercent: fast ? 0 : 3, duration: fast ? 0.15 : 0.35, ease: 'power3.in' }, 0)
-      .to(backdrop, { autoAlpha: 0, duration: fast ? 0.15 : 0.35, ease: 'power2.inOut' }, fast ? 0 : 0.05)
+      .timeline({ onComplete: finish })
+      .to(overlay, { autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, router, searchParams])
 
