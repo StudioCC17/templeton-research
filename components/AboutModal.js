@@ -252,7 +252,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
             </div>
           )}
 
-          {/* Enquire - closes About and opens the contact form (listened for in Navigation) */}
+          {/* Get in touch - closes About and opens the contact form (listened for in Navigation) */}
           <button
             type="button"
             className="btn-primary"
@@ -262,7 +262,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
               window.dispatchEvent(new Event('open-contact-modal'))
             }}
           >
-            Enquire
+            Get in touch
             <Arrow />
           </button>
 
