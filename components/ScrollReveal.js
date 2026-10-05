@@ -7,7 +7,7 @@
 //                         (and any divider line on them draws across)
 //   data-reveal="image"   image unmasks from the bottom and settles from a slight zoom
 //   data-reveal="line"    a divider line draws in from the left
-//   data-reveal="logo"    the footer logo's marks build in one by one
+//   data-reveal="logo"    the footer logo's lines draw in from the centre outwards
 // The starting (hidden) states live in globals.css under .js-reveal, so nothing
 // flashes before this runs. Reduced-motion users just see everything.
 
@@ -47,13 +47,25 @@ function animate(el) {
     case 'line':
       gsap.fromTo(el, { '--line': 0 }, { '--line': 1, duration: 1.2, ease: EASE })
       break
-    case 'logo':
-      gsap.fromTo(
-        el.querySelectorAll('g'),
-        { autoAlpha: 0, x: -24, y: 24 },
-        { autoAlpha: 1, x: 0, y: 0, duration: 1, ease: EASE, stagger: 0.07, clearProps: 'transform,visibility' }
-      )
+    case 'logo': {
+      // Lines draw themselves in from the centre outwards (same as the sticky header logo):
+      // each path dashed by its real length, then revealed start to end, in pairs
+      const paths = Array.from(el.querySelectorAll('path'))
+      paths.forEach((p) => {
+        const len = Math.ceil(p.getTotalLength()) + 2
+        p.style.strokeDasharray = `${len}`
+        p.style.strokeDashoffset = `${len}`
+        p.style.opacity = '1'
+      })
+      gsap.to(paths, {
+        strokeDashoffset: 0,
+        duration: 0.75,
+        ease: 'power3.inOut',
+        delay: 0.05,
+        stagger: (i) => Math.floor(i / 2) * 0.1,
+      })
       break
+    }
   }
 }
 

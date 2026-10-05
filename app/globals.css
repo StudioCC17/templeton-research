@@ -2187,7 +2187,7 @@ display: none
 .js-reveal [data-reveal="rise"]:not([data-revealed]) { transform: translateY(28px); }
 .js-reveal [data-reveal="fade"]:not([data-revealed]),
 .js-reveal [data-reveal="stagger"]:not([data-revealed]) > *,
-.js-reveal [data-reveal="logo"]:not([data-revealed]) g { opacity: 0; }
+.js-reveal [data-reveal="logo"]:not([data-revealed]) path { opacity: 0; }
 .js-reveal [data-reveal="stagger"]:not([data-revealed]) > *,
 .js-reveal [data-reveal="line"]:not([data-revealed]) { --line: 0; }
 .js-reveal [data-reveal="image"]:not([data-revealed]) { clip-path: inset(100% 0 0 0); }
