@@ -83,8 +83,12 @@ export default function Navigation({ globalSettings, aboutData }) {
       return
     }
     if (!showSticky) {
-      paths.forEach((p) => { p.style.strokeDashoffset = p.dataset.len }) // hidden, ready to draw
-      return
+      // Wait until the header has slid away, then hide the lines ready to draw next time
+      // (hiding straight away made the logo vanish before the header slid up)
+      const t = setTimeout(() => {
+        paths.forEach((p) => { p.style.strokeDashoffset = p.dataset.len })
+      }, 800)
+      return () => clearTimeout(t)
     }
     paths.forEach((p) => { p.style.strokeDashoffset = p.dataset.len })
     gsap.to(paths, {
