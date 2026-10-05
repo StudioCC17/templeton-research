@@ -228,9 +228,6 @@ function FooterInner({ footerData }) {
                 <span className="footer-col-label">Contact</span>
                 <ul className="footer-col-list">
                   <li>
-                    <a href="mailto:info@templetonresearch.com" className="u-link footer-col-link">info@templetonresearch.com</a>
-                  </li>
-                  <li>
                     <a href="#" onClick={openContactModal} className="footer-col-link">Send us a message<Arrow /></a>
                   </li>
                   <li>
