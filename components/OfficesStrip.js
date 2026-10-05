@@ -28,7 +28,7 @@ const partsIn = (zone, now) => {
 }
 
 // A tiny, minimal analogue clock: thin ring, two hands, no numerals
-function Clock({ h, m }) {
+function Clock({ h, m, sweepDelay }) {
   const minuteAngle = m * 6
   const hourAngle = h * 30 + m * 0.5
   return (
@@ -38,6 +38,11 @@ function Clock({ h, m }) {
         style={{ transform: `rotate(${hourAngle}deg)`, transformOrigin: '12px 12px' }} />
       <line x1="12" y1="12" x2="12" y2="3.5" stroke="currentColor" strokeWidth="0.5" strokeLinecap="butt"
         style={{ transform: `rotate(${minuteAngle}deg)`, transformOrigin: '12px 12px' }} />
+      {/* Second hand: a fine cream line that sweeps smoothly (CSS animation, synced to the real seconds) */}
+      {sweepDelay !== null && (
+        <line className="office-second" x1="12" y1="14" x2="12" y2="2.75" stroke="var(--color-cream)" strokeWidth="0.3" strokeLinecap="butt"
+          style={{ animationDelay: `${sweepDelay}s` }} />
+      )}
       <circle cx="12" cy="12" r="0.7" fill="currentColor" />
     </svg>
   )
@@ -55,9 +60,17 @@ export default function OfficesStrip({ offices = [] }) {
   // Times are filled in after load (and every 30s), so the server and browser
   // never disagree about the minute
   const [now, setNow] = useState(null)
+  // Where the second hand starts (a negative delay jumps the 60s sweep to "now");
+  // null = no second hand (reduced motion)
+  const [sweepDelay, setSweepDelay] = useState(null)
   useEffect(() => {
-    setNow(new Date())
-    const id = setInterval(() => setNow(new Date()), 30000)
+    const d = new Date()
+    setNow(d)
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setSweepDelay(-(d.getSeconds() + d.getMilliseconds() / 1000))
+    }
+    // every second, so the minute hand moves on as the second hand passes 12
+    const id = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(id)
   }, [])
 
@@ -71,7 +84,7 @@ export default function OfficesStrip({ offices = [] }) {
           return (
             <li key={city} className="office">
               {/* Clock above the city, red, centred */}
-              <span className="office-clock-wrap">{zone && now ? <Clock {...partsIn(zone, now)} /> : null}</span>
+              <span className="office-clock-wrap">{zone && now ? <Clock {...partsIn(zone, now)} sweepDelay={sweepDelay} /> : null}</span>
               <span className="office-city">{city}</span>
               <span className="office-time">{zone && now ? timeIn(zone, now) : ' '}</span>
             </li>
@@ -124,6 +137,14 @@ export default function OfficesStrip({ offices = [] }) {
           line-height: 1.4;
           color: rgba(245, 245, 240, 0.6); /* faded cream on the green */
           font-variant-numeric: tabular-nums;
+        }
+        .office-clock-wrap :global(.office-second) {
+          transform-origin: 12px 12px;
+          animation: officeSweep 60s linear infinite;
+        }
+        @keyframes officeSweep {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         .office-clock-wrap :global(.office-clock) {
           display: block;
