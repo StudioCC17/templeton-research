@@ -31,8 +31,8 @@
   --color-cream-dark: #efefe9;                  /* panels (e.g. Careers), image placeholders */
   --color-sage: #e6e6dc;                        /* pale stone with a hint of the brand green - Insights background */
   /* Lines */
-  --color-border: #d3dcd9;                      /* dividers on cream (paler than the old #c4d2cf) */
-  --color-border-on-dark: rgba(245, 245, 240, 0.18); /* dividers on the dark green */
+  --color-border: #e0e6e2;                      /* dividers on cream (paler than the old #c4d2cf) */
+  --color-border-on-dark: rgba(245, 245, 240, 0.12); /* dividers on the dark green */
   --color-line-field: var(--color-border);       /* form field underlines at rest (red draws in on focus) */
   /* Overlay */
   --color-overlay: #245148a3;                   /* dim behind modals */
