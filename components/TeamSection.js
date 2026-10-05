@@ -649,7 +649,7 @@ export default function TeamSection({ teamData, careersData }) {
           line-height: 1.2;
           color: var(--color-green);
           display: block !important;
-          margin-bottom: 0.75rem; /* tighter to the copy below */
+          margin-bottom: 1.5rem; /* space between the heading and the copy */
           width: 70%;
         }
 
