@@ -11,28 +11,37 @@ const PATHS = {
   left: ['M19.5 12h-15', 'M11 5.5L4.5 12l6.5 6.5'],
 }
 
+// Two looks:
+//  - 'up-right' (default): small, top-aligned to cap height, like a superscript.
+//  - 'right' / 'left': full text size and vertically centred on the line,
+//    like an en dash, for "next / previous / read more".
+const LOOK = {
+  small: { size: '0.45em', align: '0.23em', stroke: 2.1, gap: '0.2em' }, // top meets cap height
+  full: { size: '0.7em', align: '-0.05em', stroke: 1.4, gap: '0.3em' }, // centre sits ~0.3em above baseline
+}
+
 export default function Arrow({ direction = 'up-right', className = '', style = {} }) {
   const isLeft = direction === 'left'
+  const look = direction === 'up-right' ? LOOK.small : LOOK.full
   return (
     <svg
       className={`arrow ${className}`.trim()}
       viewBox="4 4 16 16"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.1" // ~0.06em at this size: matches the stroke of regular-weight Acumin
+      strokeWidth={look.stroke} // ~0.06em: matches the stroke of regular-weight Acumin
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
       style={{
         display: 'inline-block',
-        width: '0.45em',
-        height: '0.45em',
-        // Lift it so its top meets cap height (~0.68em): 0.68 - 0.45 = 0.23em
-        verticalAlign: '0.23em',
+        width: look.size,
+        height: look.size,
+        verticalAlign: look.align,
         flexShrink: 0,
         overflow: 'visible',
-        [isLeft ? 'marginRight' : 'marginLeft']: '0.2em',
+        [isLeft ? 'marginRight' : 'marginLeft']: look.gap,
         ...style,
       }}
     >
