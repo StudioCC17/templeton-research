@@ -291,7 +291,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--text-preheader-size)',
                   fontWeight: 'var(--text-preheader-weight)',
-                  letterSpacing: '0.03em',
+                  letterSpacing: 'var(--tracking-bold)',
                   color: 'var(--color-red)',
                 }}
               >
@@ -302,7 +302,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--text-service-heading-size)', // same size as in the services list
                   fontWeight: 600, // bold once the service is open
-                  letterSpacing: '-0.01em', // a touch tighter for the bold weight
+                  letterSpacing: 'var(--tracking-bold)', // a touch tighter for the bold weight
                   color: 'var(--color-cream)',
                 }}
               >
@@ -319,7 +319,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
               fontSize: 'var(--text-preheader-size)',
               fontWeight: 'var(--text-preheader-weight)',
               lineHeight: '1.4',
-              letterSpacing: '0.03em',
+              letterSpacing: 'var(--tracking-bold)',
               color: 'var(--color-red)',
               marginBottom: '6px',
             }}
@@ -487,7 +487,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
         .sd-next-label {
           font-size: var(--text-preheader-size);
           font-weight: var(--text-preheader-weight);
-          letter-spacing: 0.03em;
+          letter-spacing: var(--tracking-bold);
           color: var(--color-red);
         }
         .sd-next-arrow {

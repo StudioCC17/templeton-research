@@ -277,6 +277,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                 fontFamily: 'var(--font-body), var(--font-fallback)',
                 fontSize: 'var(--step-0)',
                 fontWeight: 600,
+                letterSpacing: 'var(--tracking-bold)',
                 color: 'var(--color-red)',
                 textDecoration: 'none',
               }}

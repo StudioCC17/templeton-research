@@ -492,7 +492,7 @@ export default function CaseStudiesSection({ caseStudies = [], headerData }) {
                               },
                               marks: {
                                 strong: ({children}) => (
-                                  <strong style={{ fontWeight: 600 }}>{children}</strong>
+                                  <strong style={{ fontWeight: 600, letterSpacing: 'var(--tracking-bold)' }}>{children}</strong>
                                 ),
                                 em: ({children}) => (
                                   <em style={{ fontStyle: 'italic' }}>{children}</em>

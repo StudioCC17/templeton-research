@@ -255,6 +255,7 @@ export default function ApproachSection({ approachData }) {
                                 fontFamily: 'var(--font-body), var(--font-fallback)',
                                 fontSize: '1.2rem',
                                 fontWeight: 600,
+                                letterSpacing: 'var(--tracking-bold)',
                                 color: 'var(--color-green)',
                                 margin: '1.25rem 0 0.75rem 0'
                               }}
@@ -317,7 +318,7 @@ export default function ApproachSection({ approachData }) {
                         },
                         marks: {
                           strong: ({children}) => (
-                            <strong style={{ fontWeight: 600 }}>{children}</strong>
+                            <strong style={{ fontWeight: 600, letterSpacing: 'var(--tracking-bold)' }}>{children}</strong>
                           ),
                           em: ({children}) => (
                             <em style={{ fontStyle: 'italic' }}>{children}</em>

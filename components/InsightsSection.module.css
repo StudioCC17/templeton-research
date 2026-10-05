@@ -224,7 +224,7 @@ position: relative;
   font-size: var(--step--1);
   font-weight: 600;
   color: var(--color-red);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-bold);
   line-height: 1.2; /* matches the site-wide link underline spacing */
 }
 

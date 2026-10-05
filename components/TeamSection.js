@@ -308,6 +308,7 @@ export default function TeamSection({ teamData, careersData }) {
                      
                         fontSize: 'var(--step--2)',
                         fontWeight: '600',
+                        letterSpacing: 'var(--tracking-bold)',
                         lineHeight: 'var(--text-body-lg-line-height)',
                  
                         color: 'var(--color-red)'
@@ -510,6 +511,7 @@ export default function TeamSection({ teamData, careersData }) {
                         fontFamily: 'var(--font-body), var(--font-fallback)',
                         fontSize: 'var(--step--2)',
                         fontWeight: 600,
+                        letterSpacing: 'var(--tracking-bold)',
                         lineHeight: 'var(--text-body-lg-line-height)',
                         color: 'var(--color-red)'
                       }}

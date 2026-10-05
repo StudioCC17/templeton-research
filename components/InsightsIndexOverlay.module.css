@@ -54,7 +54,7 @@
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--text-preheader-size);
   font-weight: var(--text-preheader-weight);
-  letter-spacing: 0.03em;
+  letter-spacing: var(--tracking-bold);
   color: var(--color-red);
   margin-bottom: 0.4rem;
 }

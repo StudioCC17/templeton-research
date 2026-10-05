@@ -57,6 +57,7 @@ const PROSE_COMPONENTS = {
         fontFamily: 'var(--font-body), var(--font-fallback)',
         fontSize: 'var(--text-preheader-size)',
         fontWeight: 600,
+        letterSpacing: 'var(--tracking-bold)',
         color: 'var(--color-red)',
         marginBottom: 0,
         marginTop: '1.5rem',
@@ -490,7 +491,7 @@ export default function ServicesSection({ servicesData }) {
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: 'var(--text-preheader-size)',
                               fontWeight: 'var(--text-preheader-weight)',
-                              letterSpacing: '0.03em',
+                              letterSpacing: 'var(--tracking-bold)',
                               color: 'var(--color-red)',
                               marginBottom: 0, // number sits close to its title
                               fontVariantNumeric: 'tabular-nums',
@@ -504,7 +505,7 @@ export default function ServicesSection({ servicesData }) {
                               fontFamily: 'var(--font-body), var(--font-fallback)',
                               fontSize: 'var(--text-service-heading-size)',
                               fontWeight: 600, // bold, matching the open service panel
-                              letterSpacing: '-0.01em', // a touch tighter for the bold weight
+                              letterSpacing: 'var(--tracking-bold)', // a touch tighter for the bold weight
                               lineHeight: 1.4,
                               color: 'var(--color-red)',
                               margin: 0,
@@ -608,6 +609,7 @@ export default function ServicesSection({ servicesData }) {
           font-family: var(--font-body), var(--font-fallback);
           font-size: var(--step--1); /* small - a quiet secondary prompt */
           font-weight: 600;
+          letter-spacing: var(--tracking-bold);
           color: var(--color-red);
           margin-bottom: 0;
           margin-top: auto;
