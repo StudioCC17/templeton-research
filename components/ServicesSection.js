@@ -396,6 +396,7 @@ export default function ServicesSection({ servicesData }) {
                             }}
                           >
                             {service.title}
+                            <Arrow className="service-arrow" />
                           </h3>
                           <p
                             className="service-summary"
@@ -412,9 +413,6 @@ export default function ServicesSection({ servicesData }) {
                             {service.summary || SERVICE_SUMMARIES[service.title] || SERVICE_FILL}
                           </p>
                         </div>
-                        <span className="service-arrow" aria-hidden="true">
-                          <Arrow direction="right" style={{ marginLeft: 0 }} />
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -515,21 +513,13 @@ export default function ServicesSection({ servicesData }) {
         }
 
         /* Plain arrow (no circle) - just slides across on hover */
+        /* Diagonal arrow sitting right after each service title; nudges on hover */
         .service-arrow {
-          flex-shrink: 0;
-          align-self: baseline; /* sits on the same line as the service title */
-          display: block;
-          font-size: var(--step-1);
-          line-height: 1.4;
-          color: var(--color-red);
-        }
-
-        .service-arrow svg {
           transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .service-header:hover .service-arrow svg {
-          transform: translateX(4px);
+        .service-header:hover .service-arrow {
+          transform: translate(2px, -2px);
         }
 
         .service-header .service-summary {
