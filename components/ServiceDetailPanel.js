@@ -426,7 +426,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
               padding: '0.35rem 1rem 0.4em',
               fontFamily: 'var(--font-body), var(--font-fallback)',
               fontSize: 'var(--step-0)',
-              fontWeight: 400,
+              fontWeight: 600,
               textTransform: 'none',
               cursor: 'pointer',
               transition: 'background-color 0.3s',

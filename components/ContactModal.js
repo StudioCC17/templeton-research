@@ -300,7 +300,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                   borderRadius: '2px',
                   fontFamily: 'var(--font-body), var(--font-fallback)',
                   fontSize: 'var(--step-0)',
-                  fontWeight: 400,
+                  fontWeight: 600,
                   cursor: status === 'submitting' ? 'default' : 'pointer',
                   opacity: status === 'submitting' ? 0.6 : 1,
                   transition: 'background-color 0.3s ease, opacity 0.3s ease',
