@@ -394,7 +394,11 @@ export default function ServicesSection({ servicesData }) {
                               width: 'fit-content',
                             }}
                           >
-                            {service.title}<Arrow direction="right" className="service-arrow" />
+                            {service.title}<Arrow
+                              direction="right"
+                              className="service-arrow"
+                              style={{ width: '0.55em', height: '0.55em', marginLeft: '0.5em', verticalAlign: '0.02em' }} // smaller, kept centred on the line
+                            />
                           </h3>
                           <p
                             className="service-summary"
@@ -531,7 +535,7 @@ export default function ServicesSection({ servicesData }) {
         }
 
         .services-list:hover .service-item:not(:hover) .service-header > div {
-          opacity: 0.35;
+          opacity: 0.6;
         }
 
         @media (hover: none) {
