@@ -378,8 +378,8 @@ export default function ServicesSection({ servicesData }) {
                               width: 'fit-content',
                             }}
                           >
+                            <Arrow direction="right" className="service-arrow" style={{ marginLeft: 0, marginRight: '0.4em', verticalAlign: 'calc(0.23em + 2px)' }} />
                             {service.title}
-                            <Arrow className="service-arrow" style={{ verticalAlign: 'calc(0.23em + 2px)' }} />
                           </h3>
                           <p
                             className="service-summary"
@@ -496,13 +496,13 @@ export default function ServicesSection({ servicesData }) {
         }
 
         /* Plain arrow (no circle) - just slides across on hover */
-        /* Diagonal arrow sitting right after each service title; nudges on hover */
+        /* Right arrow leading each service title; slides right on hover */
         .service-arrow {
           transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .service-header:hover .service-arrow {
-          transform: translate(2px, -2px);
+          transform: translateX(3px);
         }
 
         .service-header .service-summary {
