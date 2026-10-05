@@ -326,13 +326,14 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             What we do
           </span>
 
+          <div className="sd-toggle-list">
           {cards.map((card, i) => {
             const key = card._key || i
             const isExpanded = !!expanded[key]
             // While one toggle is open, the others fade back (hover brings them up)
             const isDimmed = Object.keys(expanded).length > 0 && !isExpanded
             return (
-              <div key={key}>
+              <div key={key} className="sd-card">
                 {/* Sub-header toggle */}
                 <div
                   className="sd-toggle-header"
@@ -413,6 +414,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             )
           })}
 
+          </div>
+
           {/* Enquire - sits straight under the list */}
           <button
             type="button"
@@ -444,7 +447,12 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
       </div>
 
       <style jsx>{`
-        .sd-toggle-header:hover {
+        /* Hovering the list: the other items fade back (like the services list);
+           the one you're on - and its open text - stays at full strength */
+        .sd-toggle-list:hover .sd-card:not(:hover) .sd-toggle-header {
+          opacity: 0.6 !important;
+        }
+        .sd-toggle-list .sd-card:hover .sd-toggle-header {
           opacity: 1 !important;
         }
         .sd-next {
