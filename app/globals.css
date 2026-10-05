@@ -590,6 +590,13 @@ p {
   .btn-primary:hover .arrow { animation: none; }
 }
 
+/* No underline on links that carry an arrow - the arrow is their hover cue */
+.u-link:has(.arrow)::after,
+.nav-contact::after,
+.services-split-footnote::after {
+  content: none;
+}
+
 /* Navigation loaded state - fades in */
 .navigation--loaded {
   opacity: 1;
