@@ -105,7 +105,7 @@ position: relative;
 }
 
 .tile:hover {
-    background-color: #ffffffa3;
+    background-color: var(--color-cream); /* same as the page - the shadow does the lifting */
     box-shadow: 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
 }
 
