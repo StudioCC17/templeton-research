@@ -348,7 +348,6 @@ export default function ServicesSection({ servicesData }) {
           <div className="services-split-right">
             <div className="services-list">
               {servicesData.services.map((service, index) => {
-                const number = String(index + 1).padStart(2, '0')
                 return (
                   <div
                     key={service._key || index}
@@ -365,22 +364,6 @@ export default function ServicesSection({ servicesData }) {
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                        <span
-                          className="service-number"
-                          style={{
-                            fontFamily: 'var(--font-body), var(--font-fallback)',
-                            fontSize: 'var(--step-2)',
-                            fontWeight: 400,
-                            lineHeight: 1.4,
-                            color: 'var(--color-red)',
-                            margin: 0,
-                            flexShrink: 0,
-                            width: '1.75em', // fixed column so every title/summary lines up
-                            fontVariantNumeric: 'tabular-nums',
-                          }}
-                        >
-                          {number}.
-                        </span>
                         <div style={{ flex: 1 }}>
                           <h3
                             className="service-title"
