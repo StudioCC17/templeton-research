@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
+import { staggerIn } from '@/lib/motion'
 
 // Body rendering for PortableText content (matches the TeamSection careers styles).
 const bodyComponents = {
@@ -53,6 +54,13 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
   const [isRendered, setIsRendered] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const closeTimer = useRef(null)
+  const contentRef = useRef(null)
+
+  // Once the panel has started sliding up, its content cascades in
+  useEffect(() => {
+    if (!isVisible || !contentRef.current) return
+    staggerIn(contentRef.current.children, { delay: 0.18, y: 12, stagger: 0.05, duration: 0.8 })
+  }, [isVisible])
 
   // Open: mount + lock scroll. The visibility flip happens in the effect
   // below, once the panel is actually in the DOM and painted at its start
@@ -180,6 +188,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
 
         {/* Content */}
         <div
+          ref={contentRef}
           className="about-modal-content"
           style={{ padding: '1.5rem', maxWidth: '100%', margin: '0 auto' }}
         >

@@ -32,6 +32,7 @@ export default function FullBleedImageSection({ imageData, height = "60vh", minH
       }}
     >
       <div
+        data-reveal="image"
         style={{
           position: 'relative',
           width: '100%',

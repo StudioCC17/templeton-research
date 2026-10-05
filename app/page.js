@@ -23,6 +23,7 @@ import InsightOverlay from '@/components/InsightOverlay'
 import InsightsIndexOverlay from '@/components/InsightsIndexOverlay'
 import Footer from '@/components/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
+import ScrollReveal from '@/components/ScrollReveal'
 
 async function getHomepageData() {
   const query = `{
@@ -378,6 +379,9 @@ export default async function Home() {
       )}
 
       <Footer footerData={footerSettings} />
+
+      {/* Scroll-in animations for anything marked data-reveal */}
+      <ScrollReveal />
 
       {/*
         InsightOverlay watches the ?article=slug query param and renders

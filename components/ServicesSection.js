@@ -281,7 +281,7 @@ export default function ServicesSection({ servicesData }) {
                   right: 0,
                   pointerEvents: isDetailOpen ? 'none' : 'auto',
                 }}>
-                  <h3 ref={headlineRef} className="hero-text" style={{ color: 'var(--color-green)', lineHeight: '1.265', opacity: 0 }}>
+                  <h3 ref={headlineRef} data-reveal="rise" className="hero-text" style={{ color: 'var(--color-green)', lineHeight: '1.265', opacity: 0 }}>
                     {servicesData.headline || 'Tailored investigative and research services that provide clarity and confidence for high-stakes decisions.'}
                   </h3>
                   {servicesData.introduction && (
@@ -346,7 +346,7 @@ export default function ServicesSection({ servicesData }) {
 
           {/* ── Right: service list ── */}
           <div className="services-split-right">
-            <div className="services-list">
+            <div className="services-list" data-reveal="stagger">
               {servicesData.services.map((service, index) => {
                 return (
                   <div
@@ -508,8 +508,20 @@ export default function ServicesSection({ servicesData }) {
         }
 
         /* ── Service rows: plain, with subtle dividers between them ── */
-        .service-item + .service-item {
-          border-top: 1px solid rgba(36, 81, 72, 0.1);
+        /* Divider drawn as a line that can draw in on scroll (--line, see ScrollReveal) */
+        .service-item {
+          position: relative;
+        }
+        .service-item + .service-item::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: rgba(36, 81, 72, 0.1);
+          transform: scaleX(var(--line, 1));
+          transform-origin: left center;
         }
 
         .service-header {

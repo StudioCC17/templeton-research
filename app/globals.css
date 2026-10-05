@@ -2170,3 +2170,46 @@ display: none
     max-width: 100vw;
   }
 }
+
+/* ----------------------------------------
+   SCROLL REVEALS (components/ScrollReveal.js)
+   Hidden starting states, only while JS is running (.js-reveal is added in
+   layout.js) and only until each element has animated (data-revealed).
+   ---------------------------------------- */
+.js-reveal [data-reveal="rise"]:not([data-revealed]) { transform: translateY(28px); }
+.js-reveal [data-reveal="fade"]:not([data-revealed]),
+.js-reveal [data-reveal="stagger"]:not([data-revealed]) > *,
+.js-reveal [data-reveal="logo"]:not([data-revealed]) g { opacity: 0; }
+.js-reveal [data-reveal="stagger"]:not([data-revealed]) > *,
+.js-reveal [data-reveal="line"]:not([data-revealed]) { --line: 0; }
+.js-reveal [data-reveal="image"]:not([data-revealed]) { clip-path: inset(100% 0 0 0); }
+
+/* Divider lines that can draw in: scaleX follows --line (0 to 1) */
+.line-top::before,
+.line-bottom::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border);
+  transform: scaleX(var(--line, 1));
+  transform-origin: left center;
+  pointer-events: none;
+  z-index: 1;
+}
+.line-top::before { top: 0; }
+.line-bottom::after { bottom: 0; }
+
+/* Team photos (when shown): soft greyscale at rest, colour + gentle zoom on hover */
+@media (hover: hover) {
+  .team-member-image {
+    filter: grayscale(1);
+    transition: filter 0.6s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+  .team-member:hover .team-member-image {
+    filter: grayscale(0);
+    transform: scale(1.04);
+  }
+}
+

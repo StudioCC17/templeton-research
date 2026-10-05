@@ -7,9 +7,11 @@
 
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Arrow from '@/components/Arrow'
+import FormSuccess from '@/components/FormSuccess'
+import { staggerIn, fadeOut } from '@/lib/motion'
 
 const INITIAL_FORM = {
   name: '',
@@ -23,6 +25,14 @@ export default function ContactModal({ isOpen, onClose, service }) {
   const [isVisible, setIsVisible] = useState(false)
   const [form, setForm] = useState(INITIAL_FORM)
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
+  const contentRef = useRef(null)
+  const formRef = useRef(null)
+
+  // Once the box has started sliding up, the heading and fields cascade in
+  useEffect(() => {
+    if (!isVisible || !contentRef.current) return
+    staggerIn(contentRef.current.querySelectorAll(':scope > div:first-child, :scope > form > *'), { delay: 0.18, y: 12, stagger: 0.04, duration: 0.8 })
+  }, [isVisible])
 
   // Portals need the DOM, which only exists in the browser.
   useEffect(() => {
@@ -93,6 +103,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
         body: JSON.stringify(form),
       })
       if (!res.ok) throw new Error('Request failed')
+      await fadeOut(formRef.current) // form fades away before the thank-you appears
       setStatus('success')
     } catch (err) {
       setStatus('error')
@@ -180,7 +191,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
           </svg>
         </button>
 
-        <div className="tr-contact-content" style={{ padding: '1.5rem 1.5rem 2rem' }}>
+        <div ref={contentRef} className="tr-contact-content" style={{ padding: '1.5rem 1.5rem 2rem' }}>
           {/* Heading */}
           <div style={{ marginBottom: '2.5rem' }}>
             <h2
@@ -198,7 +209,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
           </div>
 
           {status === 'success' ? (
-            <div style={{ paddingTop: '1rem' }}>
+            <FormSuccess>
               <p
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -210,9 +221,9 @@ export default function ContactModal({ isOpen, onClose, service }) {
               >
                 Thanks - your message is on its way. We will be in touch shortly.
               </p>
-            </div>
+            </FormSuccess>
           ) : (
-            <form onSubmit={handleSubmit} noValidate>
+            <form ref={formRef} onSubmit={handleSubmit} noValidate>
               <div style={{ marginBottom: '1.75rem' }}>
                 <label htmlFor="contact-name" style={labelStyle}>Name</label>
                 <input

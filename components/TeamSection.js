@@ -181,6 +181,7 @@ export default function TeamSection({ teamData, careersData }) {
        
           <h2 
             ref={headlineRef}
+            data-reveal="rise"
             className="hero-text"
             style={{ color: 'var(--color-green)', opacity: 0 }}
           >
@@ -317,7 +318,8 @@ export default function TeamSection({ teamData, careersData }) {
         {careers.content && (
           <div 
             id="careers"
-            className="careers-section"
+            className="careers-section line-top line-bottom"
+            data-reveal="line"
             style={{
               position: 'relative',
               display: 'flex',
@@ -330,9 +332,8 @@ export default function TeamSection({ teamData, careersData }) {
               marginRight: '-1.5vw',
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
-              paddingBottom: '1.5rem',
-              borderTop: '1px solid var(--color-border)',
-              borderBottom: '1px solid var(--color-border)'
+              paddingBottom: '1.5rem'
+              // top/bottom borders are drawn by .line-top/.line-bottom so they can draw in
             }}
           >
             {/* Full-bleed image (left). Absolutely positioned so it fills the
@@ -340,6 +341,7 @@ export default function TeamSection({ teamData, careersData }) {
                to the viewport's left edge, without affecting the text flow. */}
             <div
               className="careers-image"
+              data-reveal="image"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -361,6 +363,7 @@ export default function TeamSection({ teamData, careersData }) {
 
             <div 
               className="careers-content"
+              data-reveal="stagger"
               style={{
                 // Text column = the 40% beside the image, with even gutters:
                 // ~3.5vw from the image, ~4vw from the screen edge, and room top/bottom

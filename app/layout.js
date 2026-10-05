@@ -13,8 +13,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Turns on the scroll-reveal starting states (see ScrollReveal.js). Falls
+            back to showing everything if the animations haven't started in 4s. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('js-reveal');setTimeout(function(){if(!window.__revealReady)document.documentElement.classList.remove('js-reveal')},4000)",
+          }}
+        />
         {/* Adobe Fonts (Typekit) */}
         <link rel="stylesheet" href="https://use.typekit.net/bfr8lmv.css" />
         {/* GSAP for text animations and parallax */}

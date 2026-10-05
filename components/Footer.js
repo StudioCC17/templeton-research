@@ -194,6 +194,7 @@ function FooterInner({ footerData }) {
               }}
             >
               <svg 
+                data-reveal="logo"
                 viewBox="0 0 283.05 227.86" 
                 style={{
                   width: '60px',
