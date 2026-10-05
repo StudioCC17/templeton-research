@@ -173,7 +173,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
                 window.history.pushState(null, '', `${window.location.pathname}?${params.toString()}`)
               }}
             >
-              View all
+              View all insights
               <span aria-hidden="true" className={styles.ctaArrow}>
                 <Arrow />
               </span>
@@ -261,7 +261,7 @@ export function InsightTile({ article, index }) {
       <div className={styles.tileReadMore}>
         Read article
         <span aria-hidden="true" className={styles.tileReadMoreArrow}>
-          <Arrow direction="right" style={{ marginLeft: 0 }} />
+          <Arrow style={{ marginLeft: 0 }} />
         </span>
       </div>
     </Link>
