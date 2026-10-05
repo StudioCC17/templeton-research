@@ -261,7 +261,7 @@ export function InsightTile({ article, index }) {
       <div className={styles.tileReadMore}>
         Read article
         <span aria-hidden="true" className={styles.tileReadMoreArrow}>
-          <Arrow style={{ marginLeft: 0 }} />
+          <Arrow />
         </span>
       </div>
     </Link>

@@ -215,7 +215,7 @@ position: relative;
       bottom: 30px;
     position: absolute;
   align-items: baseline; /* arrow sits on the text baseline */
-  gap: 0.5em;
+  gap: 0; /* spacing comes from Arrow.js so it's the same everywhere */
   font-family: var(--font-body), var(--font-fallback);
   font-size: var(--step--1);
   font-weight: 600;
