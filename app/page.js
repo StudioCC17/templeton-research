@@ -22,6 +22,7 @@ import InsightsSection from '@/components/InsightsSection'
 import InsightOverlay from '@/components/InsightOverlay'
 import InsightsIndexOverlay from '@/components/InsightsIndexOverlay'
 import Footer from '@/components/Footer'
+import OfficesStrip from '@/components/OfficesStrip'
 import SmoothScroll from '@/components/SmoothScroll'
 import ScrollReveal from '@/components/ScrollReveal'
 
@@ -361,6 +362,9 @@ export default async function Home() {
           careersData={homepage.careersSection}
         />
       )}
+
+      {/* Break between Careers and Insights: offices with live local times */}
+      <OfficesStrip offices={footerSettings?.offices || []} />
 
       {homepage.insightsSection && insightArticles.length > 0 && (
         <Suspense fallback={null}>
