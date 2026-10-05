@@ -19,6 +19,7 @@ import HeroTextSection from '@/components/HeroTextSection'
 import QuoteSection from '@/components/QuoteSection'
 import Footer from '@/components/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
+import ScrollReveal from '@/components/ScrollReveal'
 
 
 
@@ -311,6 +312,7 @@ export default async function Home() {
 
       {/* Footer */}
       <Footer footerData={footerSettings} />
+      <ScrollReveal />
 
 
     </main>
