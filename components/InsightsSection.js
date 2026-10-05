@@ -175,7 +175,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
             >
               View all
               <span aria-hidden="true" className={styles.ctaArrow}>
-                <Arrow style={{ marginLeft: 0 }} />
+                <Arrow />
               </span>
             </Link>
           </div>
