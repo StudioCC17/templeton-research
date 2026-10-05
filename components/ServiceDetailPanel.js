@@ -336,7 +336,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             // While one toggle is open, the others fade back (hover brings them up)
             const isDimmed = Object.keys(expanded).length > 0 && !isExpanded
             return (
-              <div key={key} className="sd-card">
+              <div key={key} className={`sd-card${isExpanded ? ' is-open' : ''}`}>
                 {/* Sub-header toggle */}
                 <div
                   className="sd-toggle-header"
@@ -464,8 +464,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
 
       <style jsx>{`
         /* Hovering the list: the other items fade back (like the services list);
-           the one you're on - and its open text - stays at full strength */
-        .sd-toggle-list:hover .sd-card:not(:hover) .sd-toggle-header {
+           the one you're on - and any open (red) item - stays at full strength */
+        .sd-toggle-list:hover .sd-card:not(:hover):not(.is-open) .sd-toggle-header {
           opacity: 0.45 !important;
         }
         .sd-toggle-list .sd-card:hover .sd-toggle-header {
