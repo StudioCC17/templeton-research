@@ -363,9 +363,6 @@ export default async function Home() {
         />
       )}
 
-      {/* Break between Careers and Insights: offices with live local times */}
-      <OfficesStrip offices={footerSettings?.offices || []} />
-
       {homepage.insightsSection && insightArticles.length > 0 && (
         <Suspense fallback={null}>
           <InsightsSection
@@ -382,6 +379,9 @@ export default async function Home() {
           minHeight={`${homepage.fullBleedImage3.minHeight || 400}px`}
         />
       )}
+
+      {/* Offices with live local times, just above the footer */}
+      <OfficesStrip offices={footerSettings?.offices || []} />
 
       <Footer footerData={footerSettings} />
 
