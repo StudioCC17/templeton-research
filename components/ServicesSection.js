@@ -556,6 +556,14 @@ export default function ServicesSection({ servicesData }) {
 
         .service-header {
           padding: 1.5rem 0;
+          transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Hover: the row opens up a little, smoothly */
+        @media (hover: hover) {
+          .service-header:hover {
+            padding: 2.1rem 0;
+          }
         }
 
         /* Hover: a right arrow slides in after the title, and the other services fade back */
