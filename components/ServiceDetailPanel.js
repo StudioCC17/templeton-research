@@ -295,10 +295,17 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                   color: 'var(--color-red)',
                 }}
               >
-                Service
-                {number && <span style={{ marginLeft: '0.75em' }}>{number}</span>}
+                {number}
               </span>
-              {/* Service title removed - the number alone sits above "What we do" */}
+              <span
+                style={{
+                  fontFamily: 'var(--font-body), var(--font-fallback)',
+                  fontSize: 'var(--text-service-title-size)', // same size as in the services list
+                  color: 'var(--color-cream)',
+                }}
+              >
+                {title}
+              </span>
             </div>
           )}
 
