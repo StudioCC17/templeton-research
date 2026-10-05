@@ -346,7 +346,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                     cursor: 'pointer',
                     fontSize: 'var(--step-0)',
                     padding: '0.25rem 0',
-                    opacity: isDimmed ? 0.4 : 1,
+                    opacity: isDimmed ? 0.55 : 1, // closed items stay readable on the green
                     transition: 'opacity 0.4s ease',
                   }}
                 >
@@ -407,7 +407,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                     overflow: 'hidden',
                   }}
                 >
-                  <div style={{ padding: '0.5rem 0 0.75rem 1.125rem' }}>
+                  {/* maxWidth keeps the answer to a comfortable ~65 characters a line */}
+                  <div style={{ padding: '0.5rem 0 0.75rem 1.125rem', maxWidth: '34em' }}>
                     {card.body && <PortableText value={card.body} components={bodyComponents} />}
                   </div>
                 </div>

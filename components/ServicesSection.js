@@ -692,7 +692,7 @@ export default function ServicesSection({ servicesData }) {
         /* Desktop: calm the expanded prose down to the same size as the section headline. */
         @media (min-width: 1025px) {
           .services-left-crossfade > div:last-child .hero-text {
-            font-size: var(--step-4) !important;
+            font-size: var(--step-3) !important; /* a step down so it balances the panel */
           }
         }
 
