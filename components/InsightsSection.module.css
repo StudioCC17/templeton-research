@@ -63,7 +63,7 @@
 /* Supporting text - paler green (secondary text colour) */
 .intro p {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: calc(var(--step--1) * 0.94); /* same size as the service summaries */
+  font-size: var(--step--1); /* same size as the service summaries */
   font-weight: 400;
   line-height: 1.4;
   color: var(--color-text-secondary);
@@ -190,7 +190,7 @@ position: relative;
 
 .tileDate {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: calc(var(--step--2) * 0.94);
+  font-size: var(--step--2);
   font-weight: 400;
   color: var(--color-text-secondary);
   letter-spacing: 0.02em;
@@ -218,7 +218,7 @@ position: relative;
 
 .tileExcerpt {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: calc(var(--step--1) * 0.94);
+  font-size: var(--step--1);
   font-weight: 400;
   line-height: 1.472;
   color: var(--color-text-secondary);

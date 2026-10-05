@@ -176,7 +176,7 @@
 
 .errorText {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: calc(var(--step-0) * 0.94);
+  font-size: var(--step-0);
   color: var(--color-text-secondary);
   text-align: center;
 }

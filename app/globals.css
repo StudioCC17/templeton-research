@@ -193,7 +193,7 @@
 /* Small Muted - Location, metadata */
 .text-small-muted {
   font-family: var(--text-small-font);
-  font-size: calc(var(--text-small-size) * 0.94);
+  font-size: var(--text-small-size);
   font-weight: var(--text-small-weight);
   line-height: var(--text-small-line-height);
   color: var(--color-text-secondary);
@@ -1818,7 +1818,7 @@ display: none
 }
 
 .case-study-location {
-  font-size: calc(var(--step--1) * 0.94);
+  font-size: var(--step--1);
   color: var(--color-text-secondary);
 }
 

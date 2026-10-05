@@ -153,7 +153,7 @@ export default function TeamSection({ teamData, careersData }) {
         <p style={{ 
           // Supporting-text style, same as the Insights intro and service summaries
           fontFamily: 'var(--font-body), var(--font-fallback)',
-          fontSize: 'calc(var(--step--1) * 0.94)',
+          fontSize: 'var(--step--1)',
           fontWeight: 400,
           lineHeight: 1.4,
           color: 'var(--color-text-secondary)',
