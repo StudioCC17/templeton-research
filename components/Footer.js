@@ -146,7 +146,6 @@ function FooterInner({ footerData }) {
               }}
             >
               <a 
-                className="u-link"
                 href="#"
                 onClick={openContactModal}
                 style={{
@@ -165,7 +164,6 @@ function FooterInner({ footerData }) {
 <Arrow />
               </a>
               <a 
-                className="u-link"
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
