@@ -323,7 +323,9 @@ export default function TeamSection({ teamData, careersData }) {
               marginTop: '50px',
               backgroundColor: 'var(--color-cream-dark)',
               paddingTop: '1.5rem',
-              paddingBottom: '1.5rem'
+              paddingBottom: '1.5rem',
+              borderTop: '1px solid rgb(224, 224, 224)',
+              borderBottom: '1px solid rgb(224, 224, 224)'
             }}
           >
             {/* Full-bleed image (left). Absolutely positioned so it fills the
