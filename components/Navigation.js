@@ -544,7 +544,7 @@ export default function Navigation({ globalSettings, aboutData }) {
           right: 0,
           zIndex: 100, // above section content (e.g. the open service panel); below full-screen overlays
           opacity: showSticky ? 1 : 0,
-          transition: 'top 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease, ' + (headerInverse ? 'background-color 0.5s cubic-bezier(0.65, 0, 0.35, 1), border-color 0.5s cubic-bezier(0.65, 0, 0.35, 1)' : 'background-color 0.4s ease, border-color 0.4s ease'), // opening in step with the services scroll; closing quick
+          transition: 'top 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s ease, ' + (headerInverse ? 'background-color 0.5s cubic-bezier(0.65, 0, 0.35, 1), border-color 0.5s cubic-bezier(0.65, 0, 0.35, 1)' : 'background-color 0.4s ease, border-color 0.4s ease'), // opening in step with the services scroll; closing quick
         }}
       >
         {/* Hamburger for Secondary Nav */}
