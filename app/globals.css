@@ -2227,7 +2227,13 @@ display: none
 nav.navigation.navigation--scrolled.navigation--inverse {
   /* beats the per-section "...-section-scroll { background: cream !important }" rules */
   background: var(--color-green) !important;
-  border-bottom-color: var(--color-green);
+  border-bottom-color: rgba(245, 245, 240, 0.25); /* same as the open panel's centre line */
+}
+.navigation--scrolled .nav-logo-secondary svg {
+  transition: color 0.4s ease;
+}
+.navigation--inverse .nav-logo-secondary svg {
+  color: var(--color-cream) !important;
 }
 .navigation--inverse .nav-link,
 .navigation--inverse .nav-contact,
