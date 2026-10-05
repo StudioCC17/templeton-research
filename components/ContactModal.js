@@ -108,7 +108,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
-    fontSize: '1.05rem',
+    fontSize: 'var(--step-0)',
     fontWeight: 400,
     lineHeight: 1.5,
     color: '#245148',
@@ -120,7 +120,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
   const labelStyle = {
     display: 'block',
     fontFamily: 'var(--font-body), var(--font-fallback)',
-    fontSize: '0.8rem',
+    fontSize: 'var(--step--2)',
     fontWeight: 600,
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
@@ -187,7 +187,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
             <h2
               style={{
                 fontFamily: 'var(--font-heading), serif',
-                fontSize: '2rem',
+                fontSize: 'var(--step-3)',
                 fontWeight: 300,
                 lineHeight: 1.1,
                 color: '#245148',
@@ -203,7 +203,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
               <p
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '1.1rem',
+                  fontSize: 'var(--step-1)',
                   lineHeight: 1.55,
                   color: '#245148',
                   margin: 0,
@@ -277,7 +277,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                 <p
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: '0.9rem',
+                    fontSize: 'var(--step--1)',
                     color: '#BB7860',
                     marginTop: 0,
                     marginBottom: '1.25rem',
@@ -300,7 +300,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                   padding: '0.75rem 1.6rem',
                   borderRadius: '2px',
                   fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '1rem',
+                  fontSize: 'var(--step-0)',
                   fontWeight: 400,
                   cursor: status === 'submitting' ? 'default' : 'pointer',
                   opacity: status === 'submitting' ? 0.6 : 1,

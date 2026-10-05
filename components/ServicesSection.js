@@ -72,7 +72,7 @@ const PROSE_COMPONENTS = {
     bullet: ({ children }) => (
       <li style={{
         fontFamily: 'var(--font-body), var(--font-fallback)',
-        fontSize: '1.05rem',
+        fontSize: 'var(--step-0)',
         color: 'var(--color-cream)',
         marginBottom: '0.6rem',
         lineHeight: 1.55,
@@ -83,7 +83,7 @@ const PROSE_COMPONENTS = {
     number: ({ children }) => (
       <li style={{
         fontFamily: 'var(--font-body), var(--font-fallback)',
-        fontSize: '1.05rem',
+        fontSize: 'var(--step-0)',
         color: 'var(--color-cream)',
         marginBottom: '0.6rem',
         lineHeight: 1.55,
@@ -287,7 +287,7 @@ export default function ServicesSection({ servicesData }) {
                     <p style={{
                       marginTop: '1.5rem',
                       fontFamily: 'var(--font-body), var(--font-fallback)',
-                      fontSize: '1.05rem',
+                      fontSize: 'var(--step-0)',
                       lineHeight: 1.6,
                       color: 'var(--color-green)',
                     }}>
@@ -385,7 +385,7 @@ export default function ServicesSection({ servicesData }) {
                           className="service-number"
                           style={{
                             fontFamily: 'var(--font-body), var(--font-fallback)',
-                            fontSize: '1.3rem',
+                            fontSize: 'var(--step-2)',
                             fontWeight: 400,
                             lineHeight: 1.4,
                             color: 'var(--color-red)',
@@ -402,7 +402,7 @@ export default function ServicesSection({ servicesData }) {
                             className="service-title"
                             style={{
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: '1.3rem',
+                              fontSize: 'var(--step-2)',
                               fontWeight: 400,
                               lineHeight: 1.4,
                               color: 'var(--color-red)',
@@ -419,7 +419,7 @@ export default function ServicesSection({ servicesData }) {
                               marginTop: '0.25rem',
                               paddingRight: '25%',
                               fontFamily: 'var(--font-body), var(--font-fallback)',
-                              fontSize: '0.956rem',
+                              fontSize: 'var(--step--1)',
                               fontWeight: 400,
                               lineHeight: 1.4,
                               color: '#24514882',
@@ -560,7 +560,7 @@ export default function ServicesSection({ servicesData }) {
         /* Desktop: calm the expanded prose down to the same size as the section headline. */
         @media (min-width: 1025px) {
           .services-left-crossfade > div:last-child .hero-text {
-            font-size: 2.5rem !important;
+            font-size: var(--step-4) !important;
           }
         }
 
@@ -645,20 +645,20 @@ export default function ServicesSection({ servicesData }) {
           .services-has-expanded .services-left-crossfade h2,
           .services-has-expanded .services-left-crossfade h3,
           .services-has-expanded .services-left-crossfade p {
-            font-size: 1.625rem !important;
+            font-size: var(--step-3) !important;
             line-height: 1.2 !important;
           }
 
           .service-header h3,
           .service-header .service-number,
-          .service-header .service-summary { font-size: 1.15rem !important; }
+          .service-header .service-summary { font-size: var(--step-1) !important; }
 
           .service-header { padding: 1.1rem 0; }
         }
 
         /* ── Wide ── */
         @media (min-width: 1800px) {
-          .service-item h3.service-title { font-size: 1.4rem !important; }
+          .service-item h3.service-title { font-size: var(--step-2) !important; }
         }
       `}</style>
     </section>

@@ -23,49 +23,83 @@
   --color-cream: #f5f5f0;
   --color-border: #c4d2cf;
   
+  /* ----------------------------------------
+     FLUID TYPE SCALE
+     One scale for the whole site. Each step grows smoothly between a
+     375px phone and a 1440px desktop (no breakpoint jumps). Use these -
+     or the role tokens below - instead of hard-coded font sizes.
+       step -2  captions, tiny labels          11-12px
+       step -1  meta, preheaders, small UI     13-15px
+       step  0  body copy                      15-17px
+       step  1  UI titles, list items          17-18px
+       step  2  lead / large body              19-23px
+       step  3  sub-headings                   24-32px
+       step  4  section headings               28-40px
+       step  5  display                        32-51px
+       step  6  hero / article titles          36-60px
+     ---------------------------------------- */
+  --step--2: clamp(0.7rem, 0.6824rem + 0.0751vw, 0.75rem);
+  --step--1: clamp(0.84rem, 0.8013rem + 0.1653vw, 0.95rem);
+  --step-0: clamp(0.95rem, 0.9104rem + 0.1690vw, 1.0625rem);
+  --step-1: clamp(1.05rem, 1.0148rem + 0.1502vw, 1.15rem);
+  --step-2: clamp(1.2rem, 1.1120rem + 0.3756vw, 1.45rem);
+  --step-3: clamp(1.5rem, 1.3239rem + 0.7512vw, 2rem);
+  --step-4: clamp(1.75rem, 1.4859rem + 1.1268vw, 2.5rem);
+  --step-5: clamp(2rem, 1.5775rem + 1.8028vw, 3.2rem);
+  --step-6: clamp(2.25rem, 1.7218rem + 2.2535vw, 3.75rem);
+
+  /* Line heights - tighter as text gets bigger */
+  --leading-tight: 1.1;   /* display, hero */
+  --leading-snug: 1.25;   /* headings */
+  --leading-normal: 1.5;  /* body */
+
+  /* ----------------------------------------
+     ROLE TOKENS (point at the scale above)
+     ---------------------------------------- */
+
   /* Hero/Display Text - Large section headings */
   --text-display-font: var(--font-heading), var(--font-fallback);
-  --text-display-size: 2.225rem;
-  --text-display-size-sm: 1.85rem;
-  --text-display-size-md: 1.875rem;
-  --text-display-size-lg: 3.2rem;
-  --text-display-size-xl: 3.35rem;
+  --text-display-size: var(--step-5);
+  --text-display-size-sm: var(--step-5);
+  --text-display-size-md: var(--step-5);
+  --text-display-size-lg: var(--step-5);
+  --text-display-size-xl: var(--step-6);
   --text-display-weight: 300;
-  --text-display-line-height: 1.1;
+  --text-display-line-height: var(--leading-tight);
   
   /* Body Large - Main content paragraphs */
   --text-body-lg-font: var(--font-heading), var(--font-fallback);
-  --text-body-lg-size: 1.4rem;
+  --text-body-lg-size: var(--step-2);
   --text-body-lg-weight: 400;
   --text-body-lg-line-height: 1.44;
   
   /* Body Regular - Standard paragraphs */
   --text-body-font: var(--font-body), var(--font-fallback);
-  --text-body-size: 1rem;
+  --text-body-size: var(--step-0);
   --text-body-weight: 400;
-  --text-body-line-height: 1.5;
+  --text-body-line-height: var(--leading-normal);
   
   /* Label - Names, titles */
   --text-label-font: var(--font-body), var(--font-fallback);
-  --text-label-size: 1.1rem;
+  --text-label-size: var(--step-1);
   --text-label-weight: 400;
   --text-label-line-height: 1.2;
   
   /* Small - Secondary info, metadata */
   --text-small-font: var(--font-body), var(--font-fallback);
-  --text-small-size: .85rem;
+  --text-small-size: var(--step--1);
   --text-small-weight: 400;
   --text-small-line-height: 1.3;
   
   /* Preheader - Section labels */
   --text-preheader-font: var(--font-body), var(--font-fallback);
-  --text-preheader-size: .95rem;
+  --text-preheader-size: var(--step--1);
   --text-preheader-weight: 600;
   --text-preheader-line-height: 1.55;
   
   /* Link - Text links */
   --text-link-font: var(--font-body), var(--font-fallback);
-  --text-link-size: 0.9rem;
+  --text-link-size: var(--step--1);
   --text-link-weight: 600;
   --text-link-line-height: 1.3;
 }
@@ -108,7 +142,7 @@
 
 #careers .preheader-label {
     text-transform: none;
-    font-size: 1.05rem;
+    font-size: var(--step-0);
     display: block!important
 }
 
@@ -228,7 +262,7 @@
   }
 
   .services-left-crossfade h3 {
-font-size: 2.5rem !important;
+font-size: var(--step-4) !important;
 }
   
 
@@ -252,7 +286,7 @@ font-size: 2.5rem !important;
 }
 
 .service-item h3 {
-     font-size: 1.4rem!important;
+     font-size: var(--step-2)!important;
 }
 
 .random-image-grid-section {
@@ -293,7 +327,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
     font-family: var(--font-body), var(--font-fallback);
-    font-size: 1.1rem;
+    font-size: var(--step-1);
     font-weight: 400;
     line-height: 1.5;
     color: rgb(36, 81, 72);
@@ -320,14 +354,14 @@ body {
 /* Global Heading Styles */
 h1 {
   font-family: var(--font-heading), serif;
-  font-size: 4.5vw;
+  font-size: var(--step-6);
   font-weight: 300;
   line-height: 1;
 }
 
 h2 {
 font-family: var(--font-body), var(--font-fallback);
-     font-size: clamp(24px, 3.5vw, 40px);
+     font-size: var(--step-4);
     font-weight: 300;
     line-height: 1.2;
   
@@ -339,7 +373,7 @@ font-family: var(--font-body), var(--font-fallback);
 
 h3 {
     font-family: var(--font-heading), serif;
-    font-size: clamp(1.3rem, 3vw, 1rem);
+    font-size: var(--step-2);
     font-weight: 300;
     line-height: 1.105;
     letter-spacing: 0;
@@ -349,21 +383,21 @@ h3 {
 
 h4 {
   font-family: var(--font-heading), serif;
-  font-size: clamp(1.25rem, 2.5vw, 20px);
+  font-size: var(--step-2);
   font-weight: 300;
   line-height: 1.105;
 }
 
 h5 {
   font-family: var(--font-heading), serif;
-  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  font-size: var(--step-2);
   font-weight: 300;
   line-height: 1.105;
 }
 
 h6 {
   font-family: var(--font-heading), serif;
-  font-size: 1rem;
+  font-size: var(--step-0);
   font-weight: 400;
   line-height: 1.105;
 }
@@ -375,7 +409,7 @@ h6 {
 p {
 
     font-family: var(--font-body), var(--font-fallback);
-    font-size: 1.1rem;
+    font-size: var(--step-1);
     font-weight: 400;
     line-height: 1.5;
     color: rgb(36, 81, 72);
@@ -480,7 +514,7 @@ nav.navigation.navigation--scrolled {
   padding: 0.75rem 1rem;
   border: 1px solid rgb(36, 81, 72);
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   background-color: white;
   color: rgb(36, 81, 72);
 }
@@ -491,7 +525,7 @@ top: .5rem;
 right: .5rem;
 background: none;
 border: none;
-font-size: 20px;
+font-size: var(--step-2);
 cursor: pointer;
 color: rgb(36, 81, 72);
 padding: 0.5rem;
@@ -505,7 +539,7 @@ line-height: 1;
     padding: 1rem 2rem;
     border-radius: 6px;
     font-family: var(--font-body), var(--font-fallback);
-    font-size: 1.1rem;
+    font-size: var(--step-1);
     font-weight: 400;
     cursor: pointer;
     transition: 0.3s;
@@ -516,7 +550,7 @@ line-height: 1;
 .contact-modal-content label {
   display: block;
     font-family: var(--font-body), var(--font-fallback);
-    font-size: 1.1rem;
+    font-size: var(--step-1);
  padding-bottom: 5px;
     color: rgb(36, 81, 72);
 }
@@ -590,7 +624,7 @@ line-height: 1;
 
 p.section-paragraph.approach-paragraph {
   font-family: var(--font-heading), serif;
-  font-size: 23px;
+  font-size: var(--step-2);
 }
 
 .nav-logo-secondary {
@@ -673,7 +707,7 @@ p.section-paragraph.approach-paragraph {
 }
 
 .logo-text {
-  font-size: 1.4rem;
+  font-size: var(--step-2);
   font-weight: 300;
   letter-spacing: 0.23em;
   color: #f5f5f0;
@@ -681,7 +715,7 @@ p.section-paragraph.approach-paragraph {
 }
 
 .logo-subtext {
-  font-size: 0.8rem;
+  font-size: var(--step--2);
   font-weight: 300;
   letter-spacing: 0.23em;
   color: #f5f5f0;
@@ -692,7 +726,7 @@ p.section-paragraph.approach-paragraph {
 .nav-link {
   color: #f5f5f0;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   font-weight: 400;
   font-family: var(--font-body), var(--font-fallback);
   transition: opacity 0.3s ease;
@@ -711,14 +745,14 @@ p.section-paragraph.approach-paragraph {
   background: none;
   border: none;
   color: #f5f5f0;
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   font-weight: 400;
   font-family: var(--font-body), var(--font-fallback);
   cursor: pointer;
   white-space: nowrap;
  
       font-family: var(--font-body), var(--font-fallback);
-    font-size: 1.1rem;
+    font-size: var(--step-1);
     font-weight: 400;
     color: #245148;
 }
@@ -813,7 +847,7 @@ p.section-paragraph.approach-paragraph {
 }
 
 .nav-mobile-menu .nav-link {
-  font-size: 1.5rem;
+  font-size: var(--step-2);
   color: #245148;
   text-decoration: none;
 
@@ -821,7 +855,7 @@ p.section-paragraph.approach-paragraph {
 }
 
 .nav-mobile-menu .locale-button {
-  font-size: 1.2rem;
+  font-size: var(--step-1);
   margin-top: 1rem;
 }
 
@@ -868,11 +902,11 @@ p.section-paragraph.approach-paragraph {
   }
   
   .logo-text {
-    font-size: 1.3rem;
+    font-size: var(--step-2);
   }
   
   .logo-subtext {
-    font-size: 0.75rem;
+    font-size: var(--step--2);
   }
   
   .nav-logo {
@@ -1043,7 +1077,7 @@ p.section-paragraph.approach-paragraph {
 .hero-preheader,
 .hero2-preheader {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1.21rem;
+  font-size: var(--step-1);
   font-weight: 400;
   line-height: 1.445;
   text-align: left; /* Your change - keeps left alignment */
@@ -1161,7 +1195,7 @@ section.text-section.approach-section {
 
 .section-label {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.989rem;
+  font-size: var(--step-0);
   font-weight: 700;
   color: #BB7860;
 display: none
@@ -1199,7 +1233,7 @@ display: none
   border-radius: 4px;
   text-decoration: none;
   font-family: var(--font-body), sans-serif;
-  font-size: 1.21rem;
+  font-size: var(--step-1);
   font-weight: 400;
   transition: background-color 0.3s ease;
 }
@@ -1209,7 +1243,7 @@ display: none
 }
 
 .cta-arrow {
-  font-size: 1.2rem;
+  font-size: var(--step-1);
   transition: transform 0.3s ease;
 }
 
@@ -1230,7 +1264,7 @@ display: none
 
 .approach-headline {
   font-family: var(--font-heading), serif;
-  font-size: 2.5rem;
+  font-size: var(--step-4);
   font-weight: 300;
   color: #f5f5f0;
   margin-bottom: 3rem;
@@ -1275,7 +1309,7 @@ display: none
 
 .services-headline {
   font-family: var(--font-heading), serif;
-  font-size: 2.5rem;
+  font-size: var(--step-4);
   font-weight: 300;
   color: #245148;
   margin-bottom: 2rem;
@@ -1283,7 +1317,7 @@ display: none
 
 .services-introduction {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   color: #245148;
   max-width: 800px;
   margin-bottom: 3rem;
@@ -1297,7 +1331,7 @@ display: none
 
 .team-headline {
   font-family: var(--font-heading), serif;
-  font-size: 2.5rem;
+  font-size: var(--step-4);
   font-weight: 300;
   color: #245148;
   margin-bottom: 2rem;
@@ -1351,7 +1385,7 @@ display: none
 
 .footer-tagline {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   color: #f5f5f0;
   opacity: 0.8;
   margin-bottom: 1rem;
@@ -1359,14 +1393,14 @@ display: none
 
 .footer-copyright {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.875rem;
+  font-size: var(--step--1);
   color: #f5f5f0;
   opacity: 0.6;
 }
 
 .footer-nav-section h4 {
   font-family: var(--font-heading), serif;
-  font-size: 1.25rem;
+  font-size: var(--step-2);
   font-weight: 400;
   color: #f5f5f0;
   margin-bottom: 1rem;
@@ -1375,7 +1409,7 @@ display: none
 .footer-nav-link {
   display: block;
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   color: #f5f5f0;
   opacity: 0.8;
   text-decoration: none;
@@ -1393,7 +1427,7 @@ display: none
 
 .footer-office h5 {
   font-family: var(--font-heading), serif;
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   font-weight: 400;
   color: #f5f5f0;
   margin-bottom: 0.5rem;
@@ -1401,7 +1435,7 @@ display: none
 
 .footer-office p {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.95rem;
+  font-size: var(--step--1);
   color: #f5f5f0;
   opacity: 0.8;
   margin: 0;
@@ -1439,7 +1473,7 @@ display: none
 
 .quote-text {
   font-family: var(--font-heading), serif;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: var(--step-4);
   font-weight: 300;
   line-height: 1.3;
   color: #245148;
@@ -1448,14 +1482,14 @@ display: none
 
 .quote-author {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   font-weight: 600;
   color: #245148;
 }
 
 .quote-title {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   color: #245148;
   opacity: 0.8;
 }
@@ -1474,7 +1508,7 @@ display: none
 
 .careers-headline {
   font-family: var(--font-heading), serif;
-  font-size: 2.5rem;
+  font-size: var(--step-4);
   font-weight: 300;
   color: #f5f5f0;
   margin-bottom: 1.5rem;
@@ -1482,7 +1516,7 @@ display: none
 
 .careers-copy {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1.1rem;
+  font-size: var(--step-1);
   color: #f5f5f0;
   max-width: 800px;
   margin-bottom: 2rem;
@@ -1498,7 +1532,7 @@ display: none
   border-radius: 4px;
   text-decoration: none;
   font-family: var(--font-body), sans-serif;
-  font-size: 1.21rem;
+  font-size: var(--step-1);
   font-weight: 400;
   transition: all 0.3s ease;
 }
@@ -1594,7 +1628,7 @@ display: none
 }
 
 .case-study-location {
-  font-size: 0.85rem;
+  font-size: var(--step--1);
   color: #666;
 }
 
@@ -1620,7 +1654,7 @@ display: none
   color: white;
   padding: 4px 12px;
   border-radius: 16px;
-  font-size: 0.8rem;
+  font-size: var(--step--2);
   font-family: var(--font-body), sans-serif;
   text-transform: capitalize;
   margin-bottom: 1rem;
@@ -1632,7 +1666,7 @@ display: none
 
 .case-study-paragraph {
   font-family: var(--font-body), sans-serif;
-  font-size: 1rem;
+  font-size: var(--step-0);
   line-height: 1.6;
   color: #245148;
   margin: 0 0 1rem 0;
@@ -1652,7 +1686,7 @@ display: none
   border-radius: 4px;
   text-decoration: none;
   font-family: var(--font-body), sans-serif;
-  font-size: 1.21rem;
+  font-size: var(--step-1);
   font-weight: 400;
   transition: background-color 0.3s ease;
 }
@@ -1662,7 +1696,7 @@ display: none
 }
 
 .case-study-cta .cta-arrow {
-  font-size: 1.2rem;
+  font-size: var(--step-1);
   transition: transform 0.3s ease;
 }
 
@@ -1768,7 +1802,7 @@ display: none
   position: absolute;
   right: 0;
   color: #f5f5f0;
-  font-size: 20px;
+  font-size: var(--step-2);
   transition: transform 0.3s ease;
   min-width: 24px;
   text-align: center;
@@ -1797,7 +1831,7 @@ display: none
 
 .case-study-location-expanded {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1.2rem;
+  font-size: var(--step-1);
   font-weight: 600;
   color: #f5f5f0;
   text-transform: uppercase;
@@ -1806,7 +1840,7 @@ display: none
 
 .case-study-type-expanded {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   font-weight: 400;
   color: #f5f5f0;
   opacity: 0.9;
@@ -1818,7 +1852,7 @@ display: none
 
 .case-study-date-expanded {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   color: #f5f5f0;
   opacity: 0.8;
 }
@@ -1838,7 +1872,7 @@ display: none
   border-radius: 4px;
   text-decoration: none;
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   font-weight: 400;
   transition: all 0.3s ease;
 }
@@ -1888,7 +1922,7 @@ display: none
   }
   
   .case-study-title {
-    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+    font-size: var(--step-4) !important;
   }
 
   .case-study-toggle-icon {

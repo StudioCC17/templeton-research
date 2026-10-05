@@ -23,7 +23,7 @@ const bodyComponents = {
         style={{
           color: 'var(--color-cream)',
           fontFamily: 'var(--font-heading), var(--font-fallback)',
-          fontSize: '1.4rem',
+          fontSize: 'var(--step-2)',
           fontWeight: 400,
           lineHeight: 1.55,
           marginBottom: '1.1rem',
@@ -37,7 +37,7 @@ const bodyComponents = {
         style={{
           color: 'var(--color-cream)',
           fontFamily: 'var(--font-heading), serif',
-          fontSize: '1.4rem',
+          fontSize: 'var(--step-2)',
           fontWeight: 400,
           lineHeight: 1.25,
           margin: '0 0 0.75rem',
@@ -61,7 +61,7 @@ const bodyComponents = {
         style={{
           color: 'var(--color-cream)',
           fontFamily: 'var(--font-body), var(--font-fallback)',
-          fontSize: '1.2rem',
+          fontSize: 'var(--step-1)',
           lineHeight: 1.55,
           marginBottom: '0.4rem',
         }}
@@ -301,7 +301,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
                 style={{
                   display: 'block',
                   fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '1.1rem',
+                  fontSize: 'var(--step-1)',
                   color: 'var(--color-cream)',
                 }}
               >
@@ -376,7 +376,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
                         color: isExpanded ? 'var(--color-red)' : 'var(--color-cream)',
                         fontWeight: 400,
                         fontFamily: 'var(--font-body), var(--font-fallback)',
-                        fontSize: '1.1rem', // matches the service titles ("01. ...", "Next")
+                        fontSize: 'var(--step-1)', // matches the service titles ("01. ...", "Next")
                         lineHeight: 1.55,
                         margin: '0px',
                         borderBottom: isExpanded ? '0px solid' : '0.5px solid transparent',
@@ -421,7 +421,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
               borderRadius: '2px',
               padding: '0.75rem 1.6rem',
               fontFamily: 'var(--font-body), var(--font-fallback)',
-              fontSize: '1rem',
+              fontSize: 'var(--step-0)',
               fontWeight: 400,
               textTransform: 'uppercase',
               cursor: 'pointer',
@@ -464,7 +464,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
           cursor: pointer;
           text-align: left;
           font-family: var(--font-body), var(--font-fallback);
-          font-size: 1.1rem;
+          font-size: var(--step-1);
           color: var(--color-cream);
         }
         .sd-next-label {

@@ -149,7 +149,7 @@ function FooterInner({ footerData }) {
                 onClick={openContactModal}
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '0.9rem',
+                  fontSize: 'var(--step--1)',
                   fontWeight: 600,
                   color: '#f5f5f0',
                   lineHeight: 1.5,
@@ -187,7 +187,7 @@ function FooterInner({ footerData }) {
                 rel="noopener noreferrer"
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
-                  fontSize: '0.9rem',
+                  fontSize: 'var(--step--1)',
                   fontWeight: 600,
                   color: '#f5f5f0',
                   lineHeight: 1.5,
@@ -289,7 +289,7 @@ function FooterInner({ footerData }) {
                   <h4 
                     style={{
                       fontFamily: 'var(--font-body), var(--font-fallback)',
-                      fontSize: '0.9rem',
+                      fontSize: 'var(--step--1)',
                       fontWeight: 600,
                       color: '#f5f5f0',
                       marginBottom: '.25rem',
@@ -302,7 +302,7 @@ function FooterInner({ footerData }) {
                   <div 
                     style={{
                       fontFamily: 'var(--font-body), var(--font-fallback)',
-                      fontSize: '0.9rem',
+                      fontSize: 'var(--step--1)',
                       fontWeight: 400,
                       lineHeight: 1.6,
                       color: '#f5f5f0'
@@ -334,7 +334,7 @@ function FooterInner({ footerData }) {
                   onClick={openLegal(slug)}
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: '0.9rem',
+                    fontSize: 'var(--step--1)',
                     fontWeight: 400,
                     color: '#f5f5f0',
                     textDecoration: 'none',

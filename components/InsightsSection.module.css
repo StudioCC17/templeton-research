@@ -56,7 +56,7 @@
     margin: 0;
     text-align: left;
     font-family: var(--font-body), var(--font-fallback);
-    font-size: 1.3rem !important;
+    font-size: var(--step-2) !important;
     font-weight: 400;
     line-height: 1.4;
     color: var(--color-red);
@@ -72,7 +72,7 @@
 
 .intro p {
   font-family: var(--font-heading), var(--font-fallback);
-  font-size: 1.45rem;
+  font-size: var(--step-2);
   font-weight: 400;
   line-height: 1.35;
   color: var(--color-green);
@@ -164,7 +164,7 @@ position: relative;
 
 .tileCategory {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.75rem;
+  font-size: var(--step--2);
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -181,7 +181,7 @@ position: relative;
 
 .tileDate {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.8rem;
+  font-size: var(--step--2);
   font-weight: 400;
   color: #24514882;
   letter-spacing: 0.02em;
@@ -196,19 +196,19 @@ position: relative;
   letter-spacing: -0.01em;
   color: var(--color-green);
   margin: 0 0 1rem 0;
-  font-size: 1.25rem;
+  font-size: var(--step-2);
 }
 
 /* Image-less tiles get a larger title to absorb the missing visual weight */
 .tileTitleLarge {
-  font-size: clamp(1.75rem, 2.5vw, 2.1rem);
+  font-size: var(--step-3);
 }
 
 /* ----- Tile excerpt ----- */
 
 .tileExcerpt {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.95rem;
+  font-size: var(--step--1);
   font-weight: 400;
   line-height: 1.55;
   color: var(--color-grey);
@@ -233,7 +233,7 @@ position: relative;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 0.85rem;
+  font-size: var(--step--1);
   font-weight: 600;
   color: var(--color-red);
   letter-spacing: 0.02em;
@@ -245,7 +245,7 @@ display: inline-block;
     transform: translateX(-4px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     margin-top: 3px;
-    font-size: 0.65rem;
+    font-size: var(--step--2);
 }
 
 .tile:hover .tileReadMoreArrow {
@@ -273,7 +273,7 @@ display: inline-block;
 
 .ctaLink {
   font-family: var(--font-body), var(--font-fallback);
-  font-size: 1rem;
+  font-size: var(--step-0);
   color: var(--color-red);
   text-decoration: none;
   display: inline-flex;

@@ -424,7 +424,7 @@ export default function Navigation({ globalSettings, aboutData }) {
                 transition: 'all 0.3s ease',
                 marginLeft: '1.5rem',
                 fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: '1.1rem',
+                fontSize: 'var(--step-1)',
                 fontWeight: '400',
                 color: '#245148',
                 textDecoration: 'none'
@@ -561,7 +561,7 @@ export default function Navigation({ globalSettings, aboutData }) {
                 transition: 'all 0.3s ease',
                 marginLeft: '1.5rem',
                 fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: '1.1rem',
+                fontSize: 'var(--step-1)',
                 fontWeight: '400',
                 color: '#245148',
                 textDecoration: 'none'

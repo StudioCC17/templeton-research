@@ -130,7 +130,7 @@ export default function TeamSection({ teamData, careersData }) {
       normal: ({children}) => (
         <p style={{ 
           fontFamily: 'var(--font-body), var(--font-fallback)',
-          fontSize: '1.05rem',
+          fontSize: 'var(--step-0)',
           fontWeight: 400,
           lineHeight: 1.55,
           marginBottom: '1.5rem'
@@ -243,7 +243,7 @@ export default function TeamSection({ teamData, careersData }) {
                     aria-hidden="true"
                     style={{
                       fontFamily: 'var(--text-display-font)',
-                      fontSize: '2.75rem',
+                      fontSize: 'var(--step-4)',
                       fontWeight: 300,
                       lineHeight: 1,
                       letterSpacing: '0.02em',
@@ -270,7 +270,7 @@ export default function TeamSection({ teamData, careersData }) {
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
                   <h3 
                     className="text-body-lg team-member-name"
-                    style={{ lineHeight: 1.35, fontSize: '1.45rem', fontFamily: 'var(--font-heading), serif' }}
+                    style={{ lineHeight: 1.35, fontSize: 'var(--step-2)', fontFamily: 'var(--font-heading), serif' }}
                   >
                     {member.name}
                   </h3>
@@ -279,7 +279,7 @@ export default function TeamSection({ teamData, careersData }) {
                       className="team-member-location"
                       style={{
                      
-                        fontSize: '12px',
+                        fontSize: 'var(--step--2)',
                         fontWeight: '600',
                         lineHeight: 'var(--text-body-lg-line-height)',
                  
@@ -296,7 +296,7 @@ export default function TeamSection({ teamData, careersData }) {
                     style={{ 
                       marginTop: '0',
                       lineHeight: 1.3,
-                      fontSize: '0.95rem',
+                      fontSize: 'var(--step--1)',
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       opacity: 0.5
                     }}
@@ -447,7 +447,7 @@ export default function TeamSection({ teamData, careersData }) {
                     className="text-body-lg"
                     style={{
                       lineHeight: 1.1,
-                      fontSize: '1.45rem',
+                      fontSize: 'var(--step-2)',
                       fontFamily: 'var(--font-heading), serif',
                       color: '#245148',
                       margin: 0
@@ -463,7 +463,7 @@ export default function TeamSection({ teamData, careersData }) {
                     style={{
                       marginTop: '5px',
                       lineHeight: 1.1,
-                      fontSize: '1.05rem',
+                      fontSize: 'var(--step-0)',
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       opacity: 0.5
                     }}
@@ -480,7 +480,7 @@ export default function TeamSection({ teamData, careersData }) {
                   href="tel:+442071234567"
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: '1.05rem',
+                    fontSize: 'var(--step-0)',
                     fontWeight: 400,
                     color: '#245148',
                     textDecoration: 'none',
@@ -494,7 +494,7 @@ export default function TeamSection({ teamData, careersData }) {
                   href="mailto:info@templetonresearch.com"
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: '1.05rem',
+                    fontSize: 'var(--step-0)',
                     fontWeight: 400,
                     color: '#245148',
                     textDecoration: 'none',
@@ -544,7 +544,7 @@ export default function TeamSection({ teamData, careersData }) {
                       style={{
                         color: '#245148',
                         fontFamily: 'var(--font-body), var(--font-fallback)',
-                        fontSize: '1.05rem',
+                        fontSize: 'var(--step-0)',
                         fontWeight: 400,
                         lineHeight: 1.55,
                         marginTop: i === 0 ? '0' : '1rem',
@@ -563,7 +563,7 @@ export default function TeamSection({ teamData, careersData }) {
                   rel="noopener noreferrer"
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
-                    fontSize: '.95rem',
+                    fontSize: 'var(--step--1)',
                     fontWeight: 600,
                     color: 'var(--color-red)',
                     textDecoration: 'none',
@@ -601,7 +601,7 @@ export default function TeamSection({ teamData, careersData }) {
         #careers .preheader-label {
           text-transform: none;
           font-family: var(--font-heading);
-          font-size: 2.2rem;
+          font-size: var(--step-3);
           font-weight: 400;
           line-height: 1.2;
           color: var(--color-green);
@@ -630,7 +630,7 @@ export default function TeamSection({ teamData, careersData }) {
           }
           
           .team-header h2 {
-            font-size: 2.5rem !important;
+            font-size: var(--step-4) !important;
           }
           
           .careers-content {
@@ -677,7 +677,7 @@ export default function TeamSection({ teamData, careersData }) {
           }
           
           .team-header h2 {
-            font-size: 1.8rem !important;
+            font-size: var(--step-3) !important;
           }
           
           .careers-content {

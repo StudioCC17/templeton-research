@@ -17,7 +17,7 @@ const bodyComponents = {
       <p
         style={{
           color: '#245148',
-          fontSize: '1.2rem',
+          fontSize: 'var(--step-1)',
           fontWeight: 400,
           lineHeight: 1.55,
           marginBottom: '1.5rem',
@@ -190,7 +190,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                 style={{
                   color: '#245148',
                   fontFamily: 'var(--font-heading), var(--font-fallback)',
-                  fontSize: '2.5rem',
+                  fontSize: 'var(--step-4)',
                   marginTop: '0.5rem',
                   lineHeight: 1.1,
                   width: '84%',
@@ -237,7 +237,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                       key={i}
                       style={{
                         color: '#245148',
-                        fontSize: '1.2rem',
+                        fontSize: 'var(--step-1)',
                         fontWeight: 400,
                         lineHeight: 1.55,
                         marginTop: i === 0 ? 0 : '1rem',
@@ -260,7 +260,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
                 display: 'inline-block',
                 marginTop: '1.5rem',
                 fontFamily: 'var(--font-body), var(--font-fallback)',
-                fontSize: '1.05rem',
+                fontSize: 'var(--step-0)',
                 fontWeight: 600,
                 color: 'var(--color-red)',
                 textDecoration: 'none',
