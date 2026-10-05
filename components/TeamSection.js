@@ -485,11 +485,12 @@ export default function TeamSection({ teamData, careersData }) {
             >
               {/* Name and Job Title */}
               <div style={{ marginBottom: '4rem' }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                {/* Mirrors the team list: name with the location in small red beside it */}
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', flexWrap: 'wrap' }}>
                   <h3
                     className="text-body-lg"
                     style={{
-                      lineHeight: 1.1,
+                      lineHeight: 1.35,
                       fontSize: 'var(--step-2)',
                       fontFamily: 'var(--font-heading), serif',
                       color: 'var(--color-green)',
@@ -498,15 +499,28 @@ export default function TeamSection({ teamData, careersData }) {
                   >
                     {selectedMember.name}
                   </h3>
+                  {selectedMember.location && (
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-body), var(--font-fallback)',
+                        fontSize: 'var(--step--2)',
+                        fontWeight: 600,
+                        lineHeight: 'var(--text-body-lg-line-height)',
+                        color: 'var(--color-red)'
+                      }}
+                    >
+                      {selectedMember.location}
+                    </span>
+                  )}
                 </div>
 
                 {selectedMember.jobTitle && (
                   <p
                     className="text-body-lg"
                     style={{
-                      marginTop: '5px',
-                      lineHeight: 1.1,
-                      fontSize: 'var(--step-0)',
+                      marginTop: 0,
+                      lineHeight: 1.3,
+                      fontSize: 'var(--step--1)', // same as the job title in the team list
                       fontFamily: 'var(--font-body), var(--font-fallback)',
                       opacity: 0.5
                     }}
