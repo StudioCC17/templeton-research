@@ -103,8 +103,9 @@ export default function ContactModal({ isOpen, onClose, service }) {
 
   const fieldStyle = {
     width: '100%',
-    backgroundColor: 'transparent', // the underline is drawn by .form-field (globals.css)
+    backgroundColor: 'transparent',
     border: 'none',
+    borderBottom: '1px solid rgba(36, 81, 72, 0.3)', // red focus line drawn over it by .form-field (globals.css)
     borderRadius: 0,
     padding: '0.35rem 0',
     fontFamily: 'var(--font-body), var(--font-fallback)',
