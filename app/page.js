@@ -20,6 +20,7 @@ import HeroTextSection from '@/components/HeroTextSection'
 import QuoteSection from '@/components/QuoteSection'
 import InsightsSection from '@/components/InsightsSection'
 import InsightOverlay from '@/components/InsightOverlay'
+import InsightsIndexOverlay from '@/components/InsightsIndexOverlay'
 import Footer from '@/components/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
 
@@ -383,6 +384,9 @@ export default async function Home() {
         a full-screen overlay when present. Wrapped in Suspense because it
         uses useSearchParams() which Next.js requires.
       */}
+      <Suspense fallback={null}>
+        <InsightsIndexOverlay />
+      </Suspense>
       <Suspense fallback={null}>
         <InsightOverlay />
       </Suspense>

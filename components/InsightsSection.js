@@ -14,7 +14,7 @@ import { urlFor } from '@/lib/sanity'
 import styles from './InsightsSection.module.css'
 import Arrow from '@/components/Arrow'
 
-const CATEGORY_LABELS = {
+export const CATEGORY_LABELS = {
   'industry-analysis': 'Industry analysis',
   'case-study': 'Case study',
   commentary: 'Commentary',
@@ -162,7 +162,17 @@ export default function InsightsSection({ insightsData, articles = [] }) {
 
         {cta?.text && cta?.link && (
           <div className={styles.ctaRow}>
-            <Link href={cta.link} className={`${styles.ctaLink} u-link`}>
+            <Link
+              href={cta.link}
+              className={`${styles.ctaLink} u-link`}
+              onClick={(e) => {
+                // Open the all-insights overlay (InsightsIndexOverlay) over the homepage
+                e.preventDefault()
+                const params = new URLSearchParams(window.location.search)
+                params.set('insights', 'all')
+                window.history.pushState(null, '', `${window.location.pathname}?${params.toString()}`)
+              }}
+            >
               {cta.text}
               <span aria-hidden="true" className={styles.ctaArrow}>
                 <Arrow direction="right" style={{ marginLeft: 0 }} />
@@ -179,7 +189,7 @@ export default function InsightsSection({ insightsData, articles = [] }) {
 // Individual tile
 // ============================================================
 
-function InsightTile({ article, index }) {
+export function InsightTile({ article, index }) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()

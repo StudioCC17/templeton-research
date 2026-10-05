@@ -1,0 +1,135 @@
+/* components/InsightsIndexOverlay.module.css
+ * Full-screen "all insights" overlay. Tiles reuse InsightsSection.module.css.
+ * Backdrop/panel start hidden; GSAP (InsightsIndexOverlay.js) animates them.
+ */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 990; /* below the article reader (1000+) so articles open on top */
+  background-color: rgba(36, 81, 72, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 991;
+  background-color: var(--color-cream);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.inner {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5% 4rem;
+}
+
+.closeButton {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-green);
+  line-height: 0;
+}
+
+.header {
+  padding: 4rem 0 2rem;
+}
+
+.preheader {
+  display: block;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--text-preheader-size);
+  font-weight: var(--text-preheader-weight);
+  letter-spacing: 0.03em;
+  color: var(--color-red);
+  margin-bottom: 0.4rem;
+}
+
+.headline {
+  color: var(--color-green);
+  margin: 0;
+}
+
+/* Category filter chips */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.chip {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--color-green);
+  background: transparent;
+  border: 1px solid rgba(36, 81, 72, 0.25);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chip:hover {
+  border-color: var(--color-green);
+}
+
+.chipActive,
+.chipActive:hover {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-cream);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+/* Tiles in this grid size to their content rather than the homepage's fixed row */
+.grid > * {
+  min-height: 320px;
+}
+
+.status {
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--step-0);
+  color: var(--color-grey);
+  padding: 2rem 0;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 3.5rem 0 1.5rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .grid > * {
+    min-height: 240px;
+  }
+}
