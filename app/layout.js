@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "document.documentElement.classList.add('js-reveal');try{if(sessionStorage.getItem('tr-splash'))document.documentElement.classList.add('splash-seen')}catch(e){}setTimeout(function(){if(!window.__revealReady)document.documentElement.classList.remove('js-reveal')},4000)",
+              "document.documentElement.classList.add('js-reveal');setTimeout(function(){if(!window.__revealReady)document.documentElement.classList.remove('js-reveal')},4000)",
           }}
         />
         {/* Adobe Fonts (Typekit) */}

@@ -2291,9 +2291,6 @@ nav.navigation.navigation--scrolled.navigation--inverse {
   height: auto;
   overflow: visible;
 }
-html.splash-seen .splash {
-  display: none; /* already shown this visit */
-}
 @keyframes splashFallback {
   to { opacity: 0; visibility: hidden; }
 }

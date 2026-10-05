@@ -1,8 +1,7 @@
 // components/SplashScreen.js
 // Opening splash: the Templeton mark draws itself in (cream on the brand green),
 // holds for a moment, then the whole splash fades away to reveal the homepage.
-// About 2.5s in total. Shown once per browser session (layout.js adds
-// .splash-seen before the page paints on later visits, so there's no flash).
+// About 2.7s in total. Shows on every page load (it's a one-page site).
 // If JavaScript fails, a CSS fallback fades it out after 4s regardless.
 
 'use client'
@@ -10,7 +9,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 
-const SEEN_KEY = 'tr-splash'
 
 export default function SplashScreen() {
   const splashRef = useRef(null)
@@ -19,14 +17,12 @@ export default function SplashScreen() {
   useLayoutEffect(() => {
     const el = splashRef.current
     if (!el) return
-    const html = document.documentElement
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (html.classList.contains('splash-seen') || reduce) {
+    if (reduce) {
       window.__splashDone = true
       setGone(true)
       return
     }
-    try { sessionStorage.setItem(SEEN_KEY, '1') } catch (e) {}
 
     // Hold the page still while the splash plays
     const prevOverflow = document.body.style.overflow
