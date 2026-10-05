@@ -7,6 +7,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
+import { applyVideoSpeed } from '@/lib/video'
 
 export default function HeroSection({ 
   heroData, 
@@ -223,6 +224,8 @@ export default function HeroSection({
                   />
                 )}
                 <video
+                  onLoadedMetadata={applyVideoSpeed}
+                  onTimeUpdate={applyVideoSpeed}
                   ref={videoRef}
                   autoPlay
                   muted

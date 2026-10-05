@@ -4,6 +4,8 @@
 
 'use client'
 
+import { applyVideoSpeed } from '@/lib/video'
+
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
@@ -184,6 +186,8 @@ export default function HeroSection({
           {mediaType === 'video' && heroData.videos?.[0] && (
             <>
               <video
+              onLoadedMetadata={applyVideoSpeed}
+              onTimeUpdate={applyVideoSpeed}
                 ref={videoRef}
                 className="hero-video"
                 autoPlay

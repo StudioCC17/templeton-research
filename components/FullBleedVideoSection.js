@@ -3,6 +3,8 @@
 
 'use client'
 
+import { applyVideoSpeed } from '@/lib/video'
+
 export default function FullBleedVideoSection({ heroData, videoIndex = 0, height = "80vh", minHeight = "500px" }) {
   
   // Helper function to get video URL from Sanity asset reference
@@ -47,6 +49,8 @@ export default function FullBleedVideoSection({ heroData, videoIndex = 0, height
       >
         {videoUrl ? (
           <video
+              onLoadedMetadata={applyVideoSpeed}
+              onTimeUpdate={applyVideoSpeed}
             autoPlay
             muted
             loop
