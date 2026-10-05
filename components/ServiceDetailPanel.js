@@ -401,7 +401,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, next
                     overflow: 'hidden',
                   }}
                 >
-                  <div style={{ padding: '0.5rem 0 0.75rem 1.125rem' }}>
+                  <div style={{ padding: '0.5rem 0 0.75rem 1.125rem', fontStyle: 'italic' /* Minion italic */ }}>
                     {card.body && <PortableText value={card.body} components={bodyComponents} />}
                   </div>
                 </div>
