@@ -16,6 +16,7 @@ export default function HeroSection({
 }) {
   const [mounted, setMounted] = useState(false)
   const videoRef = useRef(null)
+  const mediaRef = useRef(null) // wraps poster + video; this is what the parallax moves
   const sectionRef = useRef(null)
   const heroTextRef = useRef(null)
   
@@ -84,55 +85,76 @@ export default function HeroSection({
     }
   }, [mounted])
 
-  // GSAP video fade-in on canplaythrough
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video || mediaType !== 'video') return
-
-    let hasAnimated = false
-
-    const fadeIn = async () => {
-      if (hasAnimated) return
-      hasAnimated = true
-      
-      const gsap = (await import('gsap')).default
-      gsap.to(video, {
-        opacity: 1,
-        duration: 1,
-        ease: 'power2.out'
-      })
-    }
-
-    if (video.readyState >= 4) {
-      fadeIn()
-    } else {
-      video.addEventListener('canplaythrough', fadeIn, { once: true })
-    }
-
-    return () => video.removeEventListener('canplaythrough', fadeIn)
-  }, [mediaType, mounted])
-
-  // Parallax effect
-  useEffect(() => {
-    const handleScroll = () => {
-      if (videoRef.current && sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect()
-        const scrollProgress = -rect.top / window.innerHeight
-        const translateY = scrollProgress * 50
-        videoRef.current.style.transform = `translateY(${translateY}px)`
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   // Select random video on mount
   const selectedVideo = useMemo(() => {
     if (!mounted || !heroData?.videos?.length) return null
     const randomIndex = Math.floor(Math.random() * heroData.videos.length)
     return heroData.videos[randomIndex]
   }, [mounted, heroData?.videos])
+
+  // GSAP video fade-in: starts as soon as the first frame can be shown
+  // (loadeddata) instead of waiting for the whole video to buffer. The poster
+  // sits underneath, so there's never an empty gap while it loads.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || mediaType !== 'video') return
+
+    let hasAnimated = false
+    let tween
+
+    const fadeIn = async () => {
+      if (hasAnimated) return
+      hasAnimated = true
+      const gsap = (await import('gsap')).default
+      tween = gsap.to(video, { opacity: 1, duration: 1.2, ease: 'expo.out' })
+    }
+
+    if (video.readyState >= 2) {
+      fadeIn()
+    } else {
+      video.addEventListener('loadeddata', fadeIn, { once: true })
+    }
+
+    return () => {
+      video.removeEventListener('loadeddata', fadeIn)
+      if (tween) tween.kill()
+    }
+  }, [mediaType, mounted, selectedVideo])
+
+  // Parallax with GSAP ScrollTrigger: the media drifts as the section scrolls
+  // through the viewport. scrub smooths it so it glides rather than jitters.
+  useEffect(() => {
+    const media = mediaRef.current
+    const section = sectionRef.current
+    if (!media || !section) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let ctx
+    let cancelled = false
+    ;(async () => {
+      const gsap = (await import('gsap')).default
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      if (cancelled) return
+      gsap.registerPlugin(ScrollTrigger)
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          media,
+          { y: -50 },
+          {
+            y: 40,
+            ease: 'none',
+            force3D: true,
+            scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+          }
+        )
+      })
+    })()
+
+    return () => {
+      cancelled = true
+      if (ctx) ctx.revert()
+    }
+  }, [selectedVideo])
 
   const hasMedia = (mediaType === 'image' && heroData?.images?.length > 0) || 
                    (mediaType === 'video' && selectedVideo)
@@ -215,27 +237,49 @@ export default function HeroSection({
           
           {mediaType === 'video' && selectedVideo && (
             <>
-              <video
-                ref={videoRef}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                poster={selectedVideo.poster ? urlFor(selectedVideo.poster).url() : undefined}
+              {/* Poster + video share one wrapper so the parallax moves both together */}
+              <div
+                ref={mediaRef}
                 style={{
                   position: 'absolute',
                   top: '-10%',
                   left: 0,
                   width: '100%',
                   height: '140%',
-                  objectFit: 'cover',
-                  willChange: 'transform',
-                  opacity: 0
+                  willChange: 'transform'
                 }}
               >
-                <source src={getVideoUrl(selectedVideo)} type="video/mp4" />
-              </video>
+                {/* Poster shows instantly; the video fades in over it once its first frame is ready */}
+                {selectedVideo.poster?.asset && (
+                  <Image
+                    src={urlFor(selectedVideo.poster).width(2000).url()}
+                    alt={selectedVideo.poster.alt || ''}
+                    fill
+                    priority
+                    sizes="100vw"
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  poster={selectedVideo.poster?.asset ? urlFor(selectedVideo.poster).url() : undefined}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0
+                  }}
+                >
+                  <source src={getVideoUrl(selectedVideo)} type="video/mp4" />
+                </video>
+              </div>
               <div className="hero-video-overlay" />
 
 
