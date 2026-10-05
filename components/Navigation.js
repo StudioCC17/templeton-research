@@ -69,7 +69,7 @@ export default function Navigation({ globalSettings, aboutData }) {
 
   // Define nav items
   const navItems = [
-    { label: 'About us', href: '#approach', section: 'approach' },
+    { label: 'About', href: '#approach', section: 'approach' },
     { label: 'Services', href: '#services', section: 'services' },
     { label: 'Team', href: '#team', section: 'team' },
     { label: 'Careers', href: '#careers', section: 'careers' },
