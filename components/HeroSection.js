@@ -184,7 +184,7 @@ export default function HeroSection({
           backgroundColor: '#f5f5f0',
           display: 'flex',
           alignItems: 'flex-end',
-          padding: '250px 1.5% 2rem 1.5%'
+          padding: '200px 1.5% 2rem 1.5%'
         }}
       >
         <div 
