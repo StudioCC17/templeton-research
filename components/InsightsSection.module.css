@@ -94,16 +94,12 @@ position: relative;
     opacity: 0;
     transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     background-color: #2451480d;
+    border: 1px solid rgb(224, 224, 224); /* same hairline as the Careers section */
     border-radius: 14px;
     overflow: hidden;
         padding-right: 10%;
 
 
-}
-
-/* First in each row of three should have no left border */
-.tile:nth-child(3n + 1) {
-  border-left: none;
 }
 
 .tile:hover {
@@ -322,14 +318,6 @@ display: inline-block;
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .tile:nth-child(3n + 1) {
-    border-left: 1px solid var(--color-border);
-  }
-
-  .tile:nth-child(2n + 1) {
-    border-left: none;
-  }
 }
 
 /* ============================================================
@@ -346,10 +334,7 @@ display: inline-block;
     height: auto; /* desktop fixes the grid at 350px, which squashes stacked tiles */
   }
 
-  .tile,
-  .tile:nth-child(2n + 1),
-  .tile:nth-child(3n + 1) {
-    border-left: none;
+  .tile {
     padding: 1.75rem 1.5rem 4.5rem; /* bottom room for the absolutely positioned "Read article" */
     min-height: 240px;
   }
