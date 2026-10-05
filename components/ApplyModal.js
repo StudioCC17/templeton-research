@@ -16,7 +16,7 @@ const INITIAL_FORM = {
   name: '',
   email: '',
   message: '',
-  website: '', // honeypot - hidden from people, bots fill it in
+  hp_check: '', // honeypot - hidden from people, bots fill it in (odd name so browser autofill never touches it)
 }
 
 const MAX_CV_BYTES = 4 * 1024 * 1024 // 4MB (Vercel caps uploads at ~4.5MB)
@@ -346,10 +346,10 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
               {/* Honeypot: hidden from people; bots tend to fill it in */}
               <input
                 type="text"
-                name="website"
+                name="hp_check"
                 tabIndex={-1}
                 autoComplete="off"
-                value={form.website}
+                value={form.hp_check}
                 onChange={handleChange}
                 aria-hidden="true"
                 style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}

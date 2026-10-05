@@ -88,7 +88,8 @@ export async function POST(request) {
   }
 
   // Honeypot: real people never see this field
-  if ((form.get('website') || '').toString().trim()) {
+  if ((form.get('hp_check') || '').toString().trim()) {
+    console.warn('Apply: honeypot filled - treated as spam, nothing sent')
     return NextResponse.json({ ok: true })
   }
 
@@ -120,6 +121,7 @@ export async function POST(request) {
   const payload = { type, name, email, message, filename, contentType: CV_TYPES[ext], buffer }
 
   const [emailed, saved] = await Promise.allSettled([sendEmail(payload), saveToSanity(payload)])
+  console.log(`Apply: ${type} from ${email} - email ${emailed.status === 'fulfilled' ? 'sent to ' + recipients(type).join(', ') : 'FAILED'}, Sanity ${saved.status === 'fulfilled' ? 'saved' : 'FAILED'}`)
   if (emailed.status === 'rejected') console.error('Apply: email failed:', emailed.reason)
   if (saved.status === 'rejected') console.error('Apply: Sanity save failed:', saved.reason)
 
