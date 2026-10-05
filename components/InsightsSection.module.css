@@ -94,9 +94,10 @@ position: relative;
     opacity: 0;
     transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    /* Soft green-tinted shadow, very faint at rest, deepens on hover */
-    box-shadow: 0 1px 2px rgba(36, 81, 72, 0.04), 0 4px 12px -6px rgba(36, 81, 72, 0.08);
-    background-color: #2451480d;
+    /* At rest: same cream as the page, lifted by a soft green-tinted shadow
+       (with a faint glow round the top edge so the tile reads clearly) */
+    box-shadow: 0 -2px 10px -2px rgba(36, 81, 72, 0.1), 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
+    background-color: var(--color-cream);
     border-radius: 14px;
     overflow: hidden;
         padding-right: 10%;
@@ -105,9 +106,8 @@ position: relative;
 }
 
 .tile:hover {
-    background-color: var(--color-cream); /* same as the page - the shadow does the lifting */
-    /* first layer: a soft glow around the top edge so the tile still reads against the page */
-    box-shadow: 0 -2px 10px -2px rgba(36, 81, 72, 0.1), 0 2px 4px rgba(36, 81, 72, 0.05), 0 16px 32px -14px rgba(36, 81, 72, 0.22);
+    /* Hover: the tile darkens to the soft green tint */
+    background-color: #2451480d;
 }
 
 
