@@ -133,6 +133,52 @@ export default function ServicesSection({ servicesData }) {
   }, [isDetailOpen])
   useEffect(() => () => window.dispatchEvent(new CustomEvent('services-detail', { detail: { open: false } })), [])
 
+  // ── Hover: the row under the cursor opens up a little (GSAP), the arrow slides
+  // in and the other rows fade back. The active row only changes when the
+  // cursor enters another row, so rows shifting as they grow never cause flicker.
+  const listRef = useRef(null)
+  const hoverIndexRef = useRef(null)
+  const HOVER_EXTRA_REM = 0.6 // added above and below the hovered row
+
+  const setRowOpen = (index, open) => {
+    const item = listRef.current?.children[index]
+    const header = item?.querySelector('.service-header')
+    if (!header) return
+    item.classList.toggle('is-hovered', open)
+    if (!header.dataset.basePad) {
+      header.dataset.basePad = parseFloat(getComputedStyle(header).paddingTop) || 24
+    }
+    const base = parseFloat(header.dataset.basePad)
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+    const pad = open ? base + HOVER_EXTRA_REM * rem : base
+    gsap.to(header, {
+      paddingTop: pad,
+      paddingBottom: pad,
+      duration: open ? 0.7 : 0.6,
+      ease: 'power3.out',
+      overwrite: 'auto',
+      onComplete: open ? undefined : () => {
+        gsap.set(header, { clearProps: 'paddingTop,paddingBottom' })
+        delete header.dataset.basePad
+      },
+    })
+  }
+
+  const hoverRow = (index) => {
+    if (!window.matchMedia('(hover: hover)').matches) return
+    if (hoverIndexRef.current === index) return
+    if (hoverIndexRef.current !== null) setRowOpen(hoverIndexRef.current, false)
+    hoverIndexRef.current = index
+    listRef.current?.classList.add('has-hover')
+    setRowOpen(index, true)
+  }
+
+  const leaveList = () => {
+    if (hoverIndexRef.current !== null) setRowOpen(hoverIndexRef.current, false)
+    hoverIndexRef.current = null
+    listRef.current?.classList.remove('has-hover')
+  }
+
   const openDetail = (service, index) => {
     if (!isDetailOpen) scrollSectionToTop()
     const cards = (service.description || []).filter((b) => b._type === 'textCard')
@@ -375,13 +421,13 @@ export default function ServicesSection({ servicesData }) {
 
           {/* ── Right: service list ── */}
           <div className="services-split-right">
-            <div className="services-list" data-reveal="line">
+            <div className="services-list" data-reveal="line" ref={listRef} onMouseLeave={leaveList}>
               {servicesData.services.map((service, index) => {
                 return (
                   <div
                     key={service._key || index}
                     className="service-item"
-
+                    onMouseEnter={() => hoverRow(index)}
                   >
                     <div
                       onClick={() => openDetail(service, index)}
@@ -556,17 +602,9 @@ export default function ServicesSection({ servicesData }) {
 
         .service-header {
           padding: 1.5rem 0;
-          transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Hover: the row opens up a little, smoothly */
-        @media (hover: hover) {
-          .service-header:hover {
-            padding: 2.1rem 0;
-          }
-        }
-
-        /* Hover: a right arrow slides in after the title, and the other services fade back */
+        /* Hovered row (set by hoverRow): arrow slides in after the title, other rows fade back */
         .service-header :global(.service-arrow) {
           opacity: 0;
           transform: translateX(-0.4em);
@@ -575,7 +613,7 @@ export default function ServicesSection({ servicesData }) {
             transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .service-header:hover :global(.service-arrow) {
+        .is-hovered .service-header :global(.service-arrow) {
           opacity: 1;
           transform: translateX(0);
         }
@@ -584,20 +622,20 @@ export default function ServicesSection({ servicesData }) {
           transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .services-list:hover .service-item:not(:hover) .service-header > div {
+        .has-hover .service-item:not(.is-hovered) .service-header > div {
           opacity: 0.6;
         }
 
         @media (hover: none) {
           .service-header :global(.service-arrow) { display: none; }
-          .services-list:hover .service-item:not(:hover) .service-header > div { opacity: 1; }
+          .has-hover .service-item:not(.is-hovered) .service-header > div { opacity: 1; }
         }
 
         .service-header .service-summary {
           transition: color 0.3s ease;
         }
 
-        .service-header:hover .service-summary {
+        .is-hovered .service-header .service-summary {
           color: var(--color-green) !important;
         }
 
