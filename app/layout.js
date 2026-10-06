@@ -7,8 +7,25 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
+  metadataBase: new URL('https://www.templetonresearch.com'),
   title: 'Templeton Research',
   description: 'Providing clarity when there is uncertainty',
+  openGraph: {
+    title: 'Templeton Research',
+    description: 'Providing clarity when there is uncertainty',
+    siteName: 'Templeton Research',
+    type: 'website',
+    locale: 'en_GB',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Templeton Research',
+    description: 'Providing clarity when there is uncertainty',
+  },
+}
+
+export const viewport = {
+  themeColor: '#245148',
 }
 
 export default function RootLayout({ children }) {
