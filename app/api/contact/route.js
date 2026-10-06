@@ -1,11 +1,10 @@
 // app/api/contact/route.js
-// Receives the contact form POST, validates it, stores a
-// contactSubmission document in Sanity, and emails a notification
-// via Resend. Runs on the server only.
+// Receives the contact form POST, validates it and emails it to the
+// team via Resend. Nothing is stored (personal data stays out of Sanity,
+// whose datasets are public on the current plan). Runs on the server only.
 
 import { NextResponse } from 'next/server'
 import { rateLimit, clientIp } from '@/lib/rateLimit'
-import { writeClient } from '@/lib/sanityWriteClient'
 import { bccFor } from '@/lib/formCopy'
 
 // Route handlers run on the Node runtime by default, which is what the
@@ -94,33 +93,16 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Please provide a valid email.' }, { status: 400 })
   }
 
-  // Save to Sanity and send the email independently, so one failing
-  // doesn't lose the enquiry. Succeed if at least one worked.
-  const [saved, emailed] = await Promise.allSettled([
-    writeClient.create({
-      _type: 'contactSubmission',
-      name,
-      email,
-      company: company || undefined,
-      message,
-      submittedAt: new Date().toISOString(),
-    }),
-    sendNotification({ name, email, company, message }),
-  ])
-
-  if (saved.status === 'rejected') {
-    console.error('Contact submission: Sanity save failed:', saved.reason)
-  }
-  if (emailed.status === 'rejected') {
-    console.error('Contact submission: email notification failed:', emailed.reason)
-  }
-
-  if (saved.status === 'rejected' && emailed.status === 'rejected') {
+  try {
+    await sendNotification({ name, email, company, message })
+  } catch (err) {
+    console.error('Contact submission: email notification failed:', err)
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.' },
       { status: 500 }
     )
   }
+  console.log(`Contact: enquiry from ${email} - emailed to ${NOTIFY_TO.join(', ')}`)
 
   return NextResponse.json({ ok: true })
 }
