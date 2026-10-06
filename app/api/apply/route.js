@@ -1,13 +1,14 @@
 // app/api/apply/route.js
 // Careers applications from ApplyModal - general CVs ('cv') go to careers@,
-// internship applications ('internship') go to internships@. Validates the form, then
-// emails it with the CV attached. Nothing is stored (CVs are personal data and
-// stay out of Sanity, whose datasets are public on the current plan). If the
-// email fails the applicant sees an error and can try again.
+// internship applications ('internship') go to internships@. Validates the form, then (in
+// parallel) emails it to the internships inbox with the CV attached, and saves
+// it in Sanity as a jobApplication with the CV stored as a file. Succeeds if
+// either works, so an application is never lost.
 
 import { NextResponse } from 'next/server'
 import { rateLimit, clientIp } from '@/lib/rateLimit'
 import { bccFor } from '@/lib/formCopy'
+import { writeClient } from '@/lib/sanityWriteClient'
 
 export const runtime = 'nodejs'
 
@@ -68,6 +69,19 @@ async function sendEmail({ type, name, email, message, filename, buffer }) {
   if (!res.ok) throw new Error(`Resend responded ${res.status}: ${await res.text()}`)
 }
 
+async function saveToSanity({ type, name, email, message, filename, contentType, buffer }) {
+  const asset = await writeClient.assets.upload('file', buffer, { filename, contentType })
+  await writeClient.create({
+    _type: 'jobApplication',
+    applicationType: type,
+    name,
+    email,
+    message: message || undefined,
+    cv: { _type: 'file', asset: { _type: 'reference', _ref: asset._id } },
+    submittedAt: new Date().toISOString(),
+  })
+}
+
 export async function POST(request) {
   if (!rateLimit(`apply:${clientIp(request)}`)) {
     console.warn(`Apply: rate limited ${clientIp(request)}`)
@@ -115,14 +129,15 @@ export async function POST(request) {
 
   const buffer = Buffer.from(await cv.arrayBuffer())
   const filename = (cv.name || `cv.${ext}`).replace(/[^\w.\- ]/g, '_')
-  const payload = { type, name, email, message, filename, buffer }
+  const payload = { type, name, email, message, filename, contentType: CV_TYPES[ext], buffer }
 
-  try {
-    await sendEmail(payload)
-  } catch (err) {
-    console.error('Apply: email failed:', err)
+  const [emailed, saved] = await Promise.allSettled([sendEmail(payload), saveToSanity(payload)])
+  console.log(`Apply: ${type} from ${email} - email ${emailed.status === 'fulfilled' ? 'sent to ' + recipients(type).join(', ') : 'FAILED'}, Sanity ${saved.status === 'fulfilled' ? 'saved' : 'FAILED'}`)
+  if (emailed.status === 'rejected') console.error('Apply: email failed:', emailed.reason)
+  if (saved.status === 'rejected') console.error('Apply: Sanity save failed:', saved.reason)
+
+  if (emailed.status === 'rejected' && saved.status === 'rejected') {
     return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
   }
-  console.log(`Apply: ${type} from ${email} - emailed to ${recipients(type).join(', ')}`)
   return NextResponse.json({ ok: true })
 }
