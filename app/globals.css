@@ -26,10 +26,11 @@
   --color-red: #BB7860;                         /* labels, preheaders, links, buttons, errors */
   --color-red-muted: rgba(187, 120, 96, 0.6);   /* hints in brackets, "Choose file" */
   --color-red-hover: #A66850;                   /* button hover */
-  /* Surfaces */
+  /* Surfaces - one warm, earthy family stepping down from the page cream:
+     cream -> warm stone (Careers) -> deeper stone (Insights) -> brand green (footer) */
   --color-cream: #f5f5f0;                       /* page background + text on red/green */
-  --color-cream-dark: #efefe9;                  /* panels (e.g. Careers), image placeholders */
-  --color-sage: #e6e6dc;                        /* pale stone with a hint of the brand green - Insights background */
+  --color-cream-dark: #efebe2;                  /* warm stone - panels (Careers), image placeholders */
+  --color-sage: #e6e1d5;                        /* deeper warm stone - Insights + View all insights */
   /* Lines */
   --color-border: #e0e6e2;                      /* dividers on cream (paler than the old #c4d2cf) */
   --color-border-on-dark: rgba(245, 245, 240, 0.12); /* dividers on the dark green */
