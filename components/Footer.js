@@ -155,6 +155,7 @@ function FooterInner({ footerData }) {
                   triggered on scroll by ScrollReveal (data-reveal="logo") */}
               <svg 
                 data-reveal="logo"
+                suppressHydrationWarning /* ScrollReveal marks it before React hydrates the footer */
                 viewBox="0 0 283.05 227.86" 
                 fill="none"
                 stroke="currentColor"
@@ -168,18 +169,19 @@ function FooterInner({ footerData }) {
                   overflow: 'visible'
                 }}
               >
-                <path d="M127.8 225.27V2.59H2.59" />
-                <path d="M155.54 225.27V2.59H280.47" />
-                <path d="M99.79 225.27V30.73H2.59" />
-                <path d="M183.56 225.27V30.73H280.47" />
-                <path d="M72.06 225.27V58.85H2.59" />
-                <path d="M211 225.27V58.85H280.47" />
+                <path d="M127.8 225.27V2.59H2.59" suppressHydrationWarning />
+                <path d="M155.54 225.27V2.59H280.47" suppressHydrationWarning />
+                <path d="M99.79 225.27V30.73H2.59" suppressHydrationWarning />
+                <path d="M183.56 225.27V30.73H280.47" suppressHydrationWarning />
+                <path d="M72.06 225.27V58.85H2.59" suppressHydrationWarning />
+                <path d="M211 225.27V58.85H280.47" suppressHydrationWarning />
               </svg>
             </div>
           </div>
 
           {/* Right Side - Office Locations */}
           <div 
+            className="footer-right"
             style={{
               padding: '1.25rem',
               display: 'flex',
@@ -342,10 +344,9 @@ function FooterInner({ footerData }) {
               padding-right: 0 !important;
             }
             
-            .footer-container > div:last-child {
-              padding-left: 0 !important;
-              grid-template-columns: 1fr !important;
-              gap: 2rem !important;
+            /* stacked: the line down the middle no longer divides anything */
+            .footer-divider {
+              display: none !important;
             }
           }
 
@@ -360,6 +361,18 @@ function FooterInner({ footerData }) {
             
             .footer-left {
               padding: 0 !important;
+            }
+
+            .footer-right {
+              padding-left: 0 !important; /* the footer itself carries the side margin here */
+              padding-right: 0 !important;
+            }
+
+            /* Thumb-friendly: each link at least 24px tall */
+            .footer-col-link,
+            .footer-right :global(.u-link) {
+              display: inline-block;
+              padding: 0.2rem 0;
             }
             
             .footer-divider {

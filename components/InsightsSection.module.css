@@ -306,6 +306,17 @@ display: inline-block;
 
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    height: auto; /* the desktop 350px height squashed the tiles so "Read article" overlapped the titles */
+  }
+
+  /* Two tiles side by side - a third would sit alone on a second row */
+  .grid > *:nth-child(n + 3) {
+    display: none;
+  }
+
+  .tile {
+    padding-bottom: 4.5rem; /* room for the absolutely positioned "Read article" */
+    min-height: 260px;
   }
 }
 
@@ -321,6 +332,10 @@ display: inline-block;
   .grid {
     grid-template-columns: 1fr;
     height: auto; /* desktop fixes the grid at 350px, which squashes stacked tiles */
+  }
+
+  .grid > *:nth-child(3) {
+    display: block; /* phones stack them, so all three show */
   }
 
   .tile {

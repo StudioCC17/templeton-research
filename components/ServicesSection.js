@@ -694,7 +694,7 @@ export default function ServicesSection({ servicesData }) {
           margin-bottom: 0;
           margin-top: 0;
           line-height: 1.4;
-          max-width: 50%;
+          white-space: nowrap; /* was max-width 50%, which broke it over two lines on tablets */
         }
 
         /* "Have a question?" in the softer green; "Get in touch" stays red as the link */

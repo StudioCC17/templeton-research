@@ -745,7 +745,7 @@ export default function TeamSection({ teamData, careersData }) {
           }
           
           .team-section {
-            padding: 1.5rem 1.25rem !important;
+            padding: 1.5rem 1.25rem 0 !important; /* careers panel runs straight into Insights */
           }
 
           /* Less of a gap between the headline and the names (was ~120px) */

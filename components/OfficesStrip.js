@@ -94,7 +94,8 @@ export default function OfficesStrip({ offices = [] }) {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          gap: 2.5rem 7rem;
+          /* tighter as the screen narrows so all six stay on one row on laptops */
+          gap: 2.5rem clamp(3rem, calc((100vw - 660px) / 5), 7rem);
         }
         .office {
           display: flex;
@@ -132,8 +133,22 @@ export default function OfficesStrip({ offices = [] }) {
           overflow: visible;
         }
         @media (max-width: 1024px) {
+          /* tablet: two even rows of three (not five and one) */
+          .offices-strip {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+          }
           .offices-list {
-            gap: 2rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            justify-content: center;
+            gap: 2.5rem 4rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .offices-list {
+            grid-template-columns: repeat(2, auto);
+            gap: 2rem 2.5rem;
           }
         }
         @media (max-width: 768px) {
