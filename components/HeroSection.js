@@ -184,6 +184,12 @@ export default function HeroSection({
       {hasMedia && (
         <section 
           ref={sectionRef}
+          className="hero-media"
+          onClick={() => {
+            // the down-arrow cursor invites a scroll: glide to the next section
+            const next = document.getElementById('services')
+            if (next) window.scrollTo({ top: next.getBoundingClientRect().top + window.scrollY - 38, behavior: 'smooth' })
+          }}
           style={{
             position: 'relative',
             height: '78.65vh', // 10% taller than 71.5vh
