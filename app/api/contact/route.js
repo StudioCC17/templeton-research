@@ -4,6 +4,7 @@
 // via Resend. Runs on the server only.
 
 import { NextResponse } from 'next/server'
+import { rateLimit, clientIp } from '@/lib/rateLimit'
 import { writeClient } from '@/lib/sanityWriteClient'
 import { bccFor } from '@/lib/formCopy'
 
@@ -63,6 +64,13 @@ async function sendNotification({ name, email, company, message }) {
 }
 
 export async function POST(request) {
+  if (!rateLimit(`contact:${clientIp(request)}`)) {
+    console.warn(`Contact: rate limited ${clientIp(request)}`)
+    return NextResponse.json(
+      { error: 'Too many submissions - please try again in a few minutes.' },
+      { status: 429 }
+    )
+  }
   let body
   try {
     body = await request.json()

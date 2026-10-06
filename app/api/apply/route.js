@@ -6,6 +6,7 @@
 // either works, so an application is never lost.
 
 import { NextResponse } from 'next/server'
+import { rateLimit, clientIp } from '@/lib/rateLimit'
 import { bccFor } from '@/lib/formCopy'
 import { writeClient } from '@/lib/sanityWriteClient'
 
@@ -82,6 +83,13 @@ async function saveToSanity({ type, name, email, message, filename, contentType,
 }
 
 export async function POST(request) {
+  if (!rateLimit(`apply:${clientIp(request)}`)) {
+    console.warn(`Apply: rate limited ${clientIp(request)}`)
+    return NextResponse.json(
+      { error: 'Too many submissions - please try again in a few minutes.' },
+      { status: 429 }
+    )
+  }
   let form
   try {
     form = await request.formData()
