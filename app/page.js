@@ -22,7 +22,7 @@ import InsightsSection from '@/components/InsightsSection'
 import InsightOverlay from '@/components/InsightOverlay'
 import InsightsIndexOverlay from '@/components/InsightsIndexOverlay'
 import Footer from '@/components/Footer'
-import OfficesStrip from '@/components/OfficesStrip'
+// import OfficesStrip from '@/components/OfficesStrip' // clocks hidden for now (see below)
 import SplashScreen from '@/components/SplashScreen'
 import SmoothScroll from '@/components/SmoothScroll'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -389,7 +389,8 @@ export default async function Home() {
       <Footer footerData={footerSettings} />
 
       {/* Offices with live local times, under the footer */}
-      <OfficesStrip offices={footerSettings?.offices || []} />
+      {/* Office clocks hidden for now - remove these comment markers to bring them back */}
+      {/* <OfficesStrip offices={footerSettings?.offices || []} /> */}
 
       {/* Scroll-in animations for anything marked data-reveal */}
       <ScrollReveal />
