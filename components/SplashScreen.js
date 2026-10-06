@@ -60,9 +60,9 @@ export default function SplashScreen() {
       // centre pair, then middle, then outer
       stagger: (i) => Math.floor(i / 2) * 0.12,
     }, 0.25)
-      .to(el, { autoAlpha: 0, duration: 0.7, ease: 'power2.inOut' }, 2.0) // fade to the homepage
+      .to(el, { autoAlpha: 0, duration: 0.35, ease: 'power2.out' }, 2.0) // quick fade to the homepage
       // the header + hero intros start as the fade finishes (see lib/splash.js)
-      .call(announce, null, 2.55)
+      .call(announce, null, 2.3)
 
     return () => {
       tl.kill()
