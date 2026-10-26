@@ -259,7 +259,7 @@ function FooterInner({ footerData }) {
                     <a href="#" onClick={openContactModal} className="footer-col-link">Send us a message<Arrow /></a>
                   </li>
                   <li>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-col-link">LinkedIn<Arrow /></a>
+                    <a href="https://uk.linkedin.com/company/templeton-research" target="_blank" rel="noopener noreferrer" className="footer-col-link">LinkedIn<Arrow /></a>
                   </li>
                 </ul>
               </div>

@@ -17,6 +17,9 @@ import AboutModal from '@/components/AboutModal'
 import Arrow from '@/components/Arrow'
 import { afterSplash } from '@/lib/splash'
 
+// EN / JP switch in the phone menu - hidden until the Japanese site exists
+const SHOW_LOCALE_SWITCH = false
+
 export default function Navigation({ globalSettings, aboutData, offices = [] }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [hasLoaded, setHasLoaded] = useState(false)
@@ -470,14 +473,16 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
             </p>
           )}
 
-          <button
-            className="locale-button nm-locale"
-            tabIndex={isMobileMenuOpen ? 0 : -1}
-          >
-            <span style={{ opacity: 1 }}>EN</span>
-            <span className="nm-locale-sep" aria-hidden="true">/</span>
-            <span style={{ opacity: .4 }}>JP</span>
-          </button>
+          {SHOW_LOCALE_SWITCH && (
+            <button
+              className="locale-button nm-locale"
+              tabIndex={isMobileMenuOpen ? 0 : -1}
+            >
+              <span style={{ opacity: 1 }}>EN</span>
+              <span className="nm-locale-sep" aria-hidden="true">/</span>
+              <span style={{ opacity: .4 }}>JP</span>
+            </button>
+          )}
         </div>
       </div>
 
