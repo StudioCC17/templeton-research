@@ -17,7 +17,7 @@ import AboutModal from '@/components/AboutModal'
 import Arrow from '@/components/Arrow'
 import { afterSplash } from '@/lib/splash'
 
-export default function Navigation({ globalSettings, aboutData }) {
+export default function Navigation({ globalSettings, aboutData, offices = [] }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [hasLoaded, setHasLoaded] = useState(false)
   const [currentSection, setCurrentSection] = useState('hero')
@@ -152,6 +152,17 @@ export default function Navigation({ globalSettings, aboutData }) {
     { label: 'Team', href: '#team', section: 'team' },
     { label: 'Insights', href: '#insights', section: 'insights' }
   ]
+
+  // The phone menu also lists Careers (it has its own section on the page)
+  const mobileNavItems = [
+    ...navItems.slice(0, 3),
+    { label: 'Careers', href: '#careers', section: 'careers' },
+    navItems[3],
+  ]
+  const officeCities = [...offices]
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .map((o) => (o.city || '').trim())
+    .filter(Boolean)
 
   // Close mobile menu when clicking a nav item
   const handleMobileNavClick = (e, href, section) => {
@@ -405,38 +416,69 @@ export default function Navigation({ globalSettings, aboutData }) {
         <span className="nav-hamburger-line"></span>
       </button>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`nav-mobile-menu ${isMobileMenuOpen ? 'nav-mobile-menu--open' : ''}`}>
-        {navItems.map((navItem, index) => (
-          <Link 
-            key={index}
-            href={navItem.href} 
-            className="nav-link"
-            onClick={(e) => handleMobileNavClick(e, navItem.href, navItem.section)}
+      {/* Mobile Menu Overlay: green full-screen sheet - logo mark top left, numbered
+          sections as a ruled list, a contact button, then offices + language at the foot */}
+      <div
+        className={`nav-mobile-menu ${isMobileMenuOpen ? 'nav-mobile-menu--open' : ''}`}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <button type="button" className="nm-logo" onClick={handleLogoClick} aria-label="Back to top">
+          <svg viewBox="0 0 283.05 227.86" fill="none" stroke="currentColor" strokeWidth="4.68" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M127.8 225.27V2.59H2.59" />
+            <path d="M155.54 225.27V2.59H280.47" />
+            <path d="M99.79 225.27V30.73H2.59" />
+            <path d="M183.56 225.27V30.73H280.47" />
+            <path d="M72.06 225.27V58.85H2.59" />
+            <path d="M211 225.27V58.85H280.47" />
+          </svg>
+        </button>
+
+        <ul className="nm-list">
+          {mobileNavItems.map((navItem, index) => (
+            <li key={navItem.section} className="nm-item" style={{ '--i': index }}>
+              <Link
+                href={navItem.href}
+                className="nm-link"
+                tabIndex={isMobileMenuOpen ? 0 : -1}
+                onClick={(e) => handleMobileNavClick(e, navItem.href, navItem.section)}
+              >
+                <span className="nm-num">{String(index + 1).padStart(2, '0')}</span>
+                <span className="nm-label">{navItem.label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="nm-foot" style={{ '--i': mobileNavItems.length }}>
+          <button
+            type="button"
+            className="btn-primary nm-contact"
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+            onClick={() => {
+              setIsMobileMenuOpen(false)
+              setIsContactModalOpen(true)
+            }}
           >
-            {navItem.label}
-          </Link>
-        ))}
-        <button 
-          onClick={() => {
-            setIsMobileMenuOpen(false)
-            setIsContactModalOpen(true)
-          }}
-          className="nav-link"
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
-          Contact Us
-        </button>
-        <button 
-          className="locale-button"
-        >
-          <span style={{ opacity: 1 }}>en</span>
-          <span style={{ opacity: .25 }}> jp</span>
-        </button>
+            Contact us
+            <Arrow />
+          </button>
+
+          {officeCities.length > 0 && (
+            <p className="nm-offices">
+              <span className="nm-foot-label">Offices</span>
+              {officeCities.join(' · ')}
+            </p>
+          )}
+
+          <button
+            className="locale-button nm-locale"
+            tabIndex={isMobileMenuOpen ? 0 : -1}
+          >
+            <span style={{ opacity: 1 }}>EN</span>
+            <span className="nm-locale-sep" aria-hidden="true">/</span>
+            <span style={{ opacity: .4 }}>JP</span>
+          </button>
+        </div>
       </div>
 
       {/* Primary Navigation - Scrolls with page */}

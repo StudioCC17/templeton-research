@@ -591,6 +591,12 @@ export default function ServicesSection({ servicesData }) {
         nextNumber={nextIndex === null ? null : String(nextIndex + 1).padStart(2, '0')}
         nextTitle={nextService?.title}
         onNext={openNext}
+        // Phones: the panel shows the service's intro itself (under its title)
+        // and the 01 / 02 / 03 tabs in its own header bar
+        prose={activeIndex === null ? null : (services[activeIndex]?.description || []).filter(b => b._type !== 'expandableItem' && b._type !== 'textCard')}
+        tabCount={services.length}
+        activeIndex={activeIndex}
+        onSwitch={switchTo}
       />
 
       <style jsx global>{`
@@ -865,18 +871,40 @@ export default function ServicesSection({ servicesData }) {
             display: block;
           }
 
-          .services-has-expanded .services-left-crossfade h2,
-          .services-has-expanded .services-left-crossfade h3,
-          .services-has-expanded .services-left-crossfade p {
-            font-size: var(--step-3) !important;
-            line-height: 1.2 !important;
+          /* With a service open the panel carries everything (header bar, title,
+             intro, list) so the left column steps aside */
+          .services-has-expanded .services-split-left {
+            display: none;
+          }
+          .services-has-expanded .services-split {
+            gap: 0;
           }
 
           .service-header h3,
           .service-header .service-number,
           .service-header .service-summary { font-size: var(--step-1) !important; }
 
-          .service-header { padding: 1.1rem 0; }
+          .service-header { padding: 1.1rem 2rem 1.1rem 0; }
+
+          /* Ruled rows with a chevron, matching the team list */
+          .services-list {
+            border-bottom: 1px solid var(--color-border);
+          }
+          .service-item {
+            border-top: 1px solid var(--color-border);
+          }
+          .service-item::after {
+            content: '';
+            position: absolute;
+            right: 0.25rem;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            border-top: 1px solid var(--color-red);
+            border-right: 1px solid var(--color-red);
+            transform: translateY(-50%) rotate(45deg);
+            pointer-events: none;
+          }
         }
 
         /* ── Wide ── */

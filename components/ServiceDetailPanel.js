@@ -92,7 +92,16 @@ const bodyComponents = {
   },
 }
 
-export default function ServiceDetailPanel({ isOpen, onClose, item, number, total, nextNumber, nextTitle, onNext }) {
+// Phones only: the service's intro, shown in the panel under the title as a lead paragraph
+const mobileProseComponents = {
+  block: {
+    normal: ({ children }) => <p className="sd-mprose-p">{children}</p>,
+    h3: ({ children }) => <p className="sd-mprose-p">{children}</p>,
+    h4: () => null,
+  },
+}
+
+export default function ServiceDetailPanel({ isOpen, onClose, item, number, total, nextNumber, nextTitle, onNext, prose, tabCount = 0, activeIndex = null, onSwitch }) {
   const [isRendered, setIsRendered] = useState(false)
   const contentRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -235,8 +244,33 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           transition: 'opacity 0.4s ease',
         }}
       >
+        {/* Phones: header bar with the service tabs on the left and a labelled close on the right */}
+        <div className="sd-mbar">
+          <span className="sd-mbar-tabs">
+            {Array.from({ length: tabCount }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                className={`sd-mbar-tab${i === activeIndex ? ' is-current' : ''}`}
+                aria-current={i === activeIndex ? 'true' : undefined}
+                onClick={() => onSwitch?.(i)}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </button>
+            ))}
+          </span>
+          <button type="button" className="sd-mbar-close" onClick={handleClose}>
+            Close
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
+              <line x1="19" y1="5" x2="5" y2="19" />
+              <line x1="5" y1="5" x2="19" y2="19" />
+            </svg>
+          </button>
+        </div>
+
         {/* Close button */}
         <button
+          className="sd-close"
           onClick={handleClose}
           aria-label="Close"
           style={{
@@ -287,7 +321,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           {/* Mirrors the "Next" block at the bottom: red "Service  01" label,
               cream title underneath, same sizes and spacing */}
           {title && (
-            <div style={{ marginBottom: '1.75rem', display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <div className="sd-title" style={{ marginBottom: '1.75rem', display: 'flex', flexDirection: 'column', gap: 0 }}>
               <span
                 style={{
                   fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -313,8 +347,15 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
             </div>
           )}
 
+          {prose?.length > 0 && (
+            <div className="sd-mprose">
+              <PortableText value={prose} components={mobileProseComponents} />
+            </div>
+          )}
+
           {/* Preheader for the toggle list */}
           <span
+            className="sd-list-label"
             style={{
               display: 'block',
               fontFamily: 'var(--font-body), var(--font-fallback)',
@@ -423,7 +464,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           {/* Enquire - sits straight under the list */}
           <button
             type="button"
-            className="btn-primary" /* shared button style (globals.css) */
+            className="btn-primary sd-enquire" /* shared button style (globals.css) */
             onClick={enquire}
             style={{ marginTop: '2rem' }}
           >
@@ -438,7 +479,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           <div ref={nextRef} className="sd-next-wrap" style={{ padding: '0 2rem 2rem' }}>
             <button type="button" className="sd-next" onClick={onNext}>
               <span className="sd-next-label">
-                Next
+                Next{nextNumber ? <span className="sd-next-num"> {nextNumber}</span> : null}
               </span>
               <span className="u-link">
                 {/* Last word + arrow kept together so the arrow never drops onto a line on its own */}
@@ -495,6 +536,12 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
         .sd-next:hover .sd-next-arrow {
           transform: translateX(4px);
         }
+        /* Phone-only pieces, hidden on larger screens */
+        .sd-mbar,
+        .sd-mprose,
+        .sd-next-num {
+          display: none;
+        }
         .service-detail-content::-webkit-scrollbar {
           width: 0;
           background: transparent;
@@ -520,10 +567,142 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
           }
           .service-detail-content {
             overflow: visible !important;
-            padding: 1.5rem 0 1.5rem !important;
+            padding: 0 0 2rem !important;
           }
+
+          /* Header bar: 01 02 03 on the left, Close on the right, ruled underneath */
+          .sd-close {
+            display: none;
+          }
+          .sd-mbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0 0.9rem;
+            margin-bottom: 1.75rem;
+            border-bottom: 1px solid var(--color-border-on-dark);
+          }
+          .sd-mbar-tabs {
+            display: flex;
+            gap: 0.25rem;
+          }
+          .sd-mbar-tab {
+            min-width: 44px;
+            min-height: 36px;
+            padding: 0 0.5rem;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--text-preheader-size);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            color: rgba(245, 245, 240, 0.45);
+            transition: color 0.3s ease, border-color 0.3s ease;
+          }
+          .sd-mbar-tab.is-current {
+            color: var(--color-cream);
+            border-color: rgba(245, 245, 240, 0.35);
+          }
+          .sd-mbar-close {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 44px;
+            padding: 0 0 0 0.75rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--text-preheader-size);
+            font-weight: 600;
+            color: var(--color-cream);
+          }
+
+          /* Title, then the intro as a serif lead paragraph */
+          .sd-title {
+            margin-bottom: 1rem !important;
+          }
+          .sd-title > span:first-child {
+            display: none; /* the header bar already marks the number */
+          }
+          .sd-title > span:last-child {
+            font-family: var(--font-heading), serif !important;
+            font-weight: 400 !important;
+            font-size: var(--step-4) !important;
+            line-height: 1.15;
+            letter-spacing: 0 !important;
+            margin-top: 0.35rem;
+          }
+          .sd-mprose {
+            display: block;
+            margin-bottom: 2.25rem;
+          }
+          .sd-mprose :global(.sd-mprose-p) {
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--step-0);
+            line-height: 1.55;
+            color: rgba(245, 245, 240, 0.78);
+            margin: 0 0 0.85rem;
+          }
+
+          /* What we do: a ruled accordion, plus/minus on the right, full-width tap rows */
+          .sd-list-label {
+            margin-bottom: 0.5rem !important;
+          }
+          .sd-toggle-list {
+            border-top: 1px solid var(--color-border-on-dark);
+          }
+          .sd-card {
+            border-bottom: 1px solid var(--color-border-on-dark);
+          }
+          .sd-toggle-header {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            gap: 1rem !important;
+            padding: 0.95rem 0 !important;
+            min-height: 52px;
+          }
+          .sd-toggle-header :global(h3) {
+            font-size: var(--step-1) !important;
+            line-height: 1.35 !important;
+          }
+          .sd-toggle-header > span[aria-hidden] {
+            width: 0.8em !important;
+            height: 0.8em !important;
+          }
+          .sd-card > div:last-child {
+            padding-right: 0 !important;
+          }
+          .sd-card > div:last-child > div {
+            padding: 0 0 1rem !important;
+            max-width: none !important;
+          }
+
+          /* Enquire: full width, easy to hit */
+          .sd-inner :global(.sd-enquire) {
+            width: 100%;
+            justify-content: center;
+            min-height: 52px;
+            margin-top: 1.75rem !important;
+          }
+
+          /* Next: its own ruled row with the number, title and an arrow on the right */
           .sd-next-wrap {
-            padding: 0 0 1.5rem !important;
+            padding: 0 0 2.5rem !important;
+          }
+          .sd-next {
+            padding: 1.25rem 0 0.25rem;
+            gap: 0.35rem;
+          }
+          .sd-next-num {
+            display: inline;
+          }
+          .sd-next .u-link {
+            font-family: var(--font-heading), serif;
+            font-size: var(--step-3);
+            line-height: 1.2;
           }
         }
       `}</style>

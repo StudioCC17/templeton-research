@@ -342,7 +342,7 @@ export default async function Home() {
       {/* Opening splash - logo draws in on green, then fades to the homepage (once per visit) */}
       <SplashScreen />
 
-      <Navigation globalSettings={globalSettings} aboutData={globalSettings?.aboutSection} />
+      <Navigation globalSettings={globalSettings} aboutData={globalSettings?.aboutSection} offices={footerSettings?.offices || []} />
 
       <HeroSection
         heroData={homepage.heroSection}

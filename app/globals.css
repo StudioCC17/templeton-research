@@ -237,23 +237,41 @@
    ======================================== */
 
 @media (max-width: 768px) {
+  /* Phone type scale: fixed sizes instead of the fluid clamps, which bottom out
+     too small for body text and too big for headlines on a narrow screen.
+     Small text stays at 15px+ and labels at 12px+, so nothing is a squint. */
   :root {
-    --text-body-lg-size: 1.2rem;
+    --step--2: 0.75rem;     /* 12px - dates, tiny meta */
+    --step--1: 0.9375rem;   /* 15px - summaries, small links */
+    --step-0: 1rem;         /* 16px - body */
+    --step-1: 1.0625rem;    /* 17px - labels, list items */
+    --step-2: 1.25rem;      /* 20px - lead text */
+    --step-3: 1.5rem;       /* 24px - sub-headings */
+    --step-4: 1.625rem;     /* 26px */
+    --step-5: 1.875rem;     /* 30px - display headlines */
+    --step-6: 2.125rem;     /* 34px */
+    --text-preheader-size: 0.8125rem; /* 13px - red labels */
+    --text-service-heading-size: 1.125rem;
+    --text-body-lg-size: 1.25rem;
+    --leading-tight: 1.14;
+    /* a deeper grey so supporting text reads properly on the cream in daylight */
+    --color-text-secondary: #6b7672;
   }
-  
+
   .text-display,
   .hero-text {
     font-size: var(--text-display-size-sm);
+    line-height: 1.14 !important;
+    letter-spacing: -0.005em;
   }
-  
+
   .hero-text {
-    max-width: 95vw!important;
-        color: var(--color-green);
+    color: var(--color-green);
     margin: 0px auto;
-    max-width: 85%;
+    max-width: 100% !important; /* was 85% + 50px padding, which forced 9-line headlines */
     text-indent: 0px!important;
     opacity: 1;
-    padding-right: 50px;
+    padding-right: 0;
   }
   
   .approach-text-block {
@@ -1015,18 +1033,18 @@ p.section-paragraph.approach-paragraph {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--color-cream);
+  background-color: var(--color-green);
+  color: var(--color-cream);
   z-index: 150;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: .25rem;
+  padding: 1rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+  overflow-y: auto;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
-              visibility 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+              visibility 0.45s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .nav-mobile-menu--open {
@@ -1035,17 +1053,128 @@ p.section-paragraph.approach-paragraph {
   pointer-events: auto;
 }
 
-.nav-mobile-menu .nav-link {
-  font-size: var(--step-2);
-  color: var(--color-green);
-  text-decoration: none;
-
-  font-weight: 300;
+/* Hamburger turns cream to sit on the green sheet */
+.nav-hamburger--open .nav-hamburger-line {
+  background-color: var(--color-cream);
 }
 
-.nav-mobile-menu .locale-button {
-  font-size: var(--step-1);
-  margin-top: 1rem;
+.nm-logo {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-cream);
+  line-height: 0;
+}
+.nm-logo svg {
+  width: 40px;
+  height: 32px;
+  overflow: visible;
+}
+
+/* Numbered, ruled list of sections */
+.nm-list {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 2.5rem 0 0;
+}
+.nm-item {
+  margin: 0;
+  border-bottom: 1px solid var(--color-border-on-dark);
+}
+.nm-item:first-child {
+  border-top: 1px solid var(--color-border-on-dark);
+}
+.nm-link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  text-decoration: none;
+  color: var(--color-cream);
+}
+.nm-num {
+  min-width: 1.5rem;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--text-preheader-size);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-red);
+}
+.nm-label {
+  font-family: var(--font-heading), serif;
+  font-size: 2.125rem;
+  font-weight: 300;
+  line-height: 1.1;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nm-link:active .nm-label {
+  transform: translateX(6px);
+}
+
+/* Foot: contact button, offices, language */
+.nm-foot {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 1.5rem 1rem;
+}
+.nm-contact {
+  grid-column: 1 / -1;
+  width: 100%;
+  justify-content: center;
+  min-height: 52px;
+}
+.nm-offices {
+  margin: 0;
+  font-family: var(--font-body), var(--font-fallback);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: rgba(245, 245, 240, 0.65);
+}
+.nm-foot-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: var(--text-preheader-size);
+  font-weight: 600;
+  color: var(--color-red);
+}
+.nav-mobile-menu .nm-locale {
+  display: inline-flex;
+  gap: 0.4rem;
+  min-height: 44px;
+  align-items: flex-end;
+  padding: 0;
+  font-size: var(--text-preheader-size);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-cream);
+}
+.nm-locale-sep {
+  opacity: 0.3;
+}
+
+/* Entrance: rows rise in one after another when the menu opens */
+.nm-item,
+.nm-foot {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-mobile-menu--open .nm-item,
+.nav-mobile-menu--open .nm-foot {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.08s + var(--i) * 0.05s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nm-item,
+  .nm-foot {
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
 }
 
 /* Mobile styles for navigation */

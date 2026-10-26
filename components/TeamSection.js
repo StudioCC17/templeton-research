@@ -305,12 +305,11 @@ export default function TeamSection({ teamData, careersData }) {
                     <span 
                       className="team-member-location"
                       style={{
-                     
+                        fontFamily: 'var(--font-body), var(--font-fallback)', // was missing, so it fell back to Inter
                         fontSize: 'var(--step--2)',
                         fontWeight: '600',
                         letterSpacing: 'var(--tracking-bold)',
                         lineHeight: 'var(--text-body-lg-line-height)',
-                 
                         color: 'var(--color-red)'
                       }}
                     >
@@ -742,8 +741,30 @@ export default function TeamSection({ teamData, careersData }) {
         @media (max-width: 768px) {
           .team-grid {
             grid-template-columns: 1fr !important;
+            gap: 0 !important;
+            border-bottom: 1px solid var(--color-border);
           }
-          
+
+          /* Phones: a tidy ruled list, each row with a small chevron so it reads as tappable */
+          .team-member {
+            position: relative;
+            border-top: 1px solid var(--color-border);
+          }
+          .team-member::after {
+            content: '';
+            position: absolute;
+            right: 0.25rem;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            border-top: 1px solid var(--color-red);
+            border-right: 1px solid var(--color-red);
+            transform: translateY(-50%) rotate(45deg);
+          }
+          .team-member-info {
+            padding: 1rem 2rem 1rem 0 !important;
+          }
+
           .team-section {
             padding: 1.5rem 1.25rem 0 !important; /* careers panel runs straight into Insights */
           }
@@ -768,6 +789,12 @@ export default function TeamSection({ teamData, careersData }) {
           
           .team-header h2 {
             font-size: var(--step-3) !important;
+          }
+
+          /* Job titles in the solid secondary grey (50% green washed out on the cream) */
+          .team-member-job-title {
+            opacity: 1 !important;
+            color: var(--color-text-secondary) !important;
           }
           
           .careers-content {

@@ -7,8 +7,9 @@
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Arrow from '@/components/Arrow'
+import { TIME_ZONES, timeIn } from '@/components/OfficesStrip'
 
 function FooterInner({ footerData }) {
   const defaultFooterData = {
@@ -51,6 +52,15 @@ function FooterInner({ footerData }) {
   const footer = footerData || defaultFooterData
   const sortedOffices = footer.offices?.sort((a, b) => (a.order || 0) - (b.order || 0)) || defaultFooterData.offices
   const hasLogo = footer.companyInfo?.logo?.asset || footer.companyInfo?.logo?.asset?.url
+
+  // Phones list the offices with their local time. Filled in after load (and
+  // every 30s) so the server and browser never disagree about the minute.
+  const [now, setNow] = useState(null)
+  useEffect(() => {
+    setNow(new Date())
+    const id = setInterval(() => setNow(new Date()), 30000)
+    return () => clearInterval(id)
+  }, [])
 
   const router = useRouter()
   const pathname = usePathname()
@@ -135,6 +145,12 @@ function FooterInner({ footerData }) {
               >
                 Providing clarity when there is uncertainty
               </h2>
+
+              {/* Phones: one clear call to action under the tagline */}
+              <button type="button" className="btn-primary footer-m-cta" onClick={openContactModal}>
+                Send us a message
+                <Arrow />
+              </button>
             </div>
 
             {/* Bottom row - lines up with the legal links on the right */}
@@ -220,7 +236,23 @@ function FooterInner({ footerData }) {
                   ))}
                 </ul>
               </div>
-              <div>
+              {/* Phones only: the offices, each with its local time */}
+              <div className="footer-m-offices">
+                <span className="footer-col-label">Offices</span>
+                <ul className="footer-col-list">
+                  {sortedOffices.map((o) => {
+                    const city = (o.city || '').trim()
+                    const zone = TIME_ZONES[city.toLowerCase()]
+                    return (
+                      <li key={o._key || city} className="footer-office">
+                        <span>{city}</span>
+                        <span className="footer-office-time">{zone && now ? timeIn(zone, now) : ''}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+              <div className="footer-contact-col">
                 <span className="footer-col-label">Contact</span>
                 <ul className="footer-col-list">
                   <li>
@@ -234,13 +266,15 @@ function FooterInner({ footerData }) {
             </div>
 
             {/* Bottom - Legal links */}
-            <div style={{
+            <div className="footer-legal" style={{
               display: 'flex',
               flexDirection: 'row',
               flexWrap: 'wrap',
               gap: '1.25rem',
               marginTop: '3rem'
             }}>
+              {/* Phones: the copyright joins the legal row at the very bottom */}
+              <span className="footer-m-copy">© {new Date().getFullYear()} Templeton Research</span>
               {[
                 { label: 'Privacy Policy', slug: 'privacy-policy' },
                 { label: 'Cookie Policy', slug: 'cookie-policy' },
@@ -327,11 +361,11 @@ function FooterInner({ footerData }) {
             color: var(--color-cream);
             text-decoration: none;
           }
-          @media (max-width: 640px) {
-            .footer-cols {
-              grid-template-columns: 1fr;
-              gap: 2rem;
-            }
+          /* Phone-only pieces, hidden on larger screens */
+          .footer-m-cta,
+          .footer-m-offices,
+          .footer-m-copy {
+            display: none;
           }
 
           @media (max-width: 1024px) {
@@ -379,8 +413,121 @@ function FooterInner({ footerData }) {
               display: none !important;
             }
             
+            /* ── Phone layout: logo, tagline + CTA, then Explore | Offices,
+                 Contact, and a ruled legal row at the very bottom ── */
+            .footer-section {
+              padding: 3.5rem 1.25rem 1.5rem !important;
+            }
+            .footer-container {
+              gap: 3rem !important;
+              min-height: 0 !important;
+            }
             .footer-micro-logo {
-              display: none !important;
+              position: static !important;
+              order: -1;
+              margin-bottom: 2.25rem;
+            }
+            .footer-micro-logo svg {
+              width: 46px !important;
+              height: 37px !important;
+            }
+            .footer-left h2 {
+              font-size: var(--step-5);
+              line-height: 1.12;
+              padding-right: 10% !important;
+            }
+            .footer-m-cta {
+              display: inline-flex;
+              width: 100%;
+              justify-content: center;
+              align-items: center; /* text sat at the top of the 52px button */
+              min-height: 52px;
+              margin-top: 2rem;
+            }
+            .footer-bottom-left {
+              display: none;
+            }
+
+            .footer-cols {
+              grid-template-columns: 1fr 1fr;
+              gap: 2.5rem 1.5rem;
+              padding-top: 2.25rem;
+              border-top: 1px solid var(--color-border-on-dark);
+            }
+            .footer-col-label {
+              margin-bottom: 0.9rem;
+            }
+            .footer-col-list {
+              gap: 0;
+            }
+            /* Every row the same height, so Explore and Offices line up across */
+            .footer-col-list li {
+              margin: 0 !important;
+              min-height: 2rem;
+              display: flex;
+              align-items: center;
+            }
+            .footer-col-link {
+              font-size: var(--step-1);
+            }
+            .footer-m-offices {
+              display: block;
+            }
+            .footer-office {
+              display: flex;
+              justify-content: space-between;
+              align-items: baseline !important;
+              gap: 0.75rem;
+              width: 100%;
+              margin: 0 !important; /* beats the global li spacing */
+              padding: 0;
+              font-family: var(--font-body), var(--font-fallback);
+              font-size: var(--step-1); /* same size as the Explore links */
+              line-height: 1.425;
+              color: var(--color-cream);
+            }
+            /* The big button above already covers "Send us a message" */
+            .footer-contact-col li:first-child {
+              display: none;
+            }
+            .footer-office-time {
+              font-size: var(--step--1);
+              color: rgba(245, 245, 240, 0.5);
+              font-variant-numeric: tabular-nums;
+            }
+            .footer-m-offices .footer-col-list {
+              align-items: stretch;
+            }
+
+            .footer-legal {
+              margin-top: 2.5rem !important;
+              padding-top: 1.25rem;
+              border-top: 1px solid var(--color-border-on-dark);
+              gap: 0.25rem 1.25rem !important;
+            }
+            .footer-legal > :global(.u-link) {
+              order: 1;
+              font-size: var(--step--2) !important;
+              color: rgba(245, 245, 240, 0.65) !important;
+            }
+            /* line break between the legal links and the © / Back to top row */
+            .footer-legal::before {
+              content: '';
+              order: 2;
+              flex-basis: 100%;
+              height: 0.75rem;
+            }
+            .footer-m-copy {
+              display: block;
+              order: 3;
+              font-family: var(--font-body), var(--font-fallback);
+              font-size: var(--step--2);
+              color: rgba(245, 245, 240, 0.65);
+              align-self: center;
+            }
+            .footer-legal > .footer-col-link {
+              order: 4;
+              font-size: var(--step--2);
             }
           }
         `}</style>

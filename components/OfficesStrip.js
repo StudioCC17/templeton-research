@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react'
 
 // City -> time zone. Add a line here if a new office city is added in Sanity.
-const TIME_ZONES = {
+export const TIME_ZONES = {
   london: 'Europe/London',
   singapore: 'Asia/Singapore',
   'hong kong': 'Asia/Hong_Kong',
@@ -43,7 +43,7 @@ function Clock({ h, m }) {
   )
 }
 
-const timeIn = (zone, now) =>
+export const timeIn = (zone, now) =>
   new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: zone }).format(now)
 
 export default function OfficesStrip({ offices = [] }) {
