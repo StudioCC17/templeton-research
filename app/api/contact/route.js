@@ -15,8 +15,9 @@ export const runtime = 'nodejs'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 // Notification settings. Override in Vercel env vars if these ever change.
+// projects@ is a group inbox (Marko, Brendan and the client).
 const NOTIFY_TO = (process.env.CONTACT_TO_EMAIL ||
-  'marko@templetonresearch.com,info@templetonresearch.com')
+  'projects@templetonresearch.com')
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean)
