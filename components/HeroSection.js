@@ -96,6 +96,34 @@ export default function HeroSection({
     return heroData.videos[randomIndex]
   }, [mounted, heroData?.videos])
 
+  // Mux stream for the chosen video, if one has been uploaded in the Studio.
+  // Falls back to the plain file on Sanity until then.
+  const muxPlaybackId = selectedVideo?.muxPlaybackId
+  const muxSrc = muxPlaybackId ? `https://stream.mux.com/${muxPlaybackId}.m3u8` : null
+
+  // Safari plays HLS natively; everything else gets hls.js, loaded only when needed.
+  // capLevelToPlayerSize keeps phones on a small stream.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !muxSrc) return
+    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = muxSrc
+      return
+    }
+    let hls
+    let cancelled = false
+    import('hls.js').then(({ default: Hls }) => {
+      if (cancelled || !Hls.isSupported()) return
+      hls = new Hls({ capLevelToPlayerSize: true })
+      hls.loadSource(muxSrc)
+      hls.attachMedia(video)
+    })
+    return () => {
+      cancelled = true
+      if (hls) hls.destroy()
+    }
+  }, [muxSrc])
+
   // GSAP video fade-in: starts as soon as the first frame can be shown
   // (loadeddata) instead of waiting for the whole video to buffer. The poster
   // sits underneath, so there's never an empty gap while it loads.
@@ -240,8 +268,14 @@ export default function HeroSection({
                   muted
                   loop
                   playsInline
-                  preload="auto"
-                  poster={selectedVideo.poster?.asset ? urlFor(selectedVideo.poster).url() : undefined}
+                  preload={muxSrc ? 'metadata' : 'auto'}
+                  poster={
+                    selectedVideo.poster?.asset
+                      ? urlFor(selectedVideo.poster).url()
+                      : muxPlaybackId
+                        ? `https://image.mux.com/${muxPlaybackId}/thumbnail.webp?width=1920`
+                        : undefined
+                  }
                   style={{
                     position: 'absolute',
                     inset: 0,
@@ -251,7 +285,7 @@ export default function HeroSection({
                     opacity: 0
                   }}
                 >
-                  <source src={getVideoUrl(selectedVideo)} type="video/mp4" />
+                  {!muxSrc && <source src={getVideoUrl(selectedVideo)} type="video/mp4" />}
                 </video>
               </div>
 

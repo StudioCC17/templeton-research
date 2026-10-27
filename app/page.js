@@ -39,6 +39,7 @@ async function getHomepageData() {
         videos[]{
           asset,
           alt,
+          "muxPlaybackId": mux.asset->playbackId,
           poster {
             asset,
             alt
