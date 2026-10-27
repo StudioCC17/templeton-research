@@ -101,22 +101,24 @@ export default function HeroSection({
   const muxPlaybackId = selectedVideo?.muxPlaybackId
   const muxSrc = muxPlaybackId ? `https://stream.mux.com/${muxPlaybackId}.m3u8` : null
 
-  // Safari plays HLS natively; everything else gets hls.js, loaded only when needed.
+  // hls.js wherever the browser supports it (some Chromium builds claim native
+  // HLS but can't play it); native HLS only as a fallback, e.g. older iPhones.
   // capLevelToPlayerSize keeps phones on a small stream.
   useEffect(() => {
     const video = videoRef.current
     if (!video || !muxSrc) return
-    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = muxSrc
-      return
-    }
     let hls
     let cancelled = false
     import('hls.js').then(({ default: Hls }) => {
-      if (cancelled || !Hls.isSupported()) return
-      hls = new Hls({ capLevelToPlayerSize: true })
-      hls.loadSource(muxSrc)
-      hls.attachMedia(video)
+      if (cancelled) return
+      if (Hls.isSupported()) {
+        hls = new Hls({ capLevelToPlayerSize: true })
+        hls.loadSource(muxSrc)
+        hls.attachMedia(video)
+        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}))
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = muxSrc
+      }
     })
     return () => {
       cancelled = true
@@ -131,14 +133,11 @@ export default function HeroSection({
     const video = videoRef.current
     if (!video || mediaType !== 'video') return
 
-    let hasAnimated = false
-    let tween
-
-    const fadeIn = async () => {
-      if (hasAnimated) return
-      hasAnimated = true
-      const gsap = (await import('gsap')).default
-      tween = gsap.to(video, { opacity: 1, duration: 1.2, ease: 'expo.out' })
+    // A CSS transition rather than a tween, so it can't be cut short if the
+    // effect re-runs mid-fade (Mux streams arrive while the splash is up)
+    const fadeIn = () => {
+      video.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)' // expo.out
+      video.style.opacity = '1'
     }
 
     if (video.readyState >= 2) {
@@ -149,7 +148,6 @@ export default function HeroSection({
 
     return () => {
       video.removeEventListener('loadeddata', fadeIn)
-      if (tween) tween.kill()
     }
   }, [mediaType, mounted, selectedVideo])
 
