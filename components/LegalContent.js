@@ -4,8 +4,8 @@
 // overlay passes in. No Sanity fetch — this content rarely changes and lives
 // in the codebase so it's version-controlled alongside everything else.
 //
-// To edit copy: change the JSX below. Fill in every [BRACKETED] placeholder
-// before going live.
+// To edit copy: change the JSX below. The registered address and company
+// number can be added to the two "About us" / "Who we are" blocks once known.
 
 import styles from './LegalContent.module.css'
 
@@ -28,14 +28,14 @@ function PrivacyPolicy() {
     <>
       <header className={styles.header}>
         <h1 className={styles.title}>Privacy Policy</h1>
-        <p className={styles.lastUpdated}>Last updated: [DATE]</p>
+        <p className={styles.lastUpdated}>Last updated: 28 October 2026</p>
       </header>
 
       <div className={styles.body}>
         <p>
           This Privacy Policy explains how Templeton Research (&ldquo;we&rdquo;,
           &ldquo;us&rdquo;, &ldquo;our&rdquo;) collects and uses personal data when you
-          visit [www.templeton-research.com] or contact us through this website. We are
+          visit www.templetonresearch.com or contact us through this website. We are
           committed to protecting your privacy and handling your data in line with the UK
           General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.
         </p>
@@ -45,28 +45,25 @@ function PrivacyPolicy() {
         <p className={styles.address}>
           Templeton Research
           <br />
-          [Registered address]
+          London, United Kingdom
           <br />
-          [Company registration number, if applicable]
-          <br />
-          Email: [projects@templeton-research.com]
-        </p>
-        <p>
-          [If you have registered with the Information Commissioner&rsquo;s Office, include
-          your ICO registration number here.]
+          Email:{' '}
+          <a href="mailto:projects@templetonresearch.com">projects@templetonresearch.com</a>
         </p>
 
         <h2>What data we collect</h2>
         <p>
-          This website collects personal data only when you choose to send us an enquiry
-          through our contact form. When you do, we collect:
+          This website collects personal data only when you choose to send it to us,
+          through our contact form or our careers forms (CV submissions and internship
+          applications). Depending on the form, we collect:
         </p>
         <ul>
           <li>Your name</li>
           <li>Your email address</li>
-          <li>Your company name (optional)</li>
+          <li>Your company name (optional, contact form)</li>
           <li>The content of your message</li>
-          <li>The date and time your message was submitted</li>
+          <li>Your CV, if you upload one</li>
+          <li>The date and time your submission was sent</li>
         </ul>
         <p>
           We do not use analytics, advertising, or marketing tracking on this website, and
@@ -76,13 +73,13 @@ function PrivacyPolicy() {
 
         <h2>How we use your data and our lawful basis</h2>
         <p>
-          We use the information you submit through the contact form solely to read,
-          respond to, and follow up on your enquiry.
+          We use the information you submit solely to read, respond to and follow up on
+          your enquiry, or to consider your CV or internship application.
         </p>
         <p>
           Our lawful basis for this processing is our <strong>legitimate interests</strong>{' '}
           (UK GDPR Article 6(1)(f)) - specifically, responding to and managing enquiries
-          from people who choose to get in touch with us. We consider this processing to
+          and applications from people who choose to get in touch with us. We consider this processing to
           have a minimal privacy impact, as you provide the information voluntarily and for
           the purpose of receiving a reply.
         </p>
@@ -95,16 +92,21 @@ function PrivacyPolicy() {
         <p>
           We do not sell your personal data, and we do not share it for marketing purposes.
           We do use trusted third-party service providers (&ldquo;processors&rdquo;) to
-          operate this website. Your contact form submission is stored using:
+          operate this website:
         </p>
         <ul>
           <li>
-            <strong>Sanity</strong> - our content platform, which stores contact form
-            submissions. [Verify your dataset hosting region.]
+            <strong>Sanity</strong> - our content platform, which stores form submissions
+            and uploaded CVs.
           </li>
           <li>
-            <strong>[Hosting provider, e.g. Vercel]</strong> - which hosts and serves this
-            website.
+            <strong>Resend</strong> - which delivers form submissions to our team by email.
+          </li>
+          <li>
+            <strong>Vercel</strong> - which hosts and serves this website.
+          </li>
+          <li>
+            <strong>Mux</strong> - which streams the videos on this website.
           </li>
         </ul>
         <p>
@@ -120,14 +122,13 @@ function PrivacyPolicy() {
           this happens, we take steps to ensure your data is protected by an appropriate
           safeguard recognised under UK data protection law, such as the UK International
           Data Transfer Agreement (IDTA) or the UK Addendum to the EU Standard Contractual
-          Clauses, or transfer to a country covered by UK adequacy regulations. [Confirm
-          the specific mechanism your processors rely on.]
+          Clauses, or transfer to a country covered by UK adequacy regulations.
         </p>
 
         <h2>How long we keep your data</h2>
         <p>
-          We keep contact form submissions for [e.g. 24 months] from the date of your
-          enquiry, after which they are deleted, unless we need to retain them longer to
+          We keep form submissions and CVs for up to 24 months from the date you send
+          them, after which they are deleted, unless we need to retain them longer to
           manage an ongoing relationship or to comply with a legal obligation.
         </p>
 
@@ -142,7 +143,7 @@ function PrivacyPolicy() {
           <li>Withdraw consent, where our processing is based on consent</li>
         </ul>
         <p>
-          To exercise any of these rights, contact us at [projects@templeton-research.com].
+          To exercise any of these rights, contact us at <a href="mailto:projects@templetonresearch.com">projects@templetonresearch.com</a>.
           We will respond within one month.
         </p>
 
@@ -169,7 +170,7 @@ function PrivacyPolicy() {
         <h2>Contact</h2>
         <p>
           For any questions about this policy or your personal data, contact us at
-          [projects@templeton-research.com].
+          <a href="mailto:projects@templetonresearch.com">projects@templetonresearch.com</a>.
         </p>
       </div>
     </>
@@ -185,14 +186,14 @@ function CookiePolicy() {
     <>
       <header className={styles.header}>
         <h1 className={styles.title}>Cookie Policy</h1>
-        <p className={styles.lastUpdated}>Last updated: [DATE]</p>
+        <p className={styles.lastUpdated}>Last updated: 28 October 2026</p>
       </header>
 
       <div className={styles.body}>
         <p>
           This Cookie Policy explains how Templeton Research (&ldquo;we&rdquo;,
           &ldquo;us&rdquo;, &ldquo;our&rdquo;) uses cookies and similar technologies on
-          [www.templeton-research.com]. It should be read alongside our Privacy Policy.
+          www.templetonresearch.com. It should be read alongside our Privacy Policy.
         </p>
 
         <h2>What are cookies?</h2>
@@ -231,10 +232,13 @@ function CookiePolicy() {
             </thead>
             <tbody>
               <tr>
-                <td>[e.g. hosting/security cookie]</td>
-                <td>[Hosting provider]</td>
-                <td>Keeps the site running securely and reliably</td>
-                <td>[Session / duration]</td>
+                <td>None set by this website</td>
+                <td>-</td>
+                <td>
+                  We don&rsquo;t set cookies. Our host (Vercel) may use strictly necessary
+                  technical measures to keep the site secure and reliable.
+                </td>
+                <td>-</td>
               </tr>
             </tbody>
           </table>
@@ -246,14 +250,14 @@ function CookiePolicy() {
           <li>
             <strong>Adobe Fonts (Typekit)</strong> - used to serve the typography on this
             site. Adobe may process limited technical information (such as your IP address)
-            to deliver the fonts. [Confirm whether Adobe Fonts sets any cookies in your
-            configuration; the standard web-only embed is designed not to.]
+            to deliver the fonts. The web embed we use is designed not to set cookies.
+          </li>
+          <li>
+            <strong>Mux</strong> - used to stream the videos on this site. Mux may process
+            limited technical information (such as your IP address and device type) to
+            deliver the video at the right quality.
           </li>
         </ul>
-        <p>
-          [List any other third-party resources that set cookies, or delete this section if
-          none apply.]
-        </p>
 
         <h2>Managing cookies</h2>
         <p>
@@ -265,7 +269,8 @@ function CookiePolicy() {
           You can still control or delete cookies through your browser settings at any time.
           Most browsers let you block or remove cookies, though doing so may affect how this
           and other websites work. Guidance for common browsers is available at
-          [aboutcookies.org] or your browser&rsquo;s help pages.
+          <a href="https://www.aboutcookies.org" target="_blank" rel="noopener noreferrer">aboutcookies.org</a>{' '}
+          or your browser&rsquo;s help pages.
         </p>
 
         <h2>Changes to this policy</h2>
@@ -277,7 +282,7 @@ function CookiePolicy() {
         <h2>Contact</h2>
         <p>
           For questions about our use of cookies, contact us at
-          [projects@templeton-research.com].
+          <a href="mailto:projects@templetonresearch.com">projects@templetonresearch.com</a>.
         </p>
       </div>
     </>
@@ -293,12 +298,12 @@ function TermsOfUse() {
     <>
       <header className={styles.header}>
         <h1 className={styles.title}>Terms of Use</h1>
-        <p className={styles.lastUpdated}>Last updated: [DATE]</p>
+        <p className={styles.lastUpdated}>Last updated: 28 October 2026</p>
       </header>
 
       <div className={styles.body}>
         <p>
-          These Terms of Use govern your access to and use of [www.templeton-research.com]
+          These Terms of Use govern your access to and use of www.templetonresearch.com
           (the &ldquo;website&rdquo;), operated by Templeton Research (&ldquo;we&rdquo;,
           &ldquo;us&rdquo;, &ldquo;our&rdquo;). By using the website, you agree to these
           terms. If you do not agree, please do not use the website.
@@ -308,11 +313,10 @@ function TermsOfUse() {
         <p className={styles.address}>
           Templeton Research
           <br />
-          [Registered address]
+          London, United Kingdom
           <br />
-          [Company registration number, if applicable]
-          <br />
-          Email: [projects@templeton-research.com]
+          Email:{' '}
+          <a href="mailto:projects@templetonresearch.com">projects@templetonresearch.com</a>
         </p>
 
         <h2>Using our website</h2>
@@ -403,7 +407,7 @@ function TermsOfUse() {
         </p>
 
         <h2>Contact</h2>
-        <p>To contact us, please email [projects@templeton-research.com].</p>
+        <p>To contact us, please email <a href="mailto:projects@templetonresearch.com">projects@templetonresearch.com</a>.</p>
       </div>
     </>
   )
