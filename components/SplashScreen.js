@@ -8,6 +8,7 @@
 
 import { useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
 
 
 export default function SplashScreen() {
@@ -25,8 +26,7 @@ export default function SplashScreen() {
     }
 
     // Hold the page still while the splash plays
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    lockScroll('splash')
 
     const paths = Array.from(el.querySelectorAll('path'))
     paths.forEach((p) => {
@@ -45,7 +45,7 @@ export default function SplashScreen() {
       if (finished) return
       finished = true
       announce()
-      document.body.style.overflow = prevOverflow
+      unlockScroll('splash')
       setGone(true)
     }
     // Safety net: if animation frames are paused (e.g. the page loaded in a
@@ -67,7 +67,7 @@ export default function SplashScreen() {
     return () => {
       tl.kill()
       clearTimeout(safety)
-      document.body.style.overflow = prevOverflow
+      unlockScroll('splash')
     }
   }, [])
 

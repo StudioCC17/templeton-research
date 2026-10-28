@@ -12,6 +12,8 @@ import { createPortal } from 'react-dom'
 import Arrow from '@/components/Arrow'
 import FormSuccess from '@/components/FormSuccess'
 import { fadeOut } from '@/lib/motion'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
+import useDialogFocus from '@/lib/useDialogFocus'
 
 const INITIAL_FORM = {
   name: '',
@@ -25,7 +27,11 @@ export default function ContactModal({ isOpen, onClose, service }) {
   const [isVisible, setIsVisible] = useState(false)
   const [form, setForm] = useState(INITIAL_FORM)
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
+  const [errorMsg, setErrorMsg] = useState('')
   const formRef = useRef(null)
+  const closeTimer = useRef(null)
+  const boxRef = useRef(null)
+  useDialogFocus(boxRef, isOpen && mounted)
 
 
   // Portals need the DOM, which only exists in the browser.
@@ -37,7 +43,9 @@ export default function ContactModal({ isOpen, onClose, service }) {
   // we flip to visible, guaranteeing the slide/fade actually plays.
   useEffect(() => {
     if (!isOpen) return
-    document.body.style.overflow = 'hidden'
+    // Reopened mid-close: cancel the pending close so it can't shut this one
+    clearTimeout(closeTimer.current)
+    lockScroll('contact')
     let raf2
     const raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => setIsVisible(true))
@@ -58,8 +66,8 @@ export default function ContactModal({ isOpen, onClose, service }) {
   // Slide out, then tell the parent to unmount once the transition ends.
   const handleClose = useCallback(() => {
     setIsVisible(false)
-    document.body.style.overflow = ''
-    setTimeout(() => {
+    unlockScroll('contact')
+    closeTimer.current = setTimeout(() => {
       onClose()
       setForm(INITIAL_FORM)
       setStatus('idle')
@@ -68,16 +76,23 @@ export default function ContactModal({ isOpen, onClose, service }) {
 
   // Restore scroll lock if the component unmounts mid-animation.
   useEffect(() => {
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      clearTimeout(closeTimer.current)
+      unlockScroll('contact')
+    }
   }, [])
 
-  // Close on Escape.
+  // Close on Escape. Listens in the capture phase and stops the event, so
+  // the panel underneath (e.g. a service panel) doesn't close too.
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) handleClose()
+      if (e.key === 'Escape' && isOpen) {
+        e.stopImmediatePropagation()
+        handleClose()
+      }
     }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown, true)
+    return () => window.removeEventListener('keydown', handleKeyDown, true)
   }, [isOpen, handleClose])
 
   const handleChange = (e) => {
@@ -96,10 +111,15 @@ export default function ContactModal({ isOpen, onClose, service }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      if (!res.ok) throw new Error('Request failed')
+      if (!res.ok) {
+        // Show the server's reason (e.g. rate limited, invalid email) when it gives one
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || '')
+      }
       await fadeOut(formRef.current) // form fades away before the thank-you appears
       setStatus('success')
     } catch (err) {
+      setErrorMsg(err.message)
       setStatus('error')
     }
   }
@@ -149,8 +169,12 @@ export default function ContactModal({ isOpen, onClose, service }) {
       }}
     >
       <div
+        ref={boxRef}
         className="tr-contact-box"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Contact us"
         style={{
           backgroundColor: 'var(--color-cream)',
           width: '40%',
@@ -275,6 +299,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
 
               {status === 'error' && (
                 <p
+                  role="alert"
                   style={{
                     fontFamily: 'var(--font-body), var(--font-fallback)',
                     fontSize: 'var(--step--1)',
@@ -283,7 +308,7 @@ export default function ContactModal({ isOpen, onClose, service }) {
                     marginBottom: '1.25rem',
                   }}
                 >
-                  Something went wrong sending your message. Please try again.
+                  {errorMsg || 'Something went wrong sending your message. Please try again.'}
                 </p>
               )}
 

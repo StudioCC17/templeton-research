@@ -10,6 +10,8 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
+import useDialogFocus from '@/lib/useDialogFocus'
 
 // Body rendering for PortableText content (matches the TeamSection careers styles).
 const bodyComponents = {
@@ -53,6 +55,8 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
   const [isRendered, setIsRendered] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const closeTimer = useRef(null)
+  const panelRef = useRef(null)
+  useDialogFocus(panelRef, isRendered && isOpen)
 
   // Open: mount + lock scroll. The visibility flip happens in the effect
   // below, once the panel is actually in the DOM and painted at its start
@@ -61,13 +65,13 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
     if (isOpen) {
       if (closeTimer.current) clearTimeout(closeTimer.current)
       setIsRendered(true)
-      document.body.style.overflow = 'hidden'
+      lockScroll('about')
     } else if (isRendered) {
       // Close: play exit transition, then unmount + restore scroll.
       setIsVisible(false)
       closeTimer.current = setTimeout(() => {
         setIsRendered(false)
-        document.body.style.overflow = ''
+        unlockScroll('about')
       }, 600)
     }
   }, [isOpen, isRendered])
@@ -101,7 +105,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
   useEffect(() => {
     return () => {
       if (closeTimer.current) clearTimeout(closeTimer.current)
-      document.body.style.overflow = ''
+      unlockScroll('about')
     }
   }, [])
 
@@ -131,6 +135,7 @@ export default function AboutModal({ isOpen, onClose, aboutData }) {
       }}
     >
       <div
+        ref={panelRef}
         className="about-modal"
         onClick={(e) => e.stopPropagation()}
         role="dialog"

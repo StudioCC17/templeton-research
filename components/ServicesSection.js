@@ -12,6 +12,7 @@ import Arrow from '@/components/Arrow'
 import gsap from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { pressable } from '@/lib/a11y'
 
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger)
 
@@ -251,7 +252,7 @@ export default function ServicesSection({ servicesData }) {
       switchingRef.current = false
     }
     try {
-      const gsap = window.gsap || (await import('gsap')).default
+      const gsap = (await import('gsap')).default
       const targets = [proseRef.current, document.querySelector('.sd-inner'), document.querySelector('.sd-next-wrap')].filter(Boolean)
       if (!targets.length) return done()
       gsap.to(targets, { opacity: 0, y: -8, duration: 0.3, ease: 'power2.in', onComplete: done })
@@ -274,9 +275,9 @@ export default function ServicesSection({ servicesData }) {
     const initAnimation = async () => {
       try {
         // Use CDN globals if available (production), fall back to npm imports (local dev)
-        const gsap = window.gsap || (await import('gsap')).default
+        const gsap = (await import('gsap')).default
         const SplitText = window.SplitText || (await import('gsap/SplitText')).SplitText
-        const ScrollTrigger = window.ScrollTrigger || (await import('gsap/ScrollTrigger')).ScrollTrigger
+        const ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger
         gsap.registerPlugin(SplitText, ScrollTrigger)
 
         splitInstance = new SplitText(headlineRef.current, {
@@ -326,7 +327,7 @@ export default function ServicesSection({ servicesData }) {
 
     const initAnimation = async () => {
       try {
-        const gsap = window.gsap || (await import('gsap')).default
+        const gsap = (await import('gsap')).default
         const SplitText = window.SplitText || (await import('gsap/SplitText')).SplitText
         gsap.registerPlugin(SplitText)
         if (cancelled || !proseRef.current) return
@@ -456,7 +457,8 @@ export default function ServicesSection({ servicesData }) {
               <div className="services-left-foot">
               <p
                 className="services-split-footnote"
-                onClick={() => window.dispatchEvent(new Event('open-contact-modal'))}
+                {...pressable(() => window.dispatchEvent(new Event('open-contact-modal')))}
+                tabIndex={isDetailOpen ? -1 : 0}
                 style={{
                   opacity: isDetailOpen ? 0 : 1,
                   pointerEvents: isDetailOpen ? 'none' : 'auto',
@@ -508,7 +510,7 @@ export default function ServicesSection({ servicesData }) {
                     onMouseEnter={() => hoverRow(index)}
                   >
                     <div
-                      onClick={() => openDetail(service, index)}
+                      {...pressable(() => openDetail(service, index))}
                       className="service-header"
                       style={{
                         cursor: 'pointer',

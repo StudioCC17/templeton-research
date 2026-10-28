@@ -224,7 +224,7 @@ export default function HeroSection({
             backgroundColor: 'var(--color-cream)' // matches the page while the media loads
           }}
         >
-          {mediaType === 'image' && heroData.images?.[0] && (
+          {mediaType === 'image' && heroData.images?.[0]?.asset && (
             <>
               <Image
                 src={urlFor(heroData.images[0]).url()}

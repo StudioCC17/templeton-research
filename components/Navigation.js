@@ -16,6 +16,7 @@ import ContactModal from '@/components/ContactModal'
 import AboutModal from '@/components/AboutModal'
 import Arrow from '@/components/Arrow'
 import { afterSplash } from '@/lib/splash'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
 
 // EN / JP switch in the phone menu - hidden until the Japanese site exists
 const SHOW_LOCALE_SWITCH = false
@@ -28,7 +29,6 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
   const [contactService, setContactService] = useState(null) // pre-fills the form when opened from a service
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
-  const [lastScrollY, setLastScrollY] = useState(0)
   const [showSecondaryNav, setShowSecondaryNav] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   // A service is open in the Services section: show the sticky header in green with cream text
@@ -153,15 +153,12 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
     { label: 'About', href: '#approach', section: 'approach' },
     { label: 'Services', href: '#services', section: 'services' },
     { label: 'Team', href: '#team', section: 'team' },
+    { label: 'Careers', href: '#careers', section: 'careers' },
     { label: 'Insights', href: '#insights', section: 'insights' }
   ]
 
-  // The phone menu also lists Careers (it has its own section on the page)
-  const mobileNavItems = [
-    ...navItems.slice(0, 3),
-    { label: 'Careers', href: '#careers', section: 'careers' },
-    navItems[3],
-  ]
+  // The phone menu lists the same sections
+  const mobileNavItems = navItems
   const officeCities = [...offices]
     .sort((a, b) => (a.order || 0) - (b.order || 0))
     .map((o) => (o.city || '').trim())
@@ -173,7 +170,7 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
     handleNavClick(e, href, section)
   }
 
-  // Smooth scroll function with debugging
+  // Smooth scroll to a section
   const handleNavClick = (e, href, section) => {
     // "About us" is an action (open modal), not a scroll target.
     if (section === 'approach') {
@@ -183,10 +180,8 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
       return
     }
 
-    console.log('Nav clicked:', { href, section })
     
     if (!href.startsWith('#') || !section) {
-      console.log('Invalid href or section')
       return
     }
     
@@ -197,13 +192,10 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
     // Try multiple selectors to find the target
     if (section === 'approach') {
       targetElement = document.querySelector('.random-image-grid-section')
-      console.log('Looking for approach section:', targetElement)
     } else if (section === 'services') {
       targetElement = document.querySelector('.services-section')
-      console.log('Looking for services section:', targetElement)
     } else if (section === 'team') {
       targetElement = document.querySelector('.team-section')
-      console.log('Looking for team section:', targetElement)
     } else if (section === 'insights' || section === 'careers') {
       targetElement = document.getElementById(section)
     }
@@ -212,7 +204,6 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
       console.warn(`Target element not found for section: ${section}`)
       // Try a more generic approach
       targetElement = document.getElementById(section)
-      console.log('Trying ID selector:', targetElement)
     }
     
     if (!targetElement) {
@@ -220,14 +211,12 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
       return
     }
 
-    console.log('Found target element:', targetElement)
     
     // Calculate position with 38px offset
     const offset = 38
     // Page position (works for sections nested inside others, e.g. Careers inside Team)
     const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - offset
     
-    console.log('Scrolling to position with 38px offset:', targetPosition)
     
     // Custom smooth scroll animation (slowed down by 10%)
     const startPosition = window.pageYOffset
@@ -258,7 +247,6 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
   const handleLogoClick = (e) => {
     e.preventDefault()
     setIsMobileMenuOpen(false)
-    console.log('Logo clicked - scrolling to top')
     
     // Custom smooth scroll to top (same speed as navigation)
     const startPosition = window.pageYOffset
@@ -285,15 +273,31 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
     requestAnimationFrame(scrollToTopAnimation)
   }
 
+  // Close the phone menu with Escape, or if the screen widens past phone
+  // size (e.g. rotating to landscape), where the menu button isn't shown
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const onKey = (e) => { if (e.key === 'Escape') setIsMobileMenuOpen(false) }
+    const mq = window.matchMedia('(min-width: 769px)')
+    const onWide = () => { if (mq.matches) setIsMobileMenuOpen(false) }
+    window.addEventListener('keydown', onKey)
+    mq.addEventListener('change', onWide)
+    onWide()
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      mq.removeEventListener('change', onWide)
+    }
+  }, [isMobileMenuOpen])
+
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
+      lockScroll('nav-menu')
     } else {
-      document.body.style.overflow = ''
+      unlockScroll('nav-menu')
     }
     return () => {
-      document.body.style.overflow = ''
+      unlockScroll('nav-menu')
     }
   }, [isMobileMenuOpen])
 
@@ -306,10 +310,6 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
           const currentScrollY = window.scrollY
           const viewportHeight = window.innerHeight
           const threshold = viewportHeight * 0.35 // sticky header slides in after 35vh of scrolling (was 75vh)
-          
-          // Determine scroll direction
-          const scrollingDown = currentScrollY > lastScrollY
-          const scrollingUp = currentScrollY < lastScrollY
 
           // At the very top (first 75vh)
           if (currentScrollY < threshold) {
@@ -324,7 +324,6 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
             setShowSecondaryNav(true)
           }
 
-          setLastScrollY(currentScrollY)
           detectCurrentSection()
           ticking = false
         })
@@ -333,7 +332,8 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
     }
 
     const detectCurrentSection = () => {
-      const scrollPosition = window.scrollY + (window.innerHeight * 0.1)
+      // A section counts as current once its top passes 40% down the screen
+      const scrollPosition = window.scrollY + (window.innerHeight * 0.4)
       let activeSection = 'hero'
 
       const heroSection = document.querySelector('.hero-section')
@@ -371,10 +371,13 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     
+    window.addEventListener('resize', handleScroll)
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
     }
-  }, [lastScrollY])
+  }, [])
 
   // Trigger slide-down animation on mount
   useEffect(() => {
@@ -524,6 +527,7 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
                     href={navItem.href} 
                     className="nav-link"
                     onClick={(e) => handleNavClick(e, navItem.href, navItem.section)}
+                    aria-current={currentSection === navItem.section ? 'location' : undefined}
                     style={{
                       ...getNavItemStyles(navItem),
                       transition: 'all 0.3s ease'
@@ -639,6 +643,7 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
                     href={navItem.href} 
                     className="nav-link"
                     onClick={(e) => handleNavClick(e, navItem.href, navItem.section)}
+                    aria-current={currentSection === navItem.section ? 'location' : undefined}
                     style={{
                       ...getNavItemStyles(navItem),
                       transition: 'all 0.3s ease'
@@ -654,6 +659,7 @@ export default function Navigation({ globalSettings, aboutData, offices = [] }) 
           <div className="nav-center">
             <button 
               onClick={handleLogoClick}
+              aria-label="Templeton Research - back to top"
               className="nav-logo nav-logo-secondary"
               style={{
                 background: 'none',

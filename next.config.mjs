@@ -28,6 +28,16 @@ const nextConfig = {
       },
     ]
   },
+  // Article tiles link to /insights/<slug> (for new tabs, sharing and search
+  // engines); articles actually open as an overlay on the homepage. /contact
+  // was an old copy of the homepage.
+  async redirects() {
+    return [
+      { source: '/insights/:slug', destination: '/?article=:slug', permanent: false },
+      { source: '/insights', destination: '/?insights=all', permanent: false },
+      { source: '/contact', destination: '/', permanent: true },
+    ]
+  },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.

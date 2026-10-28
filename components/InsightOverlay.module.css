@@ -303,3 +303,19 @@ border-top: 1px solid var(--color-border);
     opacity: 0.6;
   }
 }
+
+/* ============================================================
+ * CSS FADE — used by LegalOverlay only. InsightOverlay animates
+ * .backdrop/.overlay with GSAP; the legal overlay has no GSAP, so
+ * it fades in and out with these classes instead.
+ * ============================================================ */
+
+.cssFade {
+  transition: opacity 0.64s ease, visibility 0s linear 0.64s;
+}
+
+.cssFadeVisible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0s linear 0s;
+}

@@ -206,8 +206,7 @@ function FooterInner({ footerData }) {
               position: 'relative'
             }}
           >
-            {/* Two short columns: site links + contact details
-               (office cities now live in the clocks strip under the footer) */}
+            {/* Explore | Offices (with local times) | Contact */}
             <div className="footer-cols">
               <div>
                 <span className="footer-col-label">Explore</span>
@@ -236,7 +235,7 @@ function FooterInner({ footerData }) {
                   ))}
                 </ul>
               </div>
-              {/* Phones only: the offices, each with its local time */}
+              {/* The offices, each with its local time */}
               <div className="footer-m-offices">
                 <span className="footer-col-label">Offices</span>
                 <ul className="footer-col-list">
@@ -328,7 +327,7 @@ function FooterInner({ footerData }) {
           }
           .footer-cols {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 1.5rem;
             align-content: start;
           }
@@ -361,9 +360,30 @@ function FooterInner({ footerData }) {
             color: var(--color-cream);
             text-decoration: none;
           }
-          /* Phone-only pieces, hidden on larger screens */
+          /* City on the left, its local time on the right */
+          .footer-m-offices .footer-col-list {
+            align-items: stretch;
+          }
+          .footer-office {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline !important;
+            gap: 0.75rem;
+            max-width: 13rem;
+            margin: 0 !important; /* beats the global li spacing */
+            padding: 0;
+            font-family: var(--font-body), var(--font-fallback);
+            font-size: var(--step--1);
+            line-height: 1.425;
+            color: var(--color-cream);
+          }
+          .footer-office-time {
+            font-size: var(--step--1);
+            color: rgba(245, 245, 240, 0.5);
+            font-variant-numeric: tabular-nums;
+          }
+          /* Phone/tablet-only pieces, hidden on larger screens */
           .footer-m-cta,
-          .footer-m-offices,
           .footer-m-copy {
             display: none;
           }
@@ -381,6 +401,23 @@ function FooterInner({ footerData }) {
             /* stacked: the line down the middle no longer divides anything */
             .footer-divider {
               display: none !important;
+            }
+
+            /* Stacked, the © would float under the tagline - it joins the
+               legal row at the bottom instead (as on phones) */
+            .footer-bottom-left {
+              display: none;
+            }
+            .footer-m-copy {
+              display: block;
+              font-family: var(--font-body), var(--font-fallback);
+              font-size: var(--step--1);
+              line-height: 1.425;
+              color: rgba(245, 245, 240, 0.65);
+            }
+            .footer-cols {
+              padding-top: 2rem;
+              border-top: 1px solid var(--color-border-on-dark);
             }
           }
 
@@ -470,33 +507,14 @@ function FooterInner({ footerData }) {
             .footer-col-link {
               font-size: var(--step-1);
             }
-            .footer-m-offices {
-              display: block;
-            }
             .footer-office {
-              display: flex;
-              justify-content: space-between;
-              align-items: baseline !important;
-              gap: 0.75rem;
+              max-width: none;
               width: 100%;
-              margin: 0 !important; /* beats the global li spacing */
-              padding: 0;
-              font-family: var(--font-body), var(--font-fallback);
               font-size: var(--step-1); /* same size as the Explore links */
-              line-height: 1.425;
-              color: var(--color-cream);
             }
             /* The big button above already covers "Send us a message" */
             .footer-contact-col li:first-child {
               display: none;
-            }
-            .footer-office-time {
-              font-size: var(--step--1);
-              color: rgba(245, 245, 240, 0.5);
-              font-variant-numeric: tabular-nums;
-            }
-            .footer-m-offices .footer-col-list {
-              align-items: stretch;
             }
 
             .footer-legal {

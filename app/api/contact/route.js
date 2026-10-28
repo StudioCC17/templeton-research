@@ -79,10 +79,12 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
 
-  const name = body?.name?.trim()
-  const email = body?.email?.trim()
-  const company = body?.company?.trim()
-  const message = body?.message?.trim()
+  // Only accept strings, and cap lengths so nobody can post a novel
+  const field = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
+  const name = field(body?.name, 200)
+  const email = field(body?.email, 320)
+  const company = field(body?.company, 200)
+  const message = field(body?.message, 5000)
 
   // Validation
   if (!name || !email || !message) {

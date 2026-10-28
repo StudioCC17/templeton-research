@@ -11,6 +11,8 @@ import { createPortal } from 'react-dom'
 import Arrow from '@/components/Arrow'
 import FormSuccess from '@/components/FormSuccess'
 import { fadeOut } from '@/lib/motion'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
+import useDialogFocus from '@/lib/useDialogFocus'
 
 const INITIAL_FORM = {
   name: '',
@@ -42,6 +44,9 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
   const [form, setForm] = useState(INITIAL_FORM)
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
   const formRef = useRef(null)
+  const closeTimer = useRef(null)
+  const boxRef = useRef(null)
+  useDialogFocus(boxRef, isOpen && mounted)
 
   const [cvFile, setCvFile] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
@@ -55,7 +60,9 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
   // we flip to visible, guaranteeing the slide/fade actually plays.
   useEffect(() => {
     if (!isOpen) return
-    document.body.style.overflow = 'hidden'
+    // Reopened mid-close: cancel the pending close so it can't shut this one
+    clearTimeout(closeTimer.current)
+    lockScroll('apply')
     let raf2
     const raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => setIsVisible(true))
@@ -69,8 +76,8 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
   // Slide out, then tell the parent to unmount once the transition ends.
   const handleClose = useCallback(() => {
     setIsVisible(false)
-    document.body.style.overflow = ''
-    setTimeout(() => {
+    unlockScroll('apply')
+    closeTimer.current = setTimeout(() => {
       onClose()
       setForm(INITIAL_FORM)
       setCvFile(null)
@@ -81,16 +88,23 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
 
   // Restore scroll lock if the component unmounts mid-animation.
   useEffect(() => {
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      clearTimeout(closeTimer.current)
+      unlockScroll('apply')
+    }
   }, [])
 
-  // Close on Escape.
+  // Close on Escape. Listens in the capture phase and stops the event, so
+  // the panel underneath (e.g. a service panel) doesn't close too.
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) handleClose()
+      if (e.key === 'Escape' && isOpen) {
+        e.stopImmediatePropagation()
+        handleClose()
+      }
     }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown, true)
+    return () => window.removeEventListener('keydown', handleKeyDown, true)
   }, [isOpen, handleClose])
 
   const handleChange = (e) => {
@@ -194,8 +208,12 @@ export default function ApplyModal({ isOpen, onClose, type = 'internship' }) {
       }}
     >
       <div
+        ref={boxRef}
         className="tr-contact-box"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Application form"
         style={{
           backgroundColor: 'var(--color-cream)',
           width: '40%',

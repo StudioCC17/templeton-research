@@ -12,6 +12,8 @@ import gsap from 'gsap'
 import { client } from '@/lib/sanity'
 import { InsightTile, CATEGORY_LABELS } from './InsightsSection'
 import styles from './InsightsIndexOverlay.module.css'
+import useDialogFocus from '@/lib/useDialogFocus'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
 
 const ALL_QUERY = `*[_type == "insightArticle" && defined(slug.current)] | order(publishDate desc){
   _id,
@@ -38,6 +40,7 @@ export default function InsightsIndexOverlay() {
 
   const backdropRef = useRef(null)
   const panelRef = useRef(null)
+  useDialogFocus(panelRef, isOpen)
   const gridRef = useRef(null)
   const openTlRef = useRef(null)
   const closingRef = useRef(false)
@@ -58,11 +61,8 @@ export default function InsightsIndexOverlay() {
   // ---------- Body scroll lock ----------
   useEffect(() => {
     if (!isOpen) return
-    const original = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = original
-    }
+    lockScroll('insights-index')
+    return () => unlockScroll('insights-index')
   }, [isOpen])
 
   // ---------- GSAP open ----------
@@ -127,7 +127,7 @@ export default function InsightsIndexOverlay() {
       params.delete('insights')
       params.delete('article')
       const qs = params.toString()
-      window.history.pushState(null, '', qs ? `${pathname}?${qs}` : pathname)
+      window.history.replaceState(null, '', qs ? `${pathname}?${qs}` : pathname) // so Back doesn't reopen it
     }
     const backdrop = backdropRef.current
     const panel = panelRef.current

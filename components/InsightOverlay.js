@@ -12,6 +12,7 @@ import { client } from '@/lib/sanity'
 import InsightArticle from './InsightArticle'
 import styles from './InsightOverlay.module.css'
 import Arrow from '@/components/Arrow'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
 
 // GROQ query for a single article by slug + navigation context (all slugs in order).
 // Returns the article AND a flat list of slugs so we can compute prev/next.
@@ -153,21 +154,8 @@ export default function InsightOverlay() {
   useEffect(() => {
     if (!isOpen) return
 
-    const originalOverflow = document.body.style.overflow
-    const originalPaddingRight = document.body.style.paddingRight
-
-    // Compensate for the scrollbar disappearing so the page doesn't jump
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth
-    document.body.style.overflow = 'hidden'
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`
-    }
-
-    return () => {
-      document.body.style.overflow = originalOverflow
-      document.body.style.paddingRight = originalPaddingRight
-    }
+    lockScroll('insight')
+    return () => unlockScroll('insight')
   }, [isOpen])
 
   // ---------- Data fetching ----------
@@ -240,8 +228,9 @@ export default function InsightOverlay() {
       const params = new URLSearchParams(searchParams.toString())
       params.delete('article')
       const queryString = params.toString()
-      // pushState (not router.push) so closing doesn't re-render the page on the server
-      window.history.pushState(null, '', queryString ? `${pathname}?${queryString}` : pathname)
+      // replaceState (not router.push) so closing doesn't re-render the page on
+      // the server, and Back doesn't reopen the article that was just closed
+      window.history.replaceState(null, '', queryString ? `${pathname}?${queryString}` : pathname)
 
       // Restore focus to whatever was focused before we opened
       if (previousFocusRef.current && previousFocusRef.current.focus) {

@@ -101,6 +101,14 @@
   .grid > * {
     aspect-ratio: 3 / 4;
   }
+  /* Fewer than 5 articles: one landscape tile each, across the full width */
+  .grid.gridFew {
+    grid-template-columns: repeat(var(--tiles), 1fr);
+    height: 380px;
+  }
+  .grid.gridFew > * {
+    aspect-ratio: auto;
+  }
 }
 
 /* ============================================================

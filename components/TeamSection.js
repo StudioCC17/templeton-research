@@ -9,6 +9,9 @@ import { urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
 import ApplyModal from '@/components/ApplyModal'
+import { pressable } from '@/lib/a11y'
+import useDialogFocus from '@/lib/useDialogFocus'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
 
 // Careers section feature image (full-bleed, left). Sanity CDN domain is already
 // configured for next/image via the profile images.
@@ -40,19 +43,24 @@ export default function TeamSection({ teamData, careersData }) {
     Array.from(grid.children).forEach((el) => el.classList.remove('is-hovered'))
   }
 
+  const closeTimer = useRef(null)
+  const modalRef = useRef(null)
+  useDialogFocus(modalRef, !!selectedMember)
+
   const openModal = (member) => {
+    clearTimeout(closeTimer.current) // reopened mid-close
     setSelectedMember(member)
     requestAnimationFrame(() => {
       setIsModalVisible(true)
     })
-    document.body.style.overflow = 'hidden'
+    lockScroll('team')
   }
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
-    setTimeout(() => {
+    closeTimer.current = setTimeout(() => {
       setSelectedMember(null)
-      document.body.style.overflow = ''
+      unlockScroll('team')
     }, 400)
   }, [])
 
@@ -65,7 +73,10 @@ export default function TeamSection({ teamData, careersData }) {
   }, [selectedMember, closeModal])
 
   useEffect(() => {
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      clearTimeout(closeTimer.current)
+      unlockScroll('team')
+    }
   }, [])
 
   // Scroll-triggered SplitText animation on headline
@@ -77,9 +88,9 @@ export default function TeamSection({ teamData, careersData }) {
     const initAnimation = async () => {
       try {
         // Use CDN globals if available (production), fall back to npm imports (local dev)
-        const gsap = window.gsap || (await import('gsap')).default
+        const gsap = (await import('gsap')).default
         const SplitText = window.SplitText || (await import('gsap/SplitText')).SplitText
-        const ScrollTrigger = window.ScrollTrigger || (await import('gsap/ScrollTrigger')).ScrollTrigger
+        const ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger
         gsap.registerPlugin(SplitText, ScrollTrigger)
 
         gsap.set(headlineRef.current, { opacity: 1 })
@@ -225,7 +236,8 @@ export default function TeamSection({ teamData, careersData }) {
             <div 
               key={getUniqueKey(member, index)} 
               className="team-member"
-              onClick={() => openModal(member)}
+              {...pressable(() => openModal(member))}
+              aria-label={`${member.name || 'Team member'}${member.jobTitle ? `, ${member.jobTitle}` : ''}`}
               onMouseEnter={() => hoverMember(index)}
               style={{
                 display: 'flex',
@@ -252,7 +264,7 @@ export default function TeamSection({ teamData, careersData }) {
                    display: 'none'
                 }}
               >
-                {member.profileImage ? (
+                {member.profileImage?.asset ? (
                   <Image
                     src={urlFor(member.profileImage).url()}
                     alt={member.profileImage.alt || member.name}
@@ -441,8 +453,12 @@ export default function TeamSection({ teamData, careersData }) {
           }}
         >
           <div
+            ref={modalRef}
             className="team-modal"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={selectedMember.name || 'Team member'}
             style={{
               backgroundColor: 'var(--color-cream)',
               width: '40%',
@@ -571,7 +587,7 @@ export default function TeamSection({ teamData, careersData }) {
               </div>
 
               {/* Image (only when a profile image exists) */}
-              {selectedMember.profileImage && (
+              {selectedMember.profileImage?.asset && (
                 <div
                   style={{
                     position: 'relative',
@@ -644,6 +660,19 @@ export default function TeamSection({ teamData, careersData }) {
            distance from the bottom as the text is from the image (3.5vw) */
         .careers-buttons {
           margin-top: 3.5rem;
+        }
+        /* Phones: full-width, thumb-sized buttons (like the footer's) */
+        @media (max-width: 768px) {
+          .careers-buttons {
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            margin-top: 2.5rem;
+          }
+          .careers-buttons :global(.btn-primary) {
+            justify-content: center;
+            align-items: center;
+            min-height: 52px;
+          }
         }
         @media (min-width: 1025px) {
           /* Heading sits the same distance from the top as the text is from the image */

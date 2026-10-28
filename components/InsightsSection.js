@@ -157,7 +157,12 @@ export default function InsightsSection({ insightsData, articles = [] }) {
           </div>
         </div>
 
-        <div className={styles.grid}>
+        {/* Fewer than 5 articles: large screens share the width between them
+            instead of leaving the end of the row empty */}
+        <div
+          className={`${styles.grid} ${articles.length < 5 ? styles.gridFew : ''}`}
+          style={{ '--tiles': Math.min(articles.length, 5) }}
+        >
           {articles.map((article, index) => (
             <InsightTile
               key={article._id || article.slug?.current || index}
@@ -210,14 +215,16 @@ export function InsightTile({ article, index }) {
   // opens the instant you click.
   const handleClick = (e) => {
     if (!slug) return
+    // Let cmd/ctrl/shift-click and middle-click open a new tab as normal
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
     e.preventDefault()
     const params = new URLSearchParams(searchParams.toString())
     params.set('article', slug)
     window.history.pushState(null, '', `${pathname}?${params.toString()}`)
   }
 
-  // Fallback href so cmd-click / right-click "open in new tab" still works —
-  // points to the dedicated /insights/[slug] page (built in Phase 4).
+  // Real href so cmd-click / "open in new tab" / sharing still work —
+  // next.config.mjs redirects /insights/<slug> to /?article=<slug>.
   const href = slug ? `/insights/${slug}` : '#'
 
   return (

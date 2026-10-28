@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { PortableText } from '@portabletext/react'
 import Arrow from '@/components/Arrow'
+import { pressable } from '@/lib/a11y'
 
 // ── Backdrop toggle ──────────────────────────────────────────────
 // Set to 'var(--color-overlay)' to activate the dim later. 'transparent' = no backdrop.
@@ -163,7 +164,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
     if (!isVisibleRef.current || !innerRef.current) return
     let cancelled = false
     ;(async () => {
-      const gsap = window.gsap || (await import('gsap')).default
+      const gsap = (await import('gsap')).default
       if (cancelled || !innerRef.current) return
       gsap.fromTo(
         [innerRef.current, nextRef.current].filter(Boolean),
@@ -184,7 +185,7 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
   useEffect(() => {
     let cancelled = false
     const run = async () => {
-      const gsap = window.gsap || (await import('gsap')).default
+      const gsap = (await import('gsap')).default
       if (cancelled) return
       Object.entries(bodyRefs.current).forEach(([k, el]) => {
         if (!el) return
@@ -381,7 +382,8 @@ export default function ServiceDetailPanel({ isOpen, onClose, item, number, tota
                 {/* Sub-header toggle */}
                 <div
                   className="sd-toggle-header"
-                  onClick={() => toggleCard(key)}
+                  {...pressable(() => toggleCard(key))}
+                  aria-expanded={isExpanded}
                   style={{
                     display: 'flex',
                     alignItems: 'center',

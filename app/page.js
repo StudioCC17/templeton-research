@@ -306,6 +306,10 @@ async function getLatestInsightArticles(count = 3) {
 export default async function Home() {
   const { homepage, globalSettings, footerSettings } = await getHomepageData()
 
+  // Drop references to deleted team members (they come back as null)
+  if (homepage?.seniorTeamSection?.teamMembers) {
+    homepage.seniorTeamSection.teamMembers = homepage.seniorTeamSection.teamMembers.filter(Boolean)
+  }
   if (homepage?.seniorTeamSection?.teamMemberRefs && homepage?.seniorTeamSection?.teamMembers) {
     const refs = homepage.seniorTeamSection.teamMemberRefs
     homepage.seniorTeamSection.teamMembers.sort((a, b) => {
@@ -318,7 +322,7 @@ export default async function Home() {
   if (insightsConfig?.enabled !== false) {
     if (insightsConfig?.displayMode === 'manual') {
       const refs = insightsConfig.featuredArticleRefs || []
-      const fetched = insightsConfig.featuredArticles || []
+      const fetched = (insightsConfig.featuredArticles || []).filter(Boolean) // deleted articles come back as null
       insightArticles = refs
         .map((id) => fetched.find((a) => a._id === id))
         .filter(Boolean)

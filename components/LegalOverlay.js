@@ -17,6 +17,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import LegalContent, { LEGAL_SLUGS, LEGAL_TITLES } from './LegalContent'
 import styles from './InsightOverlay.module.css'
+import { lockScroll, unlockScroll } from '@/lib/scrollLock'
 
 export default function LegalOverlay() {
   const router = useRouter()
@@ -62,20 +63,8 @@ export default function LegalOverlay() {
   useEffect(() => {
     if (!isOpen) return
 
-    const originalOverflow = document.body.style.overflow
-    const originalPaddingRight = document.body.style.paddingRight
-
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth
-    document.body.style.overflow = 'hidden'
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`
-    }
-
-    return () => {
-      document.body.style.overflow = originalOverflow
-      document.body.style.paddingRight = originalPaddingRight
-    }
+    lockScroll('legal')
+    return () => unlockScroll('legal')
   }, [isOpen])
 
   // Close — fade out first, then drop the ?legal param once the opacity
@@ -87,7 +76,7 @@ export default function LegalOverlay() {
       const params = new URLSearchParams(searchParams.toString())
       params.delete('legal')
       const queryString = params.toString()
-      router.push(queryString ? `${pathname}?${queryString}` : pathname, {
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
         scroll: false,
       })
 
@@ -146,14 +135,14 @@ export default function LegalOverlay() {
   return (
     <>
       <div
-        className={`${styles.backdrop} ${isMounted ? styles.backdropVisible : ''}`}
+        className={`${styles.backdrop} ${styles.cssFade} ${isMounted ? styles.cssFadeVisible : ''}`}
         onClick={handleClose}
         aria-hidden="true"
       />
 
       <div
         ref={overlayRef}
-        className={`${styles.overlay} ${isMounted ? styles.overlayVisible : ''}`}
+        className={`${styles.overlay} ${styles.cssFade} ${isMounted ? styles.cssFadeVisible : ''}`}
         role="dialog"
         aria-modal="true"
         aria-label={LEGAL_TITLES[activeSlug] || 'Legal document'}

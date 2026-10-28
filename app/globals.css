@@ -1205,12 +1205,19 @@ p.section-paragraph.approach-paragraph {
     grid-template-columns: 1fr auto;
   }
   
+  /* Logo sits on the left, on the same edge as the page text, opposite the
+     menu button */
   .nav-center {
-    justify-content: center;
+    justify-content: flex-start;
     padding: 0;
     order: -1;
   }
-  
+
+  .nav-logo-secondary {
+    left: 0;
+    transform: translateY(-50%);
+  }
+
   .nav-logo-image {
     max-height: 35px;
   }
@@ -1229,7 +1236,13 @@ p.section-paragraph.approach-paragraph {
   }
   
   .nav-logo {
-    padding-left: .5rem !important;
+    padding-left: 0 !important;
+  }
+
+  /* Same 1.25rem side gutter as the page text */
+  .navigation {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 }
 
