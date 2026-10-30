@@ -1222,9 +1222,19 @@ p.section-paragraph.approach-paragraph {
     max-height: 35px;
   }
   
+  /* Box the same width as the drawing (30px tall x the logo's 283:228
+     ratio), so the T's left edge sits exactly on the text gutter - the
+     inline 60px width centres it with ~11px of empty space on the left */
   .nav-logo-secondary .nav-logo-svg {
-    width: 45px;
-    height: 30px;
+    width: 37.3px !important;
+    height: 30px !important;
+  }
+
+  /* Menu button on the same 1.25rem gutter. The lines are 24px inside a
+     32px button, so pull it out 4px for the lines to meet the gutter. */
+  .nav-hamburger,
+  .nav-hamburger--open {
+    right: calc(1.25rem - 4px);
   }
   
   .logo-text {
